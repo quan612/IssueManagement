@@ -1,0 +1,11 @@
+type Project {
+  id: ID! @id
+  name: String!
+  description: String
+}
+
+type User {
+  id: ID! @id
+  email: String!
+  name: String!
+}

@@ -1,0 +1,16 @@
+#import * from './generated/prisma.graphql'
+
+type Query {
+  project(where: ProjectWhereUniqueInput!): Project
+  # projects(
+  #   where: ProjectWhereInput
+  #   orderBy: ProjectOrderByInput
+  #   skip: Int
+  #   first: Int
+  # ): [Project]!
+  projects: [Project]!
+}
+
+type Mutation {
+  createProject(name: String!, description: String): Project!
+}
