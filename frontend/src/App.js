@@ -7,18 +7,30 @@ import Header from "./components/Header";
 import * as ROUTES from "./routes";
 import * as PAGES from "./pages";
 
+import ApolloClient from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "http://localhost:5555"
+});
+
 function App() {
   return (
-    <BrowserRouter>
-      <GlobalStyles />
-      <Header />
-      {/* <hr /> */}
-      <Switch>
-        <Route exact path={ROUTES.DASHBOARD} component={PAGES.DASHBOARD} />
-        <Route exact path={ROUTES.PROJECTS} render={() => <PAGES.PROJECTS />} />
-        <Route exact path={ROUTES.USERS} render={() => <PAGES.USERS />} />
-      </Switch>
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <GlobalStyles />
+        <Header />
+        {/* <hr /> */}
+        <Switch>
+          <Route exact path={ROUTES.DASHBOARD} component={PAGES.DASHBOARD} />
+          <Route
+            exact
+            path={ROUTES.PROJECTS}
+            render={() => <PAGES.PROJECTS />}
+          />
+          <Route exact path={ROUTES.USERS} render={() => <PAGES.USERS />} />
+        </Switch>
+      </BrowserRouter>
+    </ApolloProvider>
   );
 }
 

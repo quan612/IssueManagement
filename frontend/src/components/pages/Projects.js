@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import { Query } from "react-apollo";
+import { useQuery } from "react-apollo";
+
 import gql from "graphql-tag";
 import styled from "styled-components";
-
-import ApolloClient from "apollo-boost";
-
-const client = new ApolloClient({
-  uri: "http://localhost:5555"
-});
 
 const ALL_PROJECTS_QUERY = gql`
   query ALL_PROJECTS_QUERY {
@@ -19,13 +14,19 @@ const ALL_PROJECTS_QUERY = gql`
   }
 `;
 
-client
-  .query({
-    query: ALL_PROJECTS_QUERY
-  })
-  .then(result => console.log(result));
+// client
+//   .query({
+//     query: ALL_PROJECTS_QUERY
+//   })
+//   .then(result => console.log(result));
 
 const Projects = () => {
+  const { loading, error, data } = useQuery(ALL_PROJECTS_QUERY);
+
+  if (data) {
+    console.log(data);
+  }
+
   return (
     <>
       {/* <Query query={ALL_PROJECTS_QUERY}>

@@ -2,12 +2,6 @@
 
 type Query {
   project(where: ProjectWhereUniqueInput!): Project
-  # projects(
-  #   where: ProjectWhereInput
-  #   orderBy: ProjectOrderByInput
-  #   skip: Int
-  #   first: Int
-  # ): [Project]!
   projects: [Project]!
 }
 
