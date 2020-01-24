@@ -27,7 +27,8 @@ function App() {
             path={ROUTES.PROJECTS}
             render={() => <PAGES.PROJECTS />}
           />
-          <Route exact path={ROUTES.USERS} render={() => <PAGES.USERS />} />
+          <Route path={ROUTES.USERS} render={() => <PAGES.USERS />} />
+          <Route path={ROUTES.PROJECT} component={PAGES.PROJECT} />
         </Switch>
       </BrowserRouter>
     </ApolloProvider>
