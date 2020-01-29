@@ -1,5 +1,5 @@
 import React from "react";
-import withSingleProjectQuery from "../HOC/withSingleProjectQuery";
+import withSingleProjectQuery from "../../shared/HOC/withSingleProjectQuery";
 
 const Project = ({ error, project }) => {
   return <p>{project.description}</p>;

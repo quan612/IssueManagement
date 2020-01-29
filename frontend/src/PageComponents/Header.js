@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-import * as ROUTES from "../routes";
+import * as ROUTES from "../App/routes";
 
 // const NavContainer = styled.nav`
 //   ${tw`bg-white px-8 pt-2 shadow-md`}

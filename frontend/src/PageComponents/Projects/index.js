@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { useTrail, animated } from "react-spring";
-import withProjectsQuery from "../HOC/withProjectsQuery";
+import withProjectsQuery from "../../shared/HOC/withProjectsQuery";
 
 const Projects = ({ error, projects }) => {
   const trail = useTrail(projects.length, {

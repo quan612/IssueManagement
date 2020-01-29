@@ -1,14 +1,12 @@
-import React from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import React, { Fragment } from "react";
 import { ApolloProvider } from "react-apollo";
-import GlobalStyles from "./components/styles/Global";
+// import GlobalStyles from "./components/styles/Global";
 import styled, { ThemeProvider } from "styled-components";
-
-import Header from "./components/Header";
-import * as ROUTES from "./routes";
-import * as PAGES from "./pages";
+import NormalizeStyles from "./NormalizeStyles";
+import BaseStyles from "./BaseStyles";
 
 import ApolloClient from "apollo-boost";
+import Routes from "./routes";
 
 const client = new ApolloClient({
   uri: "http://localhost:5555"
@@ -17,7 +15,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <GlobalStyles />
         <Header />
         <div className="container mx-auto">
@@ -33,6 +31,13 @@ function App() {
           </Switch>
         </div>
       </BrowserRouter>
+       */}
+      <Fragment>
+        <NormalizeStyles />
+        <BaseStyles />
+
+        <Routes />
+      </Fragment>
     </ApolloProvider>
   );
 }

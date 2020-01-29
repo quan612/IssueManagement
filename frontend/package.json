@@ -10,6 +10,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-client": "^2.6.8",
     "autoprefixer": "^9.7.4",
+    "color": "^3.1.2",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "postcss-cli": "^7.1.0",
@@ -46,5 +47,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "tailwind.macro": "^1.0.0-alpha.10"
+  }
 }
