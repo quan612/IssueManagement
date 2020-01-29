@@ -1,7 +1,8 @@
 #import * from './generated/prisma.graphql'
+#project(where: ProjectWhereUniqueInput!): Project
 
 type Query {
-  project(where: ProjectWhereUniqueInput!): Project
+  project(id: ID!): Project
   projects: [Project]!
 }
 

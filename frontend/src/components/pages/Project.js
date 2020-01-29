@@ -1,9 +1,8 @@
 import React from "react";
+import withSingleProjectQuery from "../HOC/withSingleProjectQuery";
 
-const Project = props => {
-  //   const { params } = match.params;
-  console.log(props);
-  return <p>Tsest </p>;
+const Project = ({ error, project }) => {
+  return <p>{project.description}</p>;
 };
 
-export default Project;
+export default withSingleProjectQuery(Project);

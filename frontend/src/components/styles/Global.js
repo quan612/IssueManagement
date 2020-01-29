@@ -11,9 +11,10 @@ const GlobalStyles = createGlobalStyle`
     padding: 0px;
     outline: 0; 
     border: 0;
-    box-sizing: border-box;
+    
     border-width: 0;
     border-style: solid;
+    border-color: #e2e8f0;
   }
 
   *:focus {

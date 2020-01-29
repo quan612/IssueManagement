@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
 import GlobalStyles from "./components/styles/Global";
 import styled, { ThemeProvider } from "styled-components";
+
 import Header from "./components/Header";
 import * as ROUTES from "./routes";
 import * as PAGES from "./pages";
@@ -19,17 +20,18 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <Header />
-        {/* <hr /> */}
-        <Switch>
-          <Route exact path={ROUTES.DASHBOARD} component={PAGES.DASHBOARD} />
-          <Route
-            exact
-            path={ROUTES.PROJECTS}
-            render={() => <PAGES.PROJECTS />}
-          />
-          <Route path={ROUTES.USERS} render={() => <PAGES.USERS />} />
-          <Route path={ROUTES.PROJECT} component={PAGES.PROJECT} />
-        </Switch>
+        <div className="container mx-auto">
+          <Switch>
+            <Route exact path={ROUTES.DASHBOARD} component={PAGES.DASHBOARD} />
+            <Route
+              exact
+              path={ROUTES.PROJECTS}
+              render={() => <PAGES.PROJECTS />}
+            />
+            <Route path={ROUTES.USERS} render={() => <PAGES.USERS />} />
+            <Route path={ROUTES.PROJECT} component={PAGES.PROJECT} />
+          </Switch>
+        </div>
       </BrowserRouter>
     </ApolloProvider>
   );
