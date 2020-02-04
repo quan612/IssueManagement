@@ -8,4 +8,5 @@ type Query {
 
 type Mutation {
   createProject(name: String!, description: String): Project!
+  deleteProject(id: ID!): Project
 }

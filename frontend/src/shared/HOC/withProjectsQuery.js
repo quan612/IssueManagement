@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "react-apollo";
 import gql from "graphql-tag";
 
-const ALL_PROJECTS_QUERY = gql`
+export const ALL_PROJECTS_QUERY = gql`
   query ALL_PROJECTS_QUERY {
     projects {
       id

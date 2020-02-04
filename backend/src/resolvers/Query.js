@@ -8,8 +8,6 @@ const Query = {
 
   async project(parent, args, ctx, info) {
     console.log("Getting project");
-    console.log("args here", args);
-
     const project = await ctx.prisma.project(
       {
         ...args
