@@ -1,12 +1,13 @@
 import { createGlobalStyle } from "styled-components";
 
-import { color, font, mixin } from "../shared/utils/styles";
+import { color, font, mixin } from "shared/utils/styles";
 
 export default createGlobalStyle`
   html, body, #root {
     height: 100%;
     min-height: 100%;
     min-width: 768px;
+    background-color:#e9ebee;
   }
   body {
     color: ${color.textDarkest};
@@ -14,10 +15,12 @@ export default createGlobalStyle`
     line-height: 1.2;
     ${font.size(16)}
     ${font.regular}
+
   }
   #root {
     display: flex;
     flex-direction: column;
+    
   }
   button,
   input,
@@ -45,7 +48,7 @@ export default createGlobalStyle`
   }
   button {
     background: none;
-    border: none;
+    /* border: none; */
   }
   /* Workaround for IE11 focus highlighting for select elements */
   select::-ms-value {
@@ -91,4 +94,13 @@ export default createGlobalStyle`
     touch-action: manipulation;
   }
   ${mixin.placeholderColor(color.textLight)}
+
+  /* set height for editable content area, by default it is just 1 line 
+https://stackoverflow.com/questions/46559354/how-to-set-the-height-of-ckeditor-5-classic-editor
+*/
+.ck-editor__editable_inline {
+  min-height: 135px;
+  max-height: 135px;
+}
+
 `;

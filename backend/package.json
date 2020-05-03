@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
+    "cookie-parser": "^1.4.4",
     "graphql-yoga": "1.18.3",
     "jsonwebtoken": "8.5.1",
     "prisma-binding": "^2.3.16",

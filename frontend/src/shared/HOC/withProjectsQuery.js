@@ -1,21 +1,32 @@
 import React from "react";
 import { useQuery } from "react-apollo";
-import gql from "graphql-tag";
 
-export const ALL_PROJECTS_QUERY = gql`
-  query ALL_PROJECTS_QUERY {
-    projects {
-      id
-      name
-      description
-    }
-  }
-`;
+import {
+  ALL_PROJECTS_QUERY,
+  SINGLE_PROJECT_QUERY,
+} from "shared/HOC/GraphQL/Project";
 
-const withProjectsQuery = BaseComponent => ({ ...props }) => {
+export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
   const { loading, error, data } = useQuery(ALL_PROJECTS_QUERY);
-  if (loading) return <h1>Loading</h1>;
-  else return <BaseComponent error={error} projects={data.projects} />;
+
+  return (
+    <BaseComponent
+      loading={loading}
+      error={error}
+      projects={data ? data.projects : []}
+      {...props}
+    />
+  );
 };
 
-export default withProjectsQuery;
+export const withSingleProjectQuery = (BaseComponent) => ({ ...props }) => {
+  const { params } = props.match;
+  const { loading, error, data } = useQuery(SINGLE_PROJECT_QUERY, {
+    variables: { id: params.projectId },
+  });
+
+  if (loading) return <p>Single project query</p>;
+  else {
+    return <BaseComponent error={error} project={data.project} {...props} />;
+  }
+};

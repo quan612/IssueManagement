@@ -1,12 +1,72 @@
 #import * from './generated/prisma.graphql'
-#project(where: ProjectWhereUniqueInput!): Project
+
+type SuccessMessage {
+  message: String
+}
 
 type Query {
   project(id: ID!): Project
   projects: [Project]!
+  me: User
+  users: [User]!
+  issues(projectId: ID!, filter: IssueWhereInput): [Issue!]!
+  issue(id: ID!): Issue!
+  logsOnIssue(issueId: ID!): [Log!]!
+  singleComment(id: ID!): Comment!
+  singleUser(id: ID!): User!
 }
 
 type Mutation {
   createProject(name: String!, description: String): Project!
   deleteProject(id: ID!): Project
+  updateProject(id: ID!, name: String!, description: String): Project!
+  signup(email: String!, name: String!, password: String!): User!
+  signin(email: String!, password: String!): User!
+  signout: SuccessMessage
+  resetPassword(
+    email: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
+  updateUserInfo(email: String!, name: String!, avatar:String):User!
+
+  createIssue(
+    title: String!
+    description: String
+    type: IssueType!
+    status: IssueStatus!
+    priority: IssuePriority!
+    project: ID!
+    assignee: ID
+  ): Issue!
+
+  updateIssue(
+    id: ID!
+    title: String!
+    description: String
+    type: IssueType!
+    status: IssueStatus!
+    priority: IssuePriority!
+    assignee: ID
+    estimate: Int
+    timeSpent: Int
+    listPosition: Float
+    actionType: String
+  ): Issue!
+
+  createComment(text: String!, issue: ID!, actionType: String): Comment!
+  updateComment(id: ID!, text: String): Comment!
+}
+
+#define the user so that the reset token should not be exposed on the client side, means not going to be return back within User info obj
+# type User {
+#   id: ID!
+#   email: String!
+#   name: String!
+#   permissions: [Permission!]! #@scalarList(strategy: RELATION)
+# }
+
+input IssuesFilter {
+  queryString: String
+  assignee: ID
 }

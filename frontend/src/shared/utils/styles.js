@@ -1,10 +1,10 @@
-import { css } from "styled-components";
-import Color from "color";
+import styled, { css } from "styled-components";
+import tw from "tailwind.macro";
 
 import { IssueType, IssueStatus, IssuePriority } from "../constants/issues";
 
 export const color = {
-  primary: "#0052cc", // Blue
+  primary: "#5a67d8", // Blue
   success: "#0B875B", // green
   danger: "#E13C3C", // red
   warning: "#F89C1C", // orange
@@ -25,70 +25,48 @@ export const color = {
 
   borderLightest: "#dfe1e6",
   borderLight: "#C1C7D0",
-  borderInputFocus: "#4c9aff"
+  borderInputFocus: "#4c9aff",
 };
 
-export const issueTypeColors = {
-  [IssueType.TASK]: "#4FADE6", // blue
-  [IssueType.BUG]: "#E44D42", // red
-  [IssueType.STORY]: "#65BA43" // green
+export const statusColor = {
+  [IssueStatus.BACKLOG]: tw`text-gray-600 `,
+  [IssueStatus.SELECTED]: tw` text-gray-600 `,
+  [IssueStatus.INPROGRESS]: tw`text-blue-700`,
+  [IssueStatus.DONE]: tw` text-green-600`,
 };
 
-export const issuePriorityColors = {
-  [IssuePriority.HIGHEST]: "#CD1317", // red
-  [IssuePriority.HIGH]: "#E9494A", // orange
-  [IssuePriority.MEDIUM]: "#E97F33", // orange
-  [IssuePriority.LOW]: "#2D8738", // green
-  [IssuePriority.LOWEST]: "#57A55A" // green
+export const statusColorWithBorder = {
+  [IssueStatus.BACKLOG]: tw`bg-gray-500 `,
+  [IssueStatus.SELECTED]: tw` bg-gray-700 `,
+  [IssueStatus.INPROGRESS]: tw`bg-blue-700`,
+  [IssueStatus.DONE]: tw` bg-green-600`,
 };
 
-export const issueStatusColors = {
-  [IssueStatus.BACKLOG]: color.textDark,
-  [IssueStatus.INPROGRESS]: "#fff",
-  [IssueStatus.SELECTED]: color.textDark,
-  [IssueStatus.DONE]: "#fff"
-};
-
-export const issueStatusBackgroundColors = {
-  [IssueStatus.BACKLOG]: color.backgroundMedium,
-  [IssueStatus.INPROGRESS]: color.primary,
-  [IssueStatus.SELECTED]: color.backgroundMedium,
-  [IssueStatus.DONE]: color.success
-};
-
+// need to double check
 export const sizes = {
   appNavBarLeftWidth: 64,
   secondarySideBarWidth: 230,
-  minViewportWidth: 1000
+  minViewportWidth: 1000,
 };
 
 export const zIndexValues = {
   modal: 1000,
   dropdown: 101,
-  navLeft: 100
+  navLeft: 100,
 };
 
 export const font = {
   regular: 'font-family: "CircularStdBook"; font-weight: normal;',
   medium: 'font-family: "CircularStdMedium"; font-weight: normal;',
-  bold: 'font-family: "CircularStdBold"; font-weight: normal;',
+  bold: 'font-family: "CircularStdBold"; font-weight: bold;',
   black: 'font-family: "CircularStdBlack"; font-weight: normal;',
-  size: size => `font-size: ${size}px;`
+  size: (size) => `font-size: ${size}px;`,
 };
 
 export const mixin = {
-  darken: (colorValue, amount) =>
-    Color(colorValue)
-      .darken(amount)
-      .string(),
-  lighten: (colorValue, amount) =>
-    Color(colorValue)
-      .lighten(amount)
-      .string(),
-  rgba: (colorValue, opacity) =>
-    Color(colorValue)
-      .alpha(opacity)
-      .string(),
+  // darken: (colorValue, amount) => Color(colorValue).darken(amount).string(),
+  // lighten: (colorValue, amount) => Color(colorValue).lighten(amount).string(),
+  // rgba: (colorValue, opacity) => Color(colorValue).alpha(opacity).string(),
   boxShadowMedium: css`
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   `,
@@ -115,7 +93,7 @@ export const mixin = {
     bottom: 0;
     left: 0;
   `,
-  placeholderColor: colorValue => css`
+  placeholderColor: (colorValue) => css`
     ::-webkit-input-placeholder {
       color: ${colorValue} !important;
       opacity: 1 !important;
@@ -140,7 +118,7 @@ export const mixin = {
   `,
   customScrollbar: ({
     width = 8,
-    background = color.backgroundMedium
+    background = color.backgroundMedium,
   } = {}) => css`
     &::-webkit-scrollbar {
       width: ${width}px;
@@ -153,7 +131,7 @@ export const mixin = {
       background: ${background};
     }
   `,
-  backgroundImage: imageURL => css`
+  backgroundImage: (imageURL) => css`
     background-image: url("${imageURL}");
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -189,5 +167,5 @@ export const mixin = {
     i {
       margin-left: 4px;
     }
-  `
+  `,
 };

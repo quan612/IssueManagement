@@ -3,7 +3,19 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateProject {
+/* GraphQL */ `type AggregateComment {
+  count: Int!
+}
+
+type AggregateIssue {
+  count: Int!
+}
+
+type AggregateLog {
+  count: Int!
+}
+
+type AggregateProject {
   count: Int!
 }
 
@@ -15,9 +27,1120 @@ type BatchPayload {
   count: Long!
 }
 
+type Comment {
+  id: ID!
+  text: String!
+  issue: Issue!
+  owner: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  id: ID
+  text: String!
+  issue: IssueCreateOneWithoutCommentsInput!
+  owner: UserCreateOneWithoutCommentInput!
+}
+
+input CommentCreateManyWithoutIssueInput {
+  create: [CommentCreateWithoutIssueInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutOwnerInput {
+  create: [CommentCreateWithoutOwnerInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutIssueInput {
+  id: ID
+  text: String!
+  owner: UserCreateOneWithoutCommentInput!
+}
+
+input CommentCreateWithoutOwnerInput {
+  id: ID
+  text: String!
+  issue: IssueCreateOneWithoutCommentsInput!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateInput {
+  text: String
+  issue: IssueUpdateOneRequiredWithoutCommentsInput
+  owner: UserUpdateOneRequiredWithoutCommentInput
+}
+
+input CommentUpdateManyDataInput {
+  text: String
+}
+
+input CommentUpdateManyMutationInput {
+  text: String
+}
+
+input CommentUpdateManyWithoutIssueInput {
+  create: [CommentCreateWithoutIssueInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutIssueInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutIssueInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithoutOwnerInput {
+  create: [CommentCreateWithoutOwnerInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutOwnerInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentUpdateWithoutIssueDataInput {
+  text: String
+  owner: UserUpdateOneRequiredWithoutCommentInput
+}
+
+input CommentUpdateWithoutOwnerDataInput {
+  text: String
+  issue: IssueUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutIssueInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutIssueDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutOwnerInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutOwnerDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutIssueInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutIssueDataInput!
+  create: CommentCreateWithoutIssueInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutOwnerInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutOwnerDataInput!
+  create: CommentCreateWithoutOwnerInput!
+}
+
+input CommentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  issue: IssueWhereInput
+  owner: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
+input CommentWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
+type Issue {
+  id: ID!
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: User
+  reporter: User!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  project: Project!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+}
+
+type IssueConnection {
+  pageInfo: PageInfo!
+  edges: [IssueEdge]!
+  aggregate: AggregateIssue!
+}
+
+input IssueCreateInput {
+  id: ID
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: UserCreateOneWithoutAssignedInput
+  reporter: UserCreateOneWithoutReporterInput!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectCreateOneWithoutIssuesInput!
+  comments: CommentCreateManyWithoutIssueInput
+}
+
+input IssueCreateManyWithoutAssigneeInput {
+  create: [IssueCreateWithoutAssigneeInput!]
+  connect: [IssueWhereUniqueInput!]
+}
+
+input IssueCreateManyWithoutProjectInput {
+  create: [IssueCreateWithoutProjectInput!]
+  connect: [IssueWhereUniqueInput!]
+}
+
+input IssueCreateManyWithoutReporterInput {
+  create: [IssueCreateWithoutReporterInput!]
+  connect: [IssueWhereUniqueInput!]
+}
+
+input IssueCreateOneInput {
+  create: IssueCreateInput
+  connect: IssueWhereUniqueInput
+}
+
+input IssueCreateOneWithoutCommentsInput {
+  create: IssueCreateWithoutCommentsInput
+  connect: IssueWhereUniqueInput
+}
+
+input IssueCreateWithoutAssigneeInput {
+  id: ID
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  reporter: UserCreateOneWithoutReporterInput!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectCreateOneWithoutIssuesInput!
+  comments: CommentCreateManyWithoutIssueInput
+}
+
+input IssueCreateWithoutCommentsInput {
+  id: ID
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: UserCreateOneWithoutAssignedInput
+  reporter: UserCreateOneWithoutReporterInput!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectCreateOneWithoutIssuesInput!
+}
+
+input IssueCreateWithoutProjectInput {
+  id: ID
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: UserCreateOneWithoutAssignedInput
+  reporter: UserCreateOneWithoutReporterInput!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  comments: CommentCreateManyWithoutIssueInput
+}
+
+input IssueCreateWithoutReporterInput {
+  id: ID
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: UserCreateOneWithoutAssignedInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectCreateOneWithoutIssuesInput!
+  comments: CommentCreateManyWithoutIssueInput
+}
+
+type IssueEdge {
+  node: Issue!
+  cursor: String!
+}
+
+enum IssueOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  type_ASC
+  type_DESC
+  status_ASC
+  status_DESC
+  priority_ASC
+  priority_DESC
+  estimate_ASC
+  estimate_DESC
+  timeSpent_ASC
+  timeSpent_DESC
+  timeRemaining_ASC
+  timeRemaining_DESC
+  listPosition_ASC
+  listPosition_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type IssuePreviousValues {
+  id: ID!
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum IssuePriority {
+  Highest
+  High
+  Medium
+  Low
+  Lowest
+}
+
+input IssueScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  type: IssueType
+  type_not: IssueType
+  type_in: [IssueType!]
+  type_not_in: [IssueType!]
+  status: IssueStatus
+  status_not: IssueStatus
+  status_in: [IssueStatus!]
+  status_not_in: [IssueStatus!]
+  priority: IssuePriority
+  priority_not: IssuePriority
+  priority_in: [IssuePriority!]
+  priority_not_in: [IssuePriority!]
+  estimate: Int
+  estimate_not: Int
+  estimate_in: [Int!]
+  estimate_not_in: [Int!]
+  estimate_lt: Int
+  estimate_lte: Int
+  estimate_gt: Int
+  estimate_gte: Int
+  timeSpent: Int
+  timeSpent_not: Int
+  timeSpent_in: [Int!]
+  timeSpent_not_in: [Int!]
+  timeSpent_lt: Int
+  timeSpent_lte: Int
+  timeSpent_gt: Int
+  timeSpent_gte: Int
+  timeRemaining: Int
+  timeRemaining_not: Int
+  timeRemaining_in: [Int!]
+  timeRemaining_not_in: [Int!]
+  timeRemaining_lt: Int
+  timeRemaining_lte: Int
+  timeRemaining_gt: Int
+  timeRemaining_gte: Int
+  listPosition: Float
+  listPosition_not: Float
+  listPosition_in: [Float!]
+  listPosition_not_in: [Float!]
+  listPosition_lt: Float
+  listPosition_lte: Float
+  listPosition_gt: Float
+  listPosition_gte: Float
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [IssueScalarWhereInput!]
+  OR: [IssueScalarWhereInput!]
+  NOT: [IssueScalarWhereInput!]
+}
+
+enum IssueStatus {
+  Backlog
+  Selected
+  Inprogress
+  Done
+}
+
+type IssueSubscriptionPayload {
+  mutation: MutationType!
+  node: Issue
+  updatedFields: [String!]
+  previousValues: IssuePreviousValues
+}
+
+input IssueSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: IssueWhereInput
+  AND: [IssueSubscriptionWhereInput!]
+  OR: [IssueSubscriptionWhereInput!]
+  NOT: [IssueSubscriptionWhereInput!]
+}
+
+enum IssueType {
+  Task
+  Bug
+  Story
+}
+
+input IssueUpdateDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  assignee: UserUpdateOneWithoutAssignedInput
+  reporter: UserUpdateOneRequiredWithoutReporterInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectUpdateOneRequiredWithoutIssuesInput
+  comments: CommentUpdateManyWithoutIssueInput
+}
+
+input IssueUpdateInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  assignee: UserUpdateOneWithoutAssignedInput
+  reporter: UserUpdateOneRequiredWithoutReporterInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectUpdateOneRequiredWithoutIssuesInput
+  comments: CommentUpdateManyWithoutIssueInput
+}
+
+input IssueUpdateManyDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+}
+
+input IssueUpdateManyMutationInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+}
+
+input IssueUpdateManyWithoutAssigneeInput {
+  create: [IssueCreateWithoutAssigneeInput!]
+  delete: [IssueWhereUniqueInput!]
+  connect: [IssueWhereUniqueInput!]
+  set: [IssueWhereUniqueInput!]
+  disconnect: [IssueWhereUniqueInput!]
+  update: [IssueUpdateWithWhereUniqueWithoutAssigneeInput!]
+  upsert: [IssueUpsertWithWhereUniqueWithoutAssigneeInput!]
+  deleteMany: [IssueScalarWhereInput!]
+  updateMany: [IssueUpdateManyWithWhereNestedInput!]
+}
+
+input IssueUpdateManyWithoutProjectInput {
+  create: [IssueCreateWithoutProjectInput!]
+  delete: [IssueWhereUniqueInput!]
+  connect: [IssueWhereUniqueInput!]
+  set: [IssueWhereUniqueInput!]
+  disconnect: [IssueWhereUniqueInput!]
+  update: [IssueUpdateWithWhereUniqueWithoutProjectInput!]
+  upsert: [IssueUpsertWithWhereUniqueWithoutProjectInput!]
+  deleteMany: [IssueScalarWhereInput!]
+  updateMany: [IssueUpdateManyWithWhereNestedInput!]
+}
+
+input IssueUpdateManyWithoutReporterInput {
+  create: [IssueCreateWithoutReporterInput!]
+  delete: [IssueWhereUniqueInput!]
+  connect: [IssueWhereUniqueInput!]
+  set: [IssueWhereUniqueInput!]
+  disconnect: [IssueWhereUniqueInput!]
+  update: [IssueUpdateWithWhereUniqueWithoutReporterInput!]
+  upsert: [IssueUpsertWithWhereUniqueWithoutReporterInput!]
+  deleteMany: [IssueScalarWhereInput!]
+  updateMany: [IssueUpdateManyWithWhereNestedInput!]
+}
+
+input IssueUpdateManyWithWhereNestedInput {
+  where: IssueScalarWhereInput!
+  data: IssueUpdateManyDataInput!
+}
+
+input IssueUpdateOneInput {
+  create: IssueCreateInput
+  update: IssueUpdateDataInput
+  upsert: IssueUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: IssueWhereUniqueInput
+}
+
+input IssueUpdateOneRequiredWithoutCommentsInput {
+  create: IssueCreateWithoutCommentsInput
+  update: IssueUpdateWithoutCommentsDataInput
+  upsert: IssueUpsertWithoutCommentsInput
+  connect: IssueWhereUniqueInput
+}
+
+input IssueUpdateWithoutAssigneeDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  reporter: UserUpdateOneRequiredWithoutReporterInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectUpdateOneRequiredWithoutIssuesInput
+  comments: CommentUpdateManyWithoutIssueInput
+}
+
+input IssueUpdateWithoutCommentsDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  assignee: UserUpdateOneWithoutAssignedInput
+  reporter: UserUpdateOneRequiredWithoutReporterInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectUpdateOneRequiredWithoutIssuesInput
+}
+
+input IssueUpdateWithoutProjectDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  assignee: UserUpdateOneWithoutAssignedInput
+  reporter: UserUpdateOneRequiredWithoutReporterInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  comments: CommentUpdateManyWithoutIssueInput
+}
+
+input IssueUpdateWithoutReporterDataInput {
+  title: String
+  description: String
+  type: IssueType
+  status: IssueStatus
+  priority: IssuePriority
+  assignee: UserUpdateOneWithoutAssignedInput
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float
+  project: ProjectUpdateOneRequiredWithoutIssuesInput
+  comments: CommentUpdateManyWithoutIssueInput
+}
+
+input IssueUpdateWithWhereUniqueWithoutAssigneeInput {
+  where: IssueWhereUniqueInput!
+  data: IssueUpdateWithoutAssigneeDataInput!
+}
+
+input IssueUpdateWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput!
+  data: IssueUpdateWithoutProjectDataInput!
+}
+
+input IssueUpdateWithWhereUniqueWithoutReporterInput {
+  where: IssueWhereUniqueInput!
+  data: IssueUpdateWithoutReporterDataInput!
+}
+
+input IssueUpsertNestedInput {
+  update: IssueUpdateDataInput!
+  create: IssueCreateInput!
+}
+
+input IssueUpsertWithoutCommentsInput {
+  update: IssueUpdateWithoutCommentsDataInput!
+  create: IssueCreateWithoutCommentsInput!
+}
+
+input IssueUpsertWithWhereUniqueWithoutAssigneeInput {
+  where: IssueWhereUniqueInput!
+  update: IssueUpdateWithoutAssigneeDataInput!
+  create: IssueCreateWithoutAssigneeInput!
+}
+
+input IssueUpsertWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput!
+  update: IssueUpdateWithoutProjectDataInput!
+  create: IssueCreateWithoutProjectInput!
+}
+
+input IssueUpsertWithWhereUniqueWithoutReporterInput {
+  where: IssueWhereUniqueInput!
+  update: IssueUpdateWithoutReporterDataInput!
+  create: IssueCreateWithoutReporterInput!
+}
+
+input IssueWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  type: IssueType
+  type_not: IssueType
+  type_in: [IssueType!]
+  type_not_in: [IssueType!]
+  status: IssueStatus
+  status_not: IssueStatus
+  status_in: [IssueStatus!]
+  status_not_in: [IssueStatus!]
+  priority: IssuePriority
+  priority_not: IssuePriority
+  priority_in: [IssuePriority!]
+  priority_not_in: [IssuePriority!]
+  assignee: UserWhereInput
+  reporter: UserWhereInput
+  estimate: Int
+  estimate_not: Int
+  estimate_in: [Int!]
+  estimate_not_in: [Int!]
+  estimate_lt: Int
+  estimate_lte: Int
+  estimate_gt: Int
+  estimate_gte: Int
+  timeSpent: Int
+  timeSpent_not: Int
+  timeSpent_in: [Int!]
+  timeSpent_not_in: [Int!]
+  timeSpent_lt: Int
+  timeSpent_lte: Int
+  timeSpent_gt: Int
+  timeSpent_gte: Int
+  timeRemaining: Int
+  timeRemaining_not: Int
+  timeRemaining_in: [Int!]
+  timeRemaining_not_in: [Int!]
+  timeRemaining_lt: Int
+  timeRemaining_lte: Int
+  timeRemaining_gt: Int
+  timeRemaining_gte: Int
+  listPosition: Float
+  listPosition_not: Float
+  listPosition_in: [Float!]
+  listPosition_not_in: [Float!]
+  listPosition_lt: Float
+  listPosition_lte: Float
+  listPosition_gt: Float
+  listPosition_gte: Float
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  project: ProjectWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
+  AND: [IssueWhereInput!]
+  OR: [IssueWhereInput!]
+  NOT: [IssueWhereInput!]
+}
+
+input IssueWhereUniqueInput {
+  id: ID
+}
+
+type Log {
+  id: ID!
+  logType: LogType!
+  logDate: DateTime!
+  user: User
+  issue: Issue
+  prevAssignee: User
+  newAssignee: User
+  previousValue: String
+  newValue: String
+}
+
+type LogConnection {
+  pageInfo: PageInfo!
+  edges: [LogEdge]!
+  aggregate: AggregateLog!
+}
+
+input LogCreateInput {
+  id: ID
+  logType: LogType!
+  user: UserCreateOneInput
+  issue: IssueCreateOneInput
+  prevAssignee: UserCreateOneInput
+  newAssignee: UserCreateOneInput
+  previousValue: String
+  newValue: String
+}
+
+type LogEdge {
+  node: Log!
+  cursor: String!
+}
+
+enum LogOrderByInput {
+  id_ASC
+  id_DESC
+  logType_ASC
+  logType_DESC
+  logDate_ASC
+  logDate_DESC
+  previousValue_ASC
+  previousValue_DESC
+  newValue_ASC
+  newValue_DESC
+}
+
+type LogPreviousValues {
+  id: ID!
+  logType: LogType!
+  logDate: DateTime!
+  previousValue: String
+  newValue: String
+}
+
+type LogSubscriptionPayload {
+  mutation: MutationType!
+  node: Log
+  updatedFields: [String!]
+  previousValues: LogPreviousValues
+}
+
+input LogSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LogWhereInput
+  AND: [LogSubscriptionWhereInput!]
+  OR: [LogSubscriptionWhereInput!]
+  NOT: [LogSubscriptionWhereInput!]
+}
+
+enum LogType {
+  IssueCreate
+  IssueAssigneeChange
+  IssueStatusChange
+  IssueTypeChange
+  IssuePriorityChange
+  IssueComment
+}
+
+input LogUpdateInput {
+  logType: LogType
+  user: UserUpdateOneInput
+  issue: IssueUpdateOneInput
+  prevAssignee: UserUpdateOneInput
+  newAssignee: UserUpdateOneInput
+  previousValue: String
+  newValue: String
+}
+
+input LogUpdateManyMutationInput {
+  logType: LogType
+  previousValue: String
+  newValue: String
+}
+
+input LogWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  logType: LogType
+  logType_not: LogType
+  logType_in: [LogType!]
+  logType_not_in: [LogType!]
+  logDate: DateTime
+  logDate_not: DateTime
+  logDate_in: [DateTime!]
+  logDate_not_in: [DateTime!]
+  logDate_lt: DateTime
+  logDate_lte: DateTime
+  logDate_gt: DateTime
+  logDate_gte: DateTime
+  user: UserWhereInput
+  issue: IssueWhereInput
+  prevAssignee: UserWhereInput
+  newAssignee: UserWhereInput
+  previousValue: String
+  previousValue_not: String
+  previousValue_in: [String!]
+  previousValue_not_in: [String!]
+  previousValue_lt: String
+  previousValue_lte: String
+  previousValue_gt: String
+  previousValue_gte: String
+  previousValue_contains: String
+  previousValue_not_contains: String
+  previousValue_starts_with: String
+  previousValue_not_starts_with: String
+  previousValue_ends_with: String
+  previousValue_not_ends_with: String
+  newValue: String
+  newValue_not: String
+  newValue_in: [String!]
+  newValue_not_in: [String!]
+  newValue_lt: String
+  newValue_lte: String
+  newValue_gt: String
+  newValue_gte: String
+  newValue_contains: String
+  newValue_not_contains: String
+  newValue_starts_with: String
+  newValue_not_starts_with: String
+  newValue_ends_with: String
+  newValue_not_ends_with: String
+  AND: [LogWhereInput!]
+  OR: [LogWhereInput!]
+  NOT: [LogWhereInput!]
+}
+
+input LogWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createIssue(data: IssueCreateInput!): Issue!
+  updateIssue(data: IssueUpdateInput!, where: IssueWhereUniqueInput!): Issue
+  updateManyIssues(data: IssueUpdateManyMutationInput!, where: IssueWhereInput): BatchPayload!
+  upsertIssue(where: IssueWhereUniqueInput!, create: IssueCreateInput!, update: IssueUpdateInput!): Issue!
+  deleteIssue(where: IssueWhereUniqueInput!): Issue
+  deleteManyIssues(where: IssueWhereInput): BatchPayload!
+  createLog(data: LogCreateInput!): Log!
+  updateLog(data: LogUpdateInput!, where: LogWhereUniqueInput!): Log
+  updateManyLogs(data: LogUpdateManyMutationInput!, where: LogWhereInput): BatchPayload!
+  upsertLog(where: LogWhereUniqueInput!, create: LogCreateInput!, update: LogUpdateInput!): Log!
+  deleteLog(where: LogWhereUniqueInput!): Log
+  deleteManyLogs(where: LogWhereInput): BatchPayload!
   createProject(data: ProjectCreateInput!): Project!
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateManyProjects(data: ProjectUpdateManyMutationInput!, where: ProjectWhereInput): BatchPayload!
@@ -49,10 +1172,17 @@ type PageInfo {
   endCursor: String
 }
 
+enum Permission {
+  ADMIN
+  PRODUCTOWNER
+  USER
+}
+
 type Project {
   id: ID!
   name: String!
   description: String
+  issues(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue!]
 }
 
 type ProjectConnection {
@@ -62,6 +1192,18 @@ type ProjectConnection {
 }
 
 input ProjectCreateInput {
+  id: ID
+  name: String!
+  description: String
+  issues: IssueCreateManyWithoutProjectInput
+}
+
+input ProjectCreateOneWithoutIssuesInput {
+  create: ProjectCreateWithoutIssuesInput
+  connect: ProjectWhereUniqueInput
+}
+
+input ProjectCreateWithoutIssuesInput {
   id: ID
   name: String!
   description: String
@@ -108,11 +1250,29 @@ input ProjectSubscriptionWhereInput {
 input ProjectUpdateInput {
   name: String
   description: String
+  issues: IssueUpdateManyWithoutProjectInput
 }
 
 input ProjectUpdateManyMutationInput {
   name: String
   description: String
+}
+
+input ProjectUpdateOneRequiredWithoutIssuesInput {
+  create: ProjectCreateWithoutIssuesInput
+  update: ProjectUpdateWithoutIssuesDataInput
+  upsert: ProjectUpsertWithoutIssuesInput
+  connect: ProjectWhereUniqueInput
+}
+
+input ProjectUpdateWithoutIssuesDataInput {
+  name: String
+  description: String
+}
+
+input ProjectUpsertWithoutIssuesInput {
+  update: ProjectUpdateWithoutIssuesDataInput!
+  create: ProjectCreateWithoutIssuesInput!
 }
 
 input ProjectWhereInput {
@@ -158,6 +1318,9 @@ input ProjectWhereInput {
   description_not_starts_with: String
   description_ends_with: String
   description_not_ends_with: String
+  issues_every: IssueWhereInput
+  issues_some: IssueWhereInput
+  issues_none: IssueWhereInput
   AND: [ProjectWhereInput!]
   OR: [ProjectWhereInput!]
   NOT: [ProjectWhereInput!]
@@ -168,6 +1331,15 @@ input ProjectWhereUniqueInput {
 }
 
 type Query {
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  issue(where: IssueWhereUniqueInput!): Issue
+  issues(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue]!
+  issuesConnection(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IssueConnection!
+  log(where: LogWhereUniqueInput!): Log
+  logs(where: LogWhereInput, orderBy: LogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Log]!
+  logsConnection(where: LogWhereInput, orderBy: LogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LogConnection!
   project(where: ProjectWhereUniqueInput!): Project
   projects(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Project]!
   projectsConnection(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProjectConnection!
@@ -178,6 +1350,9 @@ type Query {
 }
 
 type Subscription {
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  issue(where: IssueSubscriptionWhereInput): IssueSubscriptionPayload
+  log(where: LogSubscriptionWhereInput): LogSubscriptionPayload
   project(where: ProjectSubscriptionWhereInput): ProjectSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -186,6 +1361,12 @@ type User {
   id: ID!
   email: String!
   name: String!
+  password: String!
+  permissions: [Permission!]!
+  assigned(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue!]
+  reporter(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue!]
+  comment(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  avatar: String
 }
 
 type UserConnection {
@@ -198,6 +1379,69 @@ input UserCreateInput {
   id: ID
   email: String!
   name: String!
+  password: String!
+  permissions: UserCreatepermissionsInput
+  assigned: IssueCreateManyWithoutAssigneeInput
+  reporter: IssueCreateManyWithoutReporterInput
+  comment: CommentCreateManyWithoutOwnerInput
+  avatar: String
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutAssignedInput {
+  create: UserCreateWithoutAssignedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutCommentInput {
+  create: UserCreateWithoutCommentInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutReporterInput {
+  create: UserCreateWithoutReporterInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreatepermissionsInput {
+  set: [Permission!]
+}
+
+input UserCreateWithoutAssignedInput {
+  id: ID
+  email: String!
+  name: String!
+  password: String!
+  permissions: UserCreatepermissionsInput
+  reporter: IssueCreateManyWithoutReporterInput
+  comment: CommentCreateManyWithoutOwnerInput
+  avatar: String
+}
+
+input UserCreateWithoutCommentInput {
+  id: ID
+  email: String!
+  name: String!
+  password: String!
+  permissions: UserCreatepermissionsInput
+  assigned: IssueCreateManyWithoutAssigneeInput
+  reporter: IssueCreateManyWithoutReporterInput
+  avatar: String
+}
+
+input UserCreateWithoutReporterInput {
+  id: ID
+  email: String!
+  name: String!
+  password: String!
+  permissions: UserCreatepermissionsInput
+  assigned: IssueCreateManyWithoutAssigneeInput
+  comment: CommentCreateManyWithoutOwnerInput
+  avatar: String
 }
 
 type UserEdge {
@@ -212,12 +1456,19 @@ enum UserOrderByInput {
   email_DESC
   name_ASC
   name_DESC
+  password_ASC
+  password_DESC
+  avatar_ASC
+  avatar_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   email: String!
   name: String!
+  password: String!
+  permissions: [Permission!]!
+  avatar: String
 }
 
 type UserSubscriptionPayload {
@@ -238,14 +1489,120 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  email: String
+  name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  assigned: IssueUpdateManyWithoutAssigneeInput
+  reporter: IssueUpdateManyWithoutReporterInput
+  comment: CommentUpdateManyWithoutOwnerInput
+  avatar: String
+}
+
 input UserUpdateInput {
   email: String
   name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  assigned: IssueUpdateManyWithoutAssigneeInput
+  reporter: IssueUpdateManyWithoutReporterInput
+  comment: CommentUpdateManyWithoutOwnerInput
+  avatar: String
 }
 
 input UserUpdateManyMutationInput {
   email: String
   name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  avatar: String
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredWithoutCommentInput {
+  create: UserCreateWithoutCommentInput
+  update: UserUpdateWithoutCommentDataInput
+  upsert: UserUpsertWithoutCommentInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredWithoutReporterInput {
+  create: UserCreateWithoutReporterInput
+  update: UserUpdateWithoutReporterDataInput
+  upsert: UserUpsertWithoutReporterInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutAssignedInput {
+  create: UserCreateWithoutAssignedInput
+  update: UserUpdateWithoutAssignedDataInput
+  upsert: UserUpsertWithoutAssignedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
+}
+
+input UserUpdateWithoutAssignedDataInput {
+  email: String
+  name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  reporter: IssueUpdateManyWithoutReporterInput
+  comment: CommentUpdateManyWithoutOwnerInput
+  avatar: String
+}
+
+input UserUpdateWithoutCommentDataInput {
+  email: String
+  name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  assigned: IssueUpdateManyWithoutAssigneeInput
+  reporter: IssueUpdateManyWithoutReporterInput
+  avatar: String
+}
+
+input UserUpdateWithoutReporterDataInput {
+  email: String
+  name: String
+  password: String
+  permissions: UserUpdatepermissionsInput
+  assigned: IssueUpdateManyWithoutAssigneeInput
+  comment: CommentUpdateManyWithoutOwnerInput
+  avatar: String
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserUpsertWithoutAssignedInput {
+  update: UserUpdateWithoutAssignedDataInput!
+  create: UserCreateWithoutAssignedInput!
+}
+
+input UserUpsertWithoutCommentInput {
+  update: UserUpdateWithoutCommentDataInput!
+  create: UserCreateWithoutCommentInput!
+}
+
+input UserUpsertWithoutReporterInput {
+  update: UserUpdateWithoutReporterDataInput!
+  create: UserCreateWithoutReporterInput!
 }
 
 input UserWhereInput {
@@ -291,6 +1648,43 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  assigned_every: IssueWhereInput
+  assigned_some: IssueWhereInput
+  assigned_none: IssueWhereInput
+  reporter_every: IssueWhereInput
+  reporter_some: IssueWhereInput
+  reporter_none: IssueWhereInput
+  comment_every: CommentWhereInput
+  comment_some: CommentWhereInput
+  comment_none: CommentWhereInput
+  avatar: String
+  avatar_not: String
+  avatar_in: [String!]
+  avatar_not_in: [String!]
+  avatar_lt: String
+  avatar_lte: String
+  avatar_gt: String
+  avatar_gte: String
+  avatar_contains: String
+  avatar_not_contains: String
+  avatar_starts_with: String
+  avatar_not_starts_with: String
+  avatar_ends_with: String
+  avatar_not_ends_with: String
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -298,6 +1692,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
 `
       }

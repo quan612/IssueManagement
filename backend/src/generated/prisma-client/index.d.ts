@@ -16,6 +16,9 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  comment: (where?: CommentWhereInput) => Promise<boolean>;
+  issue: (where?: IssueWhereInput) => Promise<boolean>;
+  log: (where?: LogWhereInput) => Promise<boolean>;
   project: (where?: ProjectWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -39,6 +42,63 @@ export interface Prisma {
    * Queries
    */
 
+  comment: (where: CommentWhereUniqueInput) => CommentNullablePromise;
+  comments: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Comment>;
+  commentsConnection: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CommentConnectionPromise;
+  issue: (where: IssueWhereUniqueInput) => IssueNullablePromise;
+  issues: (args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Issue>;
+  issuesConnection: (args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => IssueConnectionPromise;
+  log: (where: LogWhereUniqueInput) => LogNullablePromise;
+  logs: (args?: {
+    where?: LogWhereInput;
+    orderBy?: LogOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Log>;
+  logsConnection: (args?: {
+    where?: LogWhereInput;
+    orderBy?: LogOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => LogConnectionPromise;
   project: (where: ProjectWhereUniqueInput) => ProjectNullablePromise;
   projects: (args?: {
     where?: ProjectWhereInput;
@@ -83,6 +143,54 @@ export interface Prisma {
    * Mutations
    */
 
+  createComment: (data: CommentCreateInput) => CommentPromise;
+  updateComment: (args: {
+    data: CommentUpdateInput;
+    where: CommentWhereUniqueInput;
+  }) => CommentPromise;
+  updateManyComments: (args: {
+    data: CommentUpdateManyMutationInput;
+    where?: CommentWhereInput;
+  }) => BatchPayloadPromise;
+  upsertComment: (args: {
+    where: CommentWhereUniqueInput;
+    create: CommentCreateInput;
+    update: CommentUpdateInput;
+  }) => CommentPromise;
+  deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
+  deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
+  createIssue: (data: IssueCreateInput) => IssuePromise;
+  updateIssue: (args: {
+    data: IssueUpdateInput;
+    where: IssueWhereUniqueInput;
+  }) => IssuePromise;
+  updateManyIssues: (args: {
+    data: IssueUpdateManyMutationInput;
+    where?: IssueWhereInput;
+  }) => BatchPayloadPromise;
+  upsertIssue: (args: {
+    where: IssueWhereUniqueInput;
+    create: IssueCreateInput;
+    update: IssueUpdateInput;
+  }) => IssuePromise;
+  deleteIssue: (where: IssueWhereUniqueInput) => IssuePromise;
+  deleteManyIssues: (where?: IssueWhereInput) => BatchPayloadPromise;
+  createLog: (data: LogCreateInput) => LogPromise;
+  updateLog: (args: {
+    data: LogUpdateInput;
+    where: LogWhereUniqueInput;
+  }) => LogPromise;
+  updateManyLogs: (args: {
+    data: LogUpdateManyMutationInput;
+    where?: LogWhereInput;
+  }) => BatchPayloadPromise;
+  upsertLog: (args: {
+    where: LogWhereUniqueInput;
+    create: LogCreateInput;
+    update: LogUpdateInput;
+  }) => LogPromise;
+  deleteLog: (where: LogWhereUniqueInput) => LogPromise;
+  deleteManyLogs: (where?: LogWhereInput) => BatchPayloadPromise;
   createProject: (data: ProjectCreateInput) => ProjectPromise;
   updateProject: (args: {
     data: ProjectUpdateInput;
@@ -124,6 +232,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  comment: (
+    where?: CommentSubscriptionWhereInput
+  ) => CommentSubscriptionPayloadSubscription;
+  issue: (
+    where?: IssueSubscriptionWhereInput
+  ) => IssueSubscriptionPayloadSubscription;
+  log: (
+    where?: LogSubscriptionWhereInput
+  ) => LogSubscriptionPayloadSubscription;
   project: (
     where?: ProjectSubscriptionWhereInput
   ) => ProjectSubscriptionPayloadSubscription;
@@ -140,6 +257,72 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type IssuePriority = "Highest" | "High" | "Medium" | "Low" | "Lowest";
+
+export type IssueOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "priority_ASC"
+  | "priority_DESC"
+  | "estimate_ASC"
+  | "estimate_DESC"
+  | "timeSpent_ASC"
+  | "timeSpent_DESC"
+  | "timeRemaining_ASC"
+  | "timeRemaining_DESC"
+  | "listPosition_ASC"
+  | "listPosition_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type LogType =
+  | "IssueCreate"
+  | "IssueAssigneeChange"
+  | "IssueStatusChange"
+  | "IssueTypeChange"
+  | "IssuePriorityChange"
+  | "IssueComment";
+
+export type Permission = "ADMIN" | "PRODUCTOWNER" | "USER";
+
+export type LogOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "logType_ASC"
+  | "logType_DESC"
+  | "logDate_ASC"
+  | "logDate_DESC"
+  | "previousValue_ASC"
+  | "previousValue_DESC"
+  | "newValue_ASC"
+  | "newValue_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type IssueStatus = "Backlog" | "Selected" | "Inprogress" | "Done";
+
+export type IssueType = "Task" | "Bug" | "Story";
+
 export type ProjectOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -154,34 +337,68 @@ export type UserOrderByInput =
   | "email_ASC"
   | "email_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "password_ASC"
+  | "password_DESC"
+  | "avatar_ASC"
+  | "avatar_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  email: String;
-  name: String;
+export interface IssueUpdateWithoutReporterDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
 }
 
-export type ProjectWhereUniqueInput = AtLeastOne<{
+export type CommentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ProjectUpdateInput {
-  name?: Maybe<String>;
-  description?: Maybe<String>;
+export interface UserCreateOneWithoutReporterInput {
+  create?: Maybe<UserCreateWithoutReporterInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface ProjectSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProjectWhereInput>;
-  AND?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  OR?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  NOT?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+export interface LogCreateInput {
+  id?: Maybe<ID_Input>;
+  logType: LogType;
+  user?: Maybe<UserCreateOneInput>;
+  issue?: Maybe<IssueCreateOneInput>;
+  prevAssignee?: Maybe<UserCreateOneInput>;
+  newAssignee?: Maybe<UserCreateOneInput>;
+  previousValue?: Maybe<String>;
+  newValue?: Maybe<String>;
+}
+
+export interface UserCreateWithoutReporterInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  name: String;
+  password: String;
+  permissions?: Maybe<UserCreatepermissionsInput>;
+  assigned?: Maybe<IssueCreateManyWithoutAssigneeInput>;
+  comment?: Maybe<CommentCreateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface CommentUpdateWithoutIssueDataInput {
+  text?: Maybe<String>;
+  owner?: Maybe<UserUpdateOneRequiredWithoutCommentInput>;
+}
+
+export interface CommentCreateManyWithoutOwnerInput {
+  create?: Maybe<
+    CommentCreateWithoutOwnerInput[] | CommentCreateWithoutOwnerInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
 }
 
 export interface ProjectWhereInput {
@@ -227,9 +444,18 @@ export interface ProjectWhereInput {
   description_not_starts_with?: Maybe<String>;
   description_ends_with?: Maybe<String>;
   description_not_ends_with?: Maybe<String>;
+  issues_every?: Maybe<IssueWhereInput>;
+  issues_some?: Maybe<IssueWhereInput>;
+  issues_none?: Maybe<IssueWhereInput>;
   AND?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
   OR?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
   NOT?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
+}
+
+export interface CommentCreateWithoutOwnerInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  issue: IssueCreateOneWithoutCommentsInput;
 }
 
 export interface UserWhereInput {
@@ -275,29 +501,514 @@ export interface UserWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  assigned_every?: Maybe<IssueWhereInput>;
+  assigned_some?: Maybe<IssueWhereInput>;
+  assigned_none?: Maybe<IssueWhereInput>;
+  reporter_every?: Maybe<IssueWhereInput>;
+  reporter_some?: Maybe<IssueWhereInput>;
+  reporter_none?: Maybe<IssueWhereInput>;
+  comment_every?: Maybe<CommentWhereInput>;
+  comment_some?: Maybe<CommentWhereInput>;
+  comment_none?: Maybe<CommentWhereInput>;
+  avatar?: Maybe<String>;
+  avatar_not?: Maybe<String>;
+  avatar_in?: Maybe<String[] | String>;
+  avatar_not_in?: Maybe<String[] | String>;
+  avatar_lt?: Maybe<String>;
+  avatar_lte?: Maybe<String>;
+  avatar_gt?: Maybe<String>;
+  avatar_gte?: Maybe<String>;
+  avatar_contains?: Maybe<String>;
+  avatar_not_contains?: Maybe<String>;
+  avatar_starts_with?: Maybe<String>;
+  avatar_not_starts_with?: Maybe<String>;
+  avatar_ends_with?: Maybe<String>;
+  avatar_not_ends_with?: Maybe<String>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface CommentUpdateInput {
+  text?: Maybe<String>;
+  issue?: Maybe<IssueUpdateOneRequiredWithoutCommentsInput>;
+  owner?: Maybe<UserUpdateOneRequiredWithoutCommentInput>;
+}
+
+export interface LogSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LogWhereInput>;
+  AND?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
+  OR?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
+  NOT?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
+}
+
+export interface IssueUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<IssueCreateWithoutCommentsInput>;
+  update?: Maybe<IssueUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<IssueUpsertWithoutCommentsInput>;
+  connect?: Maybe<IssueWhereUniqueInput>;
+}
+
+export interface CommentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CommentWhereInput>;
+  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+}
+
+export interface IssueUpdateWithoutCommentsDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+}
+
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
+  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface UserUpdateOneWithoutAssignedInput {
+  create?: Maybe<UserCreateWithoutAssignedInput>;
+  update?: Maybe<UserUpdateWithoutAssignedDataInput>;
+  upsert?: Maybe<UserUpsertWithoutAssignedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface ProjectUpdateManyMutationInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+}
+
+export interface UserUpdateWithoutAssignedDataInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
+  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface IssueUpdateWithoutProjectDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Maybe<Permission[] | Permission>;
+}
+
+export interface IssueUpdateWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput;
+  data: IssueUpdateWithoutProjectDataInput;
+}
+
+export interface IssueUpdateManyWithoutReporterInput {
+  create?: Maybe<
+    IssueCreateWithoutReporterInput[] | IssueCreateWithoutReporterInput
+  >;
+  delete?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  set?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  disconnect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  update?: Maybe<
+    | IssueUpdateWithWhereUniqueWithoutReporterInput[]
+    | IssueUpdateWithWhereUniqueWithoutReporterInput
+  >;
+  upsert?: Maybe<
+    | IssueUpsertWithWhereUniqueWithoutReporterInput[]
+    | IssueUpsertWithWhereUniqueWithoutReporterInput
+  >;
+  deleteMany?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  updateMany?: Maybe<
+    IssueUpdateManyWithWhereNestedInput[] | IssueUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface LogWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  logType?: Maybe<LogType>;
+  logType_not?: Maybe<LogType>;
+  logType_in?: Maybe<LogType[] | LogType>;
+  logType_not_in?: Maybe<LogType[] | LogType>;
+  logDate?: Maybe<DateTimeInput>;
+  logDate_not?: Maybe<DateTimeInput>;
+  logDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  logDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  logDate_lt?: Maybe<DateTimeInput>;
+  logDate_lte?: Maybe<DateTimeInput>;
+  logDate_gt?: Maybe<DateTimeInput>;
+  logDate_gte?: Maybe<DateTimeInput>;
+  user?: Maybe<UserWhereInput>;
+  issue?: Maybe<IssueWhereInput>;
+  prevAssignee?: Maybe<UserWhereInput>;
+  newAssignee?: Maybe<UserWhereInput>;
+  previousValue?: Maybe<String>;
+  previousValue_not?: Maybe<String>;
+  previousValue_in?: Maybe<String[] | String>;
+  previousValue_not_in?: Maybe<String[] | String>;
+  previousValue_lt?: Maybe<String>;
+  previousValue_lte?: Maybe<String>;
+  previousValue_gt?: Maybe<String>;
+  previousValue_gte?: Maybe<String>;
+  previousValue_contains?: Maybe<String>;
+  previousValue_not_contains?: Maybe<String>;
+  previousValue_starts_with?: Maybe<String>;
+  previousValue_not_starts_with?: Maybe<String>;
+  previousValue_ends_with?: Maybe<String>;
+  previousValue_not_ends_with?: Maybe<String>;
+  newValue?: Maybe<String>;
+  newValue_not?: Maybe<String>;
+  newValue_in?: Maybe<String[] | String>;
+  newValue_not_in?: Maybe<String[] | String>;
+  newValue_lt?: Maybe<String>;
+  newValue_lte?: Maybe<String>;
+  newValue_gt?: Maybe<String>;
+  newValue_gte?: Maybe<String>;
+  newValue_contains?: Maybe<String>;
+  newValue_not_contains?: Maybe<String>;
+  newValue_starts_with?: Maybe<String>;
+  newValue_not_starts_with?: Maybe<String>;
+  newValue_ends_with?: Maybe<String>;
+  newValue_not_ends_with?: Maybe<String>;
+  AND?: Maybe<LogWhereInput[] | LogWhereInput>;
+  OR?: Maybe<LogWhereInput[] | LogWhereInput>;
+  NOT?: Maybe<LogWhereInput[] | LogWhereInput>;
+}
+
+export interface IssueUpdateWithWhereUniqueWithoutReporterInput {
+  where: IssueWhereUniqueInput;
+  data: IssueUpdateWithoutReporterDataInput;
+}
+
+export interface ProjectUpdateInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  issues?: Maybe<IssueUpdateManyWithoutProjectInput>;
+}
+
+export interface LogUpdateInput {
+  logType?: Maybe<LogType>;
+  user?: Maybe<UserUpdateOneInput>;
+  issue?: Maybe<IssueUpdateOneInput>;
+  prevAssignee?: Maybe<UserUpdateOneInput>;
+  newAssignee?: Maybe<UserUpdateOneInput>;
+  previousValue?: Maybe<String>;
+  newValue?: Maybe<String>;
+}
+
+export interface IssueCreateManyWithoutProjectInput {
+  create?: Maybe<
+    IssueCreateWithoutProjectInput[] | IssueCreateWithoutProjectInput
+  >;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+}
+
+export interface ProjectUpdateOneRequiredWithoutIssuesInput {
+  create?: Maybe<ProjectCreateWithoutIssuesInput>;
+  update?: Maybe<ProjectUpdateWithoutIssuesDataInput>;
+  upsert?: Maybe<ProjectUpsertWithoutIssuesInput>;
+  connect?: Maybe<ProjectWhereUniqueInput>;
 }
 
 export interface ProjectCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   description?: Maybe<String>;
+  issues?: Maybe<IssueCreateManyWithoutProjectInput>;
+}
+
+export interface ProjectUpdateWithoutIssuesDataInput {
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+}
+
+export interface IssueUpsertNestedInput {
+  update: IssueUpdateDataInput;
+  create: IssueCreateInput;
+}
+
+export interface ProjectUpsertWithoutIssuesInput {
+  update: ProjectUpdateWithoutIssuesDataInput;
+  create: ProjectCreateWithoutIssuesInput;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  email?: Maybe<String>;
 }>;
 
-export interface UserUpdateManyMutationInput {
-  email?: Maybe<String>;
-  name?: Maybe<String>;
+export interface CommentUpdateManyWithoutIssueInput {
+  create?: Maybe<
+    CommentCreateWithoutIssueInput[] | CommentCreateWithoutIssueInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutIssueInput[]
+    | CommentUpdateWithWhereUniqueWithoutIssueInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutIssueInput[]
+    | CommentUpsertWithWhereUniqueWithoutIssueInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface ProjectUpdateManyMutationInput {
-  name?: Maybe<String>;
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutIssueInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutIssueDataInput;
+}
+
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface IssueCreateOneInput {
+  create?: Maybe<IssueCreateInput>;
+  connect?: Maybe<IssueWhereUniqueInput>;
+}
+
+export interface CommentCreateInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  issue: IssueCreateOneWithoutCommentsInput;
+  owner: UserCreateOneWithoutCommentInput;
+}
+
+export interface UserUpdateOneRequiredWithoutCommentInput {
+  create?: Maybe<UserCreateWithoutCommentInput>;
+  update?: Maybe<UserUpdateWithoutCommentDataInput>;
+  upsert?: Maybe<UserUpsertWithoutCommentInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface IssueCreateWithoutCommentsInput {
+  id?: Maybe<ID_Input>;
+  title: String;
   description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
+  reporter: UserCreateOneWithoutReporterInput;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project: ProjectCreateOneWithoutIssuesInput;
+}
+
+export interface UserUpdateWithoutCommentDataInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface UserCreateWithoutAssignedInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  name: String;
+  password: String;
+  permissions?: Maybe<UserCreatepermissionsInput>;
+  reporter?: Maybe<IssueCreateManyWithoutReporterInput>;
+  comment?: Maybe<CommentCreateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface IssueUpdateManyWithoutAssigneeInput {
+  create?: Maybe<
+    IssueCreateWithoutAssigneeInput[] | IssueCreateWithoutAssigneeInput
+  >;
+  delete?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  set?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  disconnect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  update?: Maybe<
+    | IssueUpdateWithWhereUniqueWithoutAssigneeInput[]
+    | IssueUpdateWithWhereUniqueWithoutAssigneeInput
+  >;
+  upsert?: Maybe<
+    | IssueUpsertWithWhereUniqueWithoutAssigneeInput[]
+    | IssueUpsertWithWhereUniqueWithoutAssigneeInput
+  >;
+  deleteMany?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  updateMany?: Maybe<
+    IssueUpdateManyWithWhereNestedInput[] | IssueUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface IssueCreateManyWithoutReporterInput {
+  create?: Maybe<
+    IssueCreateWithoutReporterInput[] | IssueCreateWithoutReporterInput
+  >;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+}
+
+export interface IssueUpdateWithWhereUniqueWithoutAssigneeInput {
+  where: IssueWhereUniqueInput;
+  data: IssueUpdateWithoutAssigneeDataInput;
+}
+
+export interface ProjectCreateOneWithoutIssuesInput {
+  create?: Maybe<ProjectCreateWithoutIssuesInput>;
+  connect?: Maybe<ProjectWhereUniqueInput>;
+}
+
+export interface IssueUpdateWithoutAssigneeDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
+}
+
+export interface CommentCreateManyWithoutIssueInput {
+  create?: Maybe<
+    CommentCreateWithoutIssueInput[] | CommentCreateWithoutIssueInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutReporterInput {
+  create?: Maybe<UserCreateWithoutReporterInput>;
+  update?: Maybe<UserUpdateWithoutReporterDataInput>;
+  upsert?: Maybe<UserUpsertWithoutReporterInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateOneWithoutCommentInput {
+  create?: Maybe<UserCreateWithoutCommentInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutReporterDataInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
+  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface IssueCreateManyWithoutAssigneeInput {
+  create?: Maybe<
+    IssueCreateWithoutAssigneeInput[] | IssueCreateWithoutAssigneeInput
+  >;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+}
+
+export interface CommentUpdateManyWithoutOwnerInput {
+  create?: Maybe<
+    CommentCreateWithoutOwnerInput[] | CommentCreateWithoutOwnerInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutOwnerInput[]
+    | CommentUpdateWithWhereUniqueWithoutOwnerInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutOwnerInput[]
+    | CommentUpsertWithWhereUniqueWithoutOwnerInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -311,13 +1022,872 @@ export interface UserSubscriptionWhereInput {
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
-export interface UserUpdateInput {
+export interface CommentUpdateWithWhereUniqueWithoutOwnerInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutOwnerDataInput;
+}
+
+export interface ProjectSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ProjectWhereInput>;
+  AND?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+  OR?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+  NOT?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+}
+
+export interface CommentUpdateWithoutOwnerDataInput {
+  text?: Maybe<String>;
+  issue?: Maybe<IssueUpdateOneRequiredWithoutCommentsInput>;
+}
+
+export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutOwnerInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutOwnerDataInput;
+  create: CommentCreateWithoutOwnerInput;
+}
+
+export interface IssueUpsertWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput;
+  update: IssueUpdateWithoutProjectDataInput;
+  create: IssueCreateWithoutProjectInput;
+}
+
+export interface CommentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface IssueWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  type_not?: Maybe<IssueType>;
+  type_in?: Maybe<IssueType[] | IssueType>;
+  type_not_in?: Maybe<IssueType[] | IssueType>;
+  status?: Maybe<IssueStatus>;
+  status_not?: Maybe<IssueStatus>;
+  status_in?: Maybe<IssueStatus[] | IssueStatus>;
+  status_not_in?: Maybe<IssueStatus[] | IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  priority_not?: Maybe<IssuePriority>;
+  priority_in?: Maybe<IssuePriority[] | IssuePriority>;
+  priority_not_in?: Maybe<IssuePriority[] | IssuePriority>;
+  assignee?: Maybe<UserWhereInput>;
+  reporter?: Maybe<UserWhereInput>;
+  estimate?: Maybe<Int>;
+  estimate_not?: Maybe<Int>;
+  estimate_in?: Maybe<Int[] | Int>;
+  estimate_not_in?: Maybe<Int[] | Int>;
+  estimate_lt?: Maybe<Int>;
+  estimate_lte?: Maybe<Int>;
+  estimate_gt?: Maybe<Int>;
+  estimate_gte?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeSpent_not?: Maybe<Int>;
+  timeSpent_in?: Maybe<Int[] | Int>;
+  timeSpent_not_in?: Maybe<Int[] | Int>;
+  timeSpent_lt?: Maybe<Int>;
+  timeSpent_lte?: Maybe<Int>;
+  timeSpent_gt?: Maybe<Int>;
+  timeSpent_gte?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  timeRemaining_not?: Maybe<Int>;
+  timeRemaining_in?: Maybe<Int[] | Int>;
+  timeRemaining_not_in?: Maybe<Int[] | Int>;
+  timeRemaining_lt?: Maybe<Int>;
+  timeRemaining_lte?: Maybe<Int>;
+  timeRemaining_gt?: Maybe<Int>;
+  timeRemaining_gte?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  listPosition_not?: Maybe<Float>;
+  listPosition_in?: Maybe<Float[] | Float>;
+  listPosition_not_in?: Maybe<Float[] | Float>;
+  listPosition_lt?: Maybe<Float>;
+  listPosition_lte?: Maybe<Float>;
+  listPosition_gt?: Maybe<Float>;
+  listPosition_gte?: Maybe<Float>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  project?: Maybe<ProjectWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  AND?: Maybe<IssueWhereInput[] | IssueWhereInput>;
+  OR?: Maybe<IssueWhereInput[] | IssueWhereInput>;
+  NOT?: Maybe<IssueWhereInput[] | IssueWhereInput>;
+}
+
+export interface CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput;
+  data: CommentUpdateManyDataInput;
+}
+
+export interface IssueCreateWithoutProjectInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
+  reporter: UserCreateOneWithoutReporterInput;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+}
+
+export interface CommentUpdateManyDataInput {
+  text?: Maybe<String>;
+}
+
+export interface LogUpdateManyMutationInput {
+  logType?: Maybe<LogType>;
+  previousValue?: Maybe<String>;
+  newValue?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutReporterInput {
+  update: UserUpdateWithoutReporterDataInput;
+  create: UserCreateWithoutReporterInput;
+}
+
+export interface IssueUpdateOneInput {
+  create?: Maybe<IssueCreateInput>;
+  update?: Maybe<IssueUpdateDataInput>;
+  upsert?: Maybe<IssueUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<IssueWhereUniqueInput>;
+}
+
+export interface IssueUpsertWithWhereUniqueWithoutAssigneeInput {
+  where: IssueWhereUniqueInput;
+  update: IssueUpdateWithoutAssigneeDataInput;
+  create: IssueCreateWithoutAssigneeInput;
+}
+
+export interface UserCreateOneWithoutAssignedInput {
+  create?: Maybe<UserCreateWithoutAssignedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface IssueScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  type_not?: Maybe<IssueType>;
+  type_in?: Maybe<IssueType[] | IssueType>;
+  type_not_in?: Maybe<IssueType[] | IssueType>;
+  status?: Maybe<IssueStatus>;
+  status_not?: Maybe<IssueStatus>;
+  status_in?: Maybe<IssueStatus[] | IssueStatus>;
+  status_not_in?: Maybe<IssueStatus[] | IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  priority_not?: Maybe<IssuePriority>;
+  priority_in?: Maybe<IssuePriority[] | IssuePriority>;
+  priority_not_in?: Maybe<IssuePriority[] | IssuePriority>;
+  estimate?: Maybe<Int>;
+  estimate_not?: Maybe<Int>;
+  estimate_in?: Maybe<Int[] | Int>;
+  estimate_not_in?: Maybe<Int[] | Int>;
+  estimate_lt?: Maybe<Int>;
+  estimate_lte?: Maybe<Int>;
+  estimate_gt?: Maybe<Int>;
+  estimate_gte?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeSpent_not?: Maybe<Int>;
+  timeSpent_in?: Maybe<Int[] | Int>;
+  timeSpent_not_in?: Maybe<Int[] | Int>;
+  timeSpent_lt?: Maybe<Int>;
+  timeSpent_lte?: Maybe<Int>;
+  timeSpent_gt?: Maybe<Int>;
+  timeSpent_gte?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  timeRemaining_not?: Maybe<Int>;
+  timeRemaining_in?: Maybe<Int[] | Int>;
+  timeRemaining_not_in?: Maybe<Int[] | Int>;
+  timeRemaining_lt?: Maybe<Int>;
+  timeRemaining_lte?: Maybe<Int>;
+  timeRemaining_gt?: Maybe<Int>;
+  timeRemaining_gte?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  listPosition_not?: Maybe<Float>;
+  listPosition_in?: Maybe<Float[] | Float>;
+  listPosition_not_in?: Maybe<Float[] | Float>;
+  listPosition_lt?: Maybe<Float>;
+  listPosition_lte?: Maybe<Float>;
+  listPosition_gt?: Maybe<Float>;
+  listPosition_gte?: Maybe<Float>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  OR?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  NOT?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+}
+
+export interface IssueCreateWithoutReporterInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project: ProjectCreateOneWithoutIssuesInput;
+  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+}
+
+export interface IssueUpdateManyWithWhereNestedInput {
+  where: IssueScalarWhereInput;
+  data: IssueUpdateManyDataInput;
+}
+
+export interface CommentCreateWithoutIssueInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  owner: UserCreateOneWithoutCommentInput;
+}
+
+export interface IssueUpdateManyDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+}
+
+export interface IssueCreateWithoutAssigneeInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  reporter: UserCreateOneWithoutReporterInput;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project: ProjectCreateOneWithoutIssuesInput;
+  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+}
+
+export interface UserUpsertWithoutCommentInput {
+  update: UserUpdateWithoutCommentDataInput;
+  create: UserCreateWithoutCommentInput;
+}
+
+export interface IssueSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<IssueWhereInput>;
+  AND?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+  OR?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+  NOT?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutIssueInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutIssueDataInput;
+  create: CommentCreateWithoutIssueInput;
+}
+
+export type LogWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface IssueUpsertWithWhereUniqueWithoutReporterInput {
+  where: IssueWhereUniqueInput;
+  update: IssueUpdateWithoutReporterDataInput;
+  create: IssueCreateWithoutReporterInput;
+}
+
+export type ProjectWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UserUpsertWithoutAssignedInput {
+  update: UserUpdateWithoutAssignedDataInput;
+  create: UserCreateWithoutAssignedInput;
+}
+
+export interface UserUpdateDataInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
+  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface IssueUpsertWithoutCommentsInput {
+  update: IssueUpdateWithoutCommentsDataInput;
+  create: IssueCreateWithoutCommentsInput;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Maybe<Permission[] | Permission>;
+}
+
+export interface CommentUpdateManyMutationInput {
+  text?: Maybe<String>;
+}
+
+export interface UserCreateWithoutCommentInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  name: String;
+  password: String;
+  permissions?: Maybe<UserCreatepermissionsInput>;
+  assigned?: Maybe<IssueCreateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueCreateManyWithoutReporterInput>;
+  avatar?: Maybe<String>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  name: String;
+  password: String;
+  permissions?: Maybe<UserCreatepermissionsInput>;
+  assigned?: Maybe<IssueCreateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueCreateManyWithoutReporterInput>;
+  comment?: Maybe<CommentCreateManyWithoutOwnerInput>;
+  avatar?: Maybe<String>;
+}
+
+export type IssueWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface IssueUpdateManyMutationInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+}
+
+export interface IssueUpdateInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
+}
+
+export interface IssueCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
+  reporter: UserCreateOneWithoutReporterInput;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project: ProjectCreateOneWithoutIssuesInput;
+  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface IssueUpdateManyWithoutProjectInput {
+  create?: Maybe<
+    IssueCreateWithoutProjectInput[] | IssueCreateWithoutProjectInput
+  >;
+  delete?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  set?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  disconnect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  update?: Maybe<
+    | IssueUpdateWithWhereUniqueWithoutProjectInput[]
+    | IssueUpdateWithWhereUniqueWithoutProjectInput
+  >;
+  upsert?: Maybe<
+    | IssueUpsertWithWhereUniqueWithoutProjectInput[]
+    | IssueUpsertWithWhereUniqueWithoutProjectInput
+  >;
+  deleteMany?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  updateMany?: Maybe<
+    IssueUpdateManyWithWhereNestedInput[] | IssueUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface CommentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  issue?: Maybe<IssueWhereInput>;
+  owner?: Maybe<UserWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+}
+
+export interface ProjectCreateWithoutIssuesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  description?: Maybe<String>;
+}
+
+export interface IssueCreateOneWithoutCommentsInput {
+  create?: Maybe<IssueCreateWithoutCommentsInput>;
+  connect?: Maybe<IssueWhereUniqueInput>;
+}
+
+export interface IssueUpdateDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
 }
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  email: String;
+  name: String;
+  password: String;
+  permissions: Permission[];
+  avatar?: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  avatar: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  avatar: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Log {
+  id: ID_Output;
+  logType: LogType;
+  logDate: DateTimeOutput;
+  previousValue?: String;
+  newValue?: String;
+}
+
+export interface LogPromise extends Promise<Log>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  logType: () => Promise<LogType>;
+  logDate: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  issue: <T = IssuePromise>() => T;
+  prevAssignee: <T = UserPromise>() => T;
+  newAssignee: <T = UserPromise>() => T;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface LogSubscription
+  extends Promise<AsyncIterator<Log>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  logType: () => Promise<AsyncIterator<LogType>>;
+  logDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T = UserSubscription>() => T;
+  issue: <T = IssueSubscription>() => T;
+  prevAssignee: <T = UserSubscription>() => T;
+  newAssignee: <T = UserSubscription>() => T;
+  previousValue: () => Promise<AsyncIterator<String>>;
+  newValue: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LogNullablePromise extends Promise<Log | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  logType: () => Promise<LogType>;
+  logDate: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  issue: <T = IssuePromise>() => T;
+  prevAssignee: <T = UserPromise>() => T;
+  newAssignee: <T = UserPromise>() => T;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface LogPreviousValues {
+  id: ID_Output;
+  logType: LogType;
+  logDate: DateTimeOutput;
+  previousValue?: String;
+  newValue?: String;
+}
+
+export interface LogPreviousValuesPromise
+  extends Promise<LogPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  logType: () => Promise<LogType>;
+  logDate: () => Promise<DateTimeOutput>;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface LogPreviousValuesSubscription
+  extends Promise<AsyncIterator<LogPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  logType: () => Promise<AsyncIterator<LogType>>;
+  logDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  previousValue: () => Promise<AsyncIterator<String>>;
+  newValue: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateIssue {
+  count: Int;
+}
+
+export interface AggregateIssuePromise
+  extends Promise<AggregateIssue>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateIssueSubscription
+  extends Promise<AsyncIterator<AggregateIssue>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface IssueConnection {
+  pageInfo: PageInfo;
+  edges: IssueEdge[];
+}
+
+export interface IssueConnectionPromise
+  extends Promise<IssueConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<IssueEdge>>() => T;
+  aggregate: <T = AggregateIssuePromise>() => T;
+}
+
+export interface IssueConnectionSubscription
+  extends Promise<AsyncIterator<IssueConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<IssueEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateIssueSubscription>() => T;
+}
+
+export interface IssueEdge {
+  node: Issue;
+  cursor: String;
+}
+
+export interface IssueEdgePromise extends Promise<IssueEdge>, Fragmentable {
+  node: <T = IssuePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface IssueEdgeSubscription
+  extends Promise<AsyncIterator<IssueEdge>>,
+    Fragmentable {
+  node: <T = IssueSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ProjectPreviousValues {
+  id: ID_Output;
+  name: String;
+  description?: String;
+}
+
+export interface ProjectPreviousValuesPromise
+  extends Promise<ProjectPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+}
+
+export interface ProjectPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProjectPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface UserEdge {
@@ -335,6 +1905,478 @@ export interface UserEdgeSubscription
     Fragmentable {
   node: <T = UserSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateComment {
+  count: Int;
+}
+
+export interface AggregateCommentPromise
+  extends Promise<AggregateComment>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCommentSubscription
+  extends Promise<AsyncIterator<AggregateComment>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProjectSubscriptionPayload {
+  mutation: MutationType;
+  node: Project;
+  updatedFields: String[];
+  previousValues: ProjectPreviousValues;
+}
+
+export interface ProjectSubscriptionPayloadPromise
+  extends Promise<ProjectSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProjectPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProjectPreviousValuesPromise>() => T;
+}
+
+export interface ProjectSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProjectSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ProjectSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProjectPreviousValuesSubscription>() => T;
+}
+
+export interface CommentEdge {
+  node: Comment;
+  cursor: String;
+}
+
+export interface CommentEdgePromise extends Promise<CommentEdge>, Fragmentable {
+  node: <T = CommentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CommentEdgeSubscription
+  extends Promise<AsyncIterator<CommentEdge>>,
+    Fragmentable {
+  node: <T = CommentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ProjectEdge {
+  node: Project;
+  cursor: String;
+}
+
+export interface ProjectEdgePromise extends Promise<ProjectEdge>, Fragmentable {
+  node: <T = ProjectPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProjectEdgeSubscription
+  extends Promise<AsyncIterator<ProjectEdge>>,
+    Fragmentable {
+  node: <T = ProjectSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Project {
+  id: ID_Output;
+  name: String;
+  description?: String;
+}
+
+export interface ProjectPromise extends Promise<Project>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  issues: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ProjectSubscription
+  extends Promise<AsyncIterator<Project>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  issues: <T = Promise<AsyncIterator<IssueSubscription>>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ProjectNullablePromise
+  extends Promise<Project | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  issues: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Issue {
+  id: ID_Output;
+  title: String;
+  description?: String;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  estimate?: Int;
+  timeSpent?: Int;
+  timeRemaining?: Int;
+  listPosition?: Float;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface IssuePromise extends Promise<Issue>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  type: () => Promise<IssueType>;
+  status: () => Promise<IssueStatus>;
+  priority: () => Promise<IssuePriority>;
+  assignee: <T = UserPromise>() => T;
+  reporter: <T = UserPromise>() => T;
+  estimate: () => Promise<Int>;
+  timeSpent: () => Promise<Int>;
+  timeRemaining: () => Promise<Int>;
+  listPosition: () => Promise<Float>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  project: <T = ProjectPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface IssueSubscription
+  extends Promise<AsyncIterator<Issue>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<IssueType>>;
+  status: () => Promise<AsyncIterator<IssueStatus>>;
+  priority: () => Promise<AsyncIterator<IssuePriority>>;
+  assignee: <T = UserSubscription>() => T;
+  reporter: <T = UserSubscription>() => T;
+  estimate: () => Promise<AsyncIterator<Int>>;
+  timeSpent: () => Promise<AsyncIterator<Int>>;
+  timeRemaining: () => Promise<AsyncIterator<Int>>;
+  listPosition: () => Promise<AsyncIterator<Float>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  project: <T = ProjectSubscription>() => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface IssueNullablePromise
+  extends Promise<Issue | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  type: () => Promise<IssueType>;
+  status: () => Promise<IssueStatus>;
+  priority: () => Promise<IssuePriority>;
+  assignee: <T = UserPromise>() => T;
+  reporter: <T = UserPromise>() => T;
+  estimate: () => Promise<Int>;
+  timeSpent: () => Promise<Int>;
+  timeRemaining: () => Promise<Int>;
+  listPosition: () => Promise<Float>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  project: <T = ProjectPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Comment {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CommentPromise extends Promise<Comment>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  issue: <T = IssuePromise>() => T;
+  owner: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentSubscription
+  extends Promise<AsyncIterator<Comment>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  issue: <T = IssueSubscription>() => T;
+  owner: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CommentNullablePromise
+  extends Promise<Comment | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  issue: <T = IssuePromise>() => T;
+  owner: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface LogEdge {
+  node: Log;
+  cursor: String;
+}
+
+export interface LogEdgePromise extends Promise<LogEdge>, Fragmentable {
+  node: <T = LogPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LogEdgeSubscription
+  extends Promise<AsyncIterator<LogEdge>>,
+    Fragmentable {
+  node: <T = LogSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommentSubscriptionPayload {
+  mutation: MutationType;
+  node: Comment;
+  updatedFields: String[];
+  previousValues: CommentPreviousValues;
+}
+
+export interface CommentSubscriptionPayloadPromise
+  extends Promise<CommentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CommentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CommentPreviousValuesPromise>() => T;
+}
+
+export interface CommentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CommentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CommentPreviousValuesSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  name: String;
+  password: String;
+  permissions: Permission[];
+  avatar?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  assigned: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  reporter: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comment: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  avatar: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  assigned: <T = Promise<AsyncIterator<IssueSubscription>>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  reporter: <T = Promise<AsyncIterator<IssueSubscription>>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comment: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  avatar: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  assigned: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  reporter: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comment: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  avatar: () => Promise<String>;
+}
+
+export interface CommentPreviousValues {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CommentPreviousValuesPromise
+  extends Promise<CommentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PageInfo {
@@ -360,26 +2402,177 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  email: String;
-  name: String;
+export interface AggregateProject {
+  count: Int;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface AggregateProjectPromise
+  extends Promise<AggregateProject>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateProjectSubscription
+  extends Promise<AsyncIterator<AggregateProject>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateLog {
+  count: Int;
+}
+
+export interface AggregateLogPromise
+  extends Promise<AggregateLog>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLogSubscription
+  extends Promise<AsyncIterator<AggregateLog>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LogSubscriptionPayload {
+  mutation: MutationType;
+  node: Log;
+  updatedFields: String[];
+  previousValues: LogPreviousValues;
+}
+
+export interface LogSubscriptionPayloadPromise
+  extends Promise<LogSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = LogPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LogPreviousValuesPromise>() => T;
+}
+
+export interface LogSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LogSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LogSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LogPreviousValuesSubscription>() => T;
+}
+
+export interface CommentConnection {
+  pageInfo: PageInfo;
+  edges: CommentEdge[];
+}
+
+export interface CommentConnectionPromise
+  extends Promise<CommentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommentEdge>>() => T;
+  aggregate: <T = AggregateCommentPromise>() => T;
+}
+
+export interface CommentConnectionSubscription
+  extends Promise<AsyncIterator<CommentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentSubscription>() => T;
+}
+
+export interface IssuePreviousValues {
+  id: ID_Output;
+  title: String;
+  description?: String;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  estimate?: Int;
+  timeSpent?: Int;
+  timeRemaining?: Int;
+  listPosition?: Float;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface IssuePreviousValuesPromise
+  extends Promise<IssuePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  type: () => Promise<IssueType>;
+  status: () => Promise<IssueStatus>;
+  priority: () => Promise<IssuePriority>;
+  estimate: () => Promise<Int>;
+  timeSpent: () => Promise<Int>;
+  timeRemaining: () => Promise<Int>;
+  listPosition: () => Promise<Float>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface IssuePreviousValuesSubscription
+  extends Promise<AsyncIterator<IssuePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<IssueType>>;
+  status: () => Promise<AsyncIterator<IssueStatus>>;
+  priority: () => Promise<AsyncIterator<IssuePriority>>;
+  estimate: () => Promise<AsyncIterator<Int>>;
+  timeSpent: () => Promise<AsyncIterator<Int>>;
+  timeRemaining: () => Promise<AsyncIterator<Int>>;
+  listPosition: () => Promise<AsyncIterator<Float>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface IssueSubscriptionPayload {
+  mutation: MutationType;
+  node: Issue;
+  updatedFields: String[];
+  previousValues: IssuePreviousValues;
+}
+
+export interface IssueSubscriptionPayloadPromise
+  extends Promise<IssueSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = IssuePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = IssuePreviousValuesPromise>() => T;
+}
+
+export interface IssueSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<IssueSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = IssueSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = IssuePreviousValuesSubscription>() => T;
+}
+
+export interface LogConnection {
+  pageInfo: PageInfo;
+  edges: LogEdge[];
+}
+
+export interface LogConnectionPromise
+  extends Promise<LogConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LogEdge>>() => T;
+  aggregate: <T = AggregateLogPromise>() => T;
+}
+
+export interface LogConnectionSubscription
+  extends Promise<AsyncIterator<LogConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LogEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLogSubscription>() => T;
 }
 
 export interface ProjectConnection {
@@ -424,142 +2617,6 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface ProjectSubscriptionPayload {
-  mutation: MutationType;
-  node: Project;
-  updatedFields: String[];
-  previousValues: ProjectPreviousValues;
-}
-
-export interface ProjectSubscriptionPayloadPromise
-  extends Promise<ProjectSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ProjectPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ProjectPreviousValuesPromise>() => T;
-}
-
-export interface ProjectSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ProjectSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ProjectSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ProjectPreviousValuesSubscription>() => T;
-}
-
-export interface ProjectPreviousValues {
-  id: ID_Output;
-  name: String;
-  description?: String;
-}
-
-export interface ProjectPreviousValuesPromise
-  extends Promise<ProjectPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-}
-
-export interface ProjectPreviousValuesSubscription
-  extends Promise<AsyncIterator<ProjectPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ProjectEdge {
-  node: Project;
-  cursor: String;
-}
-
-export interface ProjectEdgePromise extends Promise<ProjectEdge>, Fragmentable {
-  node: <T = ProjectPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ProjectEdgeSubscription
-  extends Promise<AsyncIterator<ProjectEdge>>,
-    Fragmentable {
-  node: <T = ProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface User {
-  id: ID_Output;
-  email: String;
-  name: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Project {
-  id: ID_Output;
-  name: String;
-  description?: String;
-}
-
-export interface ProjectPromise extends Promise<Project>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-}
-
-export interface ProjectSubscription
-  extends Promise<AsyncIterator<Project>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ProjectNullablePromise
-  extends Promise<Project | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-}
-
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -585,37 +2642,17 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface BatchPayload {
-  count: Long;
-}
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AggregateProject {
-  count: Int;
-}
-
-export interface AggregateProjectPromise
-  extends Promise<AggregateProject>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateProjectSubscription
-  extends Promise<AsyncIterator<AggregateProject>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
+export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
@@ -623,22 +2660,25 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+*/
+export type Float = number;
+
+/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
 
-export type Long = string;
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /**
  * Model Metadata
@@ -646,11 +2686,43 @@ export type String = string;
 
 export const models: Model[] = [
   {
+    name: "Permission",
+    embedded: false
+  },
+  {
+    name: "IssueType",
+    embedded: false
+  },
+  {
+    name: "IssueStatus",
+    embedded: false
+  },
+  {
+    name: "IssuePriority",
+    embedded: false
+  },
+  {
     name: "Project",
     embedded: false
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Issue",
+    embedded: false
+  },
+  {
+    name: "Comment",
+    embedded: false
+  },
+  {
+    name: "LogType",
+    embedded: false
+  },
+  {
+    name: "Log",
     embedded: false
   }
 ];

@@ -1,50 +1,36 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
+import tw from "tailwind.macro";
+import { color } from "shared/utils/styles";
 
-import { color, font } from 'shared/utils/styles';
-import Icon from 'shared/components/Icon';
-
-export const StyledInput = styled.div`
-  position: relative;
-  display: inline-block;
-  height: 32px;
-  width: 100%;
+export const InputContainer = styled.div`
+  ${tw`cursor-pointer relative inline-block w-full `}
 `;
 
-export const InputElement = styled.input`
-  height: 100%;
-  width: 100%;
-  padding: 0 7px;
-  border-radius: 3px;
-  border: 1px solid ${color.borderLightest};
-  color: ${color.textDarkest};
-  background: ${color.backgroundLightest};
-  transition: background 0.1s;
-  ${font.regular}
-  ${font.size(15)}
-  ${props => props.hasIcon && 'padding-left: 32px;'}
-  &:hover {
-    background: ${color.backgroundLight};
-  }
+export const StyledInput = styled.input`
+  ${tw`w-full h-full shadow appearance-none rounded bg-white border pb-1 px-2 text-gray-700 outline-none focus:outline-none`}
+  height: 2.5rem;
+
+  &:hover,
   &:focus {
-    background: #fff;
-    border: 1px solid ${color.borderInputFocus};
-    box-shadow: 0 0 0 1px ${color.borderInputFocus};
+    border-bottom-width: 2px;
+    border-bottom-color: ${color.primary};
+    outline: none;
   }
-  ${props =>
+
+  ${(props) =>
     props.invalid &&
     css`
-      &,
+      & {
+        border-bottom-color: ${color.danger};
+        border-bottom-width: 1px;
+      }
+
+      &:hover,
       &:focus {
-        border: 1px solid ${color.danger};
-        box-shadow: none;
+        border-bottom-color: ${color.danger};
+        border-bottom-width: 2px;
       }
     `}
-`;
 
-export const StyledIcon = styled(Icon)`
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  pointer-events: none;
-  color: ${color.textMedium};
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 `;

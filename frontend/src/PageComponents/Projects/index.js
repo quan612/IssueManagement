@@ -1,16 +1,22 @@
-import React from "react";
-import withProjectsQuery from "../../shared/HOC/withProjectsQuery";
-import ListAnimation from "./list-animation";
-import ToggleProjectForm from "./AddProjectForm";
+import React, { useState } from "react";
+import { withProjectsQuery } from "shared/HOC/withProjectsQuery";
+import ProjectList from "./ProjectList";
+import Toggle from "./Toggle";
+import { ListContainer } from "./styles";
+import ProjectListLoader from "shared/components/Loaders/ProjectListLoader";
 
-const Projects = ({ error, projects }) => {
+const Projects = ({ loading, error, projects }) => {
   return (
-    <>
-      <div className="flex flex-col mb-4 items-center">
-        <ListAnimation projects={projects} />
-        <ToggleProjectForm />
-      </div>
-    </>
+    <ListContainer>
+      {loading ? (
+        <ProjectListLoader />
+      ) : (
+        <>
+          <ProjectList projects={projects} />
+          <Toggle />
+        </>
+      )}
+    </ListContainer>
   );
 };
 

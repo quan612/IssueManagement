@@ -1,11 +1,98 @@
+enum Permission {
+  ADMIN
+  PRODUCTOWNER
+  USER
+}
+
+enum IssueType {
+  Task
+  Bug
+  Story
+}
+
+enum IssueStatus {
+  Backlog
+  Selected
+  Inprogress
+  Done
+}
+
+enum IssuePriority {
+  Highest
+  High
+  Medium
+  Low
+  Lowest
+}
+
 type Project {
   id: ID! @id
   name: String!
+  # prefix: String!
   description: String
+  issues: [Issue!]! @relation(name: "ProjectIssue", onDelete: CASCADE)
 }
 
 type User {
   id: ID! @id
-  email: String!
+  email: String! @unique
   name: String!
+  password: String!
+  # resetToken: String
+  # resetTokenExpiry: Float
+  permissions: [Permission!]! @scalarList(strategy: RELATION)
+  assigned: [Issue!]! @relation(name: "AssigneeIssue", onDelete: CASCADE)
+  reporter: [Issue!]! @relation(name: "ReporterIssue", onDelete: CASCADE)
+  comment: [Comment!]! @relation(name: "CommentByUser", onDelete: CASCADE)
+  avatar: String
+}
+
+type Issue {
+  id: ID! @id
+  title: String!
+  description: String
+  type: IssueType!
+  status: IssueStatus!
+  priority: IssuePriority!
+  assignee: User @relation(name: "AssigneeIssue", onDelete: SET_NULL)
+  reporter: User! @relation(name: "ReporterIssue", onDelete: SET_NULL)
+  estimate: Int
+  timeSpent: Int
+  timeRemaining: Int
+  listPosition: Float #position on board
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  project: Project! @relation(name: "ProjectIssue", onDelete: SET_NULL)
+  comments: [Comment!]! @relation(name: "IssueComment", onDelete: CASCADE)
+}
+
+type Comment {
+  id: ID! @id
+  text: String!
+  issue: Issue! @relation(name: "IssueComment")
+  owner: User! @relation(name: "CommentByUser")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum LogType {
+  IssueCreate
+  IssueAssigneeChange
+  IssueStatusChange
+  IssueTypeChange
+  IssuePriorityChange
+  IssueComment
+}
+
+type Log {
+  id: ID! @id
+  logType: LogType!
+  logDate: DateTime! @createdAt
+  user: User @relation(link: INLINE, name: "LogIssueOwner") # FK relationship to User
+  issue: Issue @relation(link: INLINE) # FK relationship to Issue
+  prevAssignee: User @relation(link: INLINE, name: "LogIssuePrevAssignee")# FK relationship to User
+  newAssignee: User @relation(link: INLINE, name: "LogIssueNewAssignee")# FK relationship to User
+  previousValue: String
+  newValue: String
+  
 }
