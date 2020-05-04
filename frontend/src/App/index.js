@@ -26,7 +26,8 @@ const client = new ApolloClient({
   link: createHttpLink({
     credentials: "include",
     // uri: "http://localhost:5555/",
-    uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
+    uri: "https://jira-yoga-clone.herokuapp.com/",
+    // uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
   }),
 });
 
