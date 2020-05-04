@@ -1,5 +1,5 @@
 // import styled, { css } from 'styled-components';
-
+// should not use capital file name
 // import { color, font } from 'shared/utils/styles';
 // import Icon from 'shared/components/Icon';
 
