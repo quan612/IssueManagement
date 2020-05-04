@@ -11,7 +11,7 @@ import ApolloClient from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import Routes from "./routes";
-import { customResolvers } from "./customResolvers";
+import { endpoint, prodEndpoint } from "./config";
 
 const client = new ApolloClient({
   cache: new InMemoryCache({
@@ -25,9 +25,9 @@ const client = new ApolloClient({
 
   link: createHttpLink({
     credentials: "include",
-    uri: "http://localhost:5555/",
+    // uri: "http://localhost:5555/",
+    uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
   }),
-  resolvers: customResolvers,
 });
 
 function App() {
