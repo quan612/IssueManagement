@@ -1,7 +1,7 @@
 #endpoint: ${env:PRISMA_ENDPOINT}
 endpoint: https://jira-clone-prod-0c3ab460a2.herokuapp.com/jira-clone-prod/prod
 datamodel: datamodel.graphql
-#secret: ${env:PRISMA_SECRET}
+secret: ${env:PRISMA_SECRET}
 
 generate:
   - generator: javascript-client
