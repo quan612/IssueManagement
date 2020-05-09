@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation } from "react-apollo";
+import { withSignUp } from "shared/HOC";
 
 import { Formik, Form, useFormik } from "formik";
 import * as Yup from "yup";
@@ -10,7 +10,6 @@ import { Button } from "shared/components/Button";
 import { FormikInput } from "shared/components/FormikPrimitiveComponent";
 import { PageContainer, Panel, FormWrapper, Title } from "./styles";
 import { ErrorMessage } from "shared/components/ErrorMessage";
-import { withUserSignUp } from "shared/HOC/withUserMutation";
 
 const Signup = ({ loading, error, onSignUp, ...props }) => {
   const { history } = props;
@@ -110,4 +109,4 @@ const Signup = ({ loading, error, onSignUp, ...props }) => {
   );
 };
 
-export default withUserSignUp(Signup);
+export default withSignUp(Signup);

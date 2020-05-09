@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { withPasswordReset } from "shared/HOC/withUserMutation";
+import { withPasswordReset } from "shared/HOC";
 
 import { Formik, Form, useFormik } from "formik";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
   const initialValues = {
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -30,7 +30,7 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
       .required(" Password is required!")
       .min(5, "Password min length is 5"),
 
-    confirmPassword: Yup.string().required(" Confirm Password is required!")
+    confirmPassword: Yup.string().required(" Confirm Password is required!"),
   });
 
   const handleOnChange = (e, formik) => {
@@ -55,7 +55,7 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
       validateOnBlur={false}
       validateOnChange={false}
     >
-      {formik => (
+      {(formik) => (
         <PageContainer>
           <Panel>
             <FormWrapper onSubmit={formik.handleSubmit}>
@@ -64,8 +64,8 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
                 placeholder="Email"
                 type="email"
                 name="email"
-                onChange={event => handleOnChange(event, formik)}
-                onKeyDown={event => handleKeyDown(event, formik)}
+                onChange={(event) => handleOnChange(event, formik)}
+                onKeyDown={(event) => handleKeyDown(event, formik)}
                 form="novalidatedform"
               />
 
@@ -73,16 +73,16 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
                 placeholder="Password"
                 type="password"
                 name="password"
-                onChange={event => handleOnChange(event, formik)}
-                onKeyDown={event => handleKeyDown(event, formik)}
+                onChange={(event) => handleOnChange(event, formik)}
+                onKeyDown={(event) => handleKeyDown(event, formik)}
               />
 
               <FormikInput
                 placeholder="Confirm Password"
                 type="password"
                 name="confirmPassword"
-                onChange={event => handleOnChange(event, formik)}
-                onKeyDown={event => handleKeyDown(event, formik)}
+                onChange={(event) => handleOnChange(event, formik)}
+                onKeyDown={(event) => handleKeyDown(event, formik)}
               />
 
               <div className="mt-5">

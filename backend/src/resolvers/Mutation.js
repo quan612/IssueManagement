@@ -19,7 +19,7 @@ const Mutation = {
 
     return await ctx.prisma.createProject(
       {
-        ...args
+        ...args,
       },
       info
     );
@@ -30,14 +30,14 @@ const Mutation = {
       //find the project based on id
       // console.log("testing", args.id);
       const project = await ctx.prisma.project({
-        id: args.id
+        id: args.id,
       });
 
       //todo: check if the user has permission
 
       //delete the item
       return ctx.prisma.deleteProject({
-        id: args.id
+        id: args.id,
       });
     } catch (error) {
       console.log(error);
@@ -46,16 +46,16 @@ const Mutation = {
 
   async updateProject(parent, args, ctx, info) {
     try {
-      console.log(args);
+      // console.log(args);
       return await ctx.prisma.updateProject(
         {
           data: {
             name: args.name,
-            description: args.description
+            description: args.description,
           },
           where: {
-            id: args.id
-          }
+            id: args.id,
+          },
         },
         info
       );
@@ -70,7 +70,7 @@ const Mutation = {
 
     // check if there is an email in the system
     const isExist = await ctx.prisma.user({
-      email: args.email
+      email: args.email,
     });
 
     if (isExist) throw new Error(`This email ${args.email} was used.`);
@@ -83,7 +83,7 @@ const Mutation = {
       {
         ...args,
         password: hashPassword,
-        permissions: { set: ["USER"] }
+        permissions: { set: ["USER"] },
       },
       info
     );
@@ -95,7 +95,7 @@ const Mutation = {
     ctx.response.cookie("token", token, {
       httpOnly: true,
       // secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 7 // cookie for 7 days
+      maxAge: 1000 * 60 * 60 * 24 * 7, // cookie for 7 days
     });
 
     // return the user
@@ -107,7 +107,7 @@ const Mutation = {
 
     // check if there is an email in the system
     const user = await ctx.prisma.user({
-      email: email
+      email: email,
     });
 
     if (!user)
@@ -126,9 +126,10 @@ const Mutation = {
     ctx.response.cookie("token", token, {
       httpOnly: true,
       // secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 7 // cookie for 7 days
+      maxAge: 1000 * 60 * 60 * 24 * 7, // cookie for 7 days
     });
 
+    console.log("user sign in succeed");
     //return the user
     return user;
   },
@@ -146,7 +147,7 @@ const Mutation = {
 
     //find the user
     const user = await ctx.prisma.user({
-      email: email
+      email: email,
     });
     if (!user) throw new Error(`There is no user with email ${email}!`);
 
@@ -155,11 +156,11 @@ const Mutation = {
     const updatedUser = await ctx.prisma.updateUser(
       {
         where: {
-          email: email
+          email: email,
         },
         data: {
-          password: hashedPassword
-        }
+          password: hashedPassword,
+        },
       },
       info
     );
@@ -184,7 +185,7 @@ const Mutation = {
 
     //find the user
     const user = await ctx.prisma.user({
-      email: email
+      email: email,
     });
     if (!user) throw new Error(`There is no user with email ${email}!`);
 
@@ -197,9 +198,9 @@ const Mutation = {
     const updatedUser = await ctx.prisma.updateUser(
       {
         where: {
-          email: email
+          email: email,
         },
-        data: updateData
+        data: updateData,
       },
       info
     );
@@ -223,18 +224,18 @@ const Mutation = {
         status,
         priority,
         project,
-        assignee
+        assignee,
       } = args;
 
       // finding the highest position based on current issues
       let listPosition;
       const projectIssues = await ctx.prisma.issues({
-        where: { project: { id: project } }
+        where: { project: { id: project } },
       });
 
       if (projectIssues.length > 0) {
         const issuesSameType = projectIssues.filter(
-          issue => issue.type === type
+          (issue) => issue.type === type
         );
         const issueWithMaxPosition = issuesSameType.reduce(function(
           prev,
@@ -257,14 +258,14 @@ const Mutation = {
           assignee: assignee
             ? {
                 connect: {
-                  id: assignee
-                }
+                  id: assignee,
+                },
               }
             : null,
           estimate: 0,
           timeSpent: 0,
           timeRemaining: 0,
-          listPosition
+          listPosition,
         },
         info
       );
@@ -273,11 +274,11 @@ const Mutation = {
       const log = await ctx.prisma.createLog({
         logType: IssueCreate,
         user: {
-          connect: { id: ctx.request.userId }
+          connect: { id: ctx.request.userId },
         },
         issue: { connect: { id: issue.id } },
         previousValue: null,
-        newValue: null
+        newValue: null,
       });
 
       // console.log("log test", log);
@@ -304,10 +305,10 @@ const Mutation = {
       timeSpent,
       listPosition,
       assignee,
-      actionType
+      actionType,
     } = args;
 
-    console.log("args", args);
+    // console.log("args", args);
 
     let currentIssue = await ctx.prisma.issue({ id }, info);
     let currentAssignee = await ctx.prisma.issue({ id }, info).assignee();
@@ -324,7 +325,7 @@ const Mutation = {
       estimate,
       timeSpent,
       listPosition,
-      assignee
+      assignee,
     };
 
     let updateIssue;
@@ -335,9 +336,9 @@ const Mutation = {
           data: {
             ...issueFragment,
             assignee: {
-              disconnect: currentAssignee === null ? false : true
-            }
-          }
+              disconnect: currentAssignee === null ? false : true,
+            },
+          },
         },
         info
       );
@@ -349,10 +350,10 @@ const Mutation = {
             ...issueFragment,
             assignee: {
               connect: {
-                id: assignee
-              }
-            }
-          }
+                id: assignee,
+              },
+            },
+          },
         },
         info
       );
@@ -361,12 +362,12 @@ const Mutation = {
     //due to relation, assignee is not available in updateIssue, we must assign it for log
     updateIssue.assignee = await ctx.prisma.issue({ id }, info).assignee();
 
-    console.log("update issue", updateIssue);
+    // console.log("update issue", updateIssue);
 
     // update Log table
     let log = await handleCreateLog(ctx, actionType, currentIssue, updateIssue);
 
-    console.log("log test", log);
+    // console.log("log test", log);
 
     return updateIssue;
   },
@@ -383,14 +384,14 @@ const Mutation = {
         text: text,
         issue: {
           connect: {
-            id: issue
-          }
+            id: issue,
+          },
         },
         owner: {
           connect: {
-            id: ctx.request.userId
-          }
-        }
+            id: ctx.request.userId,
+          },
+        },
       },
       info
     );
@@ -414,23 +415,23 @@ const Mutation = {
     const updatedComment = await ctx.prisma.updateComment(
       {
         where: {
-          id: args.id
+          id: args.id,
         },
-        data: { text: args.text }
+        data: { text: args.text },
       },
       info
     );
     return updatedComment;
-  }
+  },
 };
 
 const handleCreateLog = async (ctx, actionType, currentIssue, updateIssue) => {
   const createLogConditions = {
     logType: actionType,
     user: {
-      connect: { id: ctx.request.userId } //the user who does this action
+      connect: { id: ctx.request.userId }, //the user who does this action
     },
-    issue: { connect: { id: updateIssue.id } }
+    issue: { connect: { id: updateIssue.id } },
   };
 
   switch (actionType) {
@@ -438,7 +439,7 @@ const handleCreateLog = async (ctx, actionType, currentIssue, updateIssue) => {
       return await ctx.prisma.createLog({
         ...createLogConditions,
         previousValue: currentIssue.status,
-        newValue: updateIssue.status
+        newValue: updateIssue.status,
       });
     case IssueAssigneeChange:
       return await ctx.prisma.createLog({
@@ -447,39 +448,39 @@ const handleCreateLog = async (ctx, actionType, currentIssue, updateIssue) => {
           currentIssue.assignee !== null
             ? {
                 connect: {
-                  id: currentIssue.assignee.id
-                }
+                  id: currentIssue.assignee.id,
+                },
               }
             : null,
         newAssignee:
           updateIssue.assignee !== null
             ? {
                 connect: {
-                  id: updateIssue.assignee.id
-                }
+                  id: updateIssue.assignee.id,
+                },
               }
-            : null
+            : null,
       });
 
     case IssueTypeChange:
       return await ctx.prisma.createLog({
         ...createLogConditions,
         previousValue: currentIssue.type,
-        newValue: updateIssue.type
+        newValue: updateIssue.type,
       });
 
     case IssuePriorityChange:
       return await ctx.prisma.createLog({
         ...createLogConditions,
         previousValue: currentIssue.priority,
-        newValue: updateIssue.priority
+        newValue: updateIssue.priority,
       });
 
     case IssueComment:
       return await ctx.prisma.createLog({
         ...createLogConditions,
         previousValue: null,
-        newValue: updateIssue.comment.id //get id so that in front end we can query comment info
+        newValue: updateIssue.comment.id, //get id so that in front end we can query comment info
       });
 
     default:

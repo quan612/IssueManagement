@@ -9,9 +9,10 @@ const color = {
   info: tw`bg-black text-white hover:bg-blue-600`,
 };
 
+// text - sm;
 export const StyledButton = styled.button`
   ${(props) => color[props.variant]}
-  ${tw`border rounded mr-2 text-lg font-bold px-6 py-2 text-sm `}
+  ${tw`border rounded text-lg font-bold px-4 py-2`}
   &:disabled {
     opacity: 0.8;
     cursor: default;

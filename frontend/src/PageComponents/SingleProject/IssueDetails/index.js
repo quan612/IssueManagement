@@ -1,10 +1,10 @@
 import React from "react";
 import { useMutation } from "react-apollo";
-import { currentUserLogIn } from "shared/HOC/withUserQuery";
-import { withSingleIssueQuery } from "shared/HOC/withIssueQuery";
+import { withSingleIssueQuery, withCurrentUser } from "shared/HOC";
+import { flowRight } from "lodash";
 
-import { UPDATE_ISSUE_MUTATION } from "shared/HOC/GraphQL/Issue";
-import { LOG_ISSUE_QUERY } from "shared/HOC/GraphQL/Issue";
+import { UPDATE_ISSUE_MUTATION } from "shared/GraphQL/Issue";
+import { LOG_ISSUE_QUERY } from "shared/GraphQL/Issue";
 
 import { IssueDetailsType } from "./Type";
 import { IssueDetailsTitle } from "./Title";
@@ -95,4 +95,4 @@ const IssueDetails = ({
   //  else return null;
 };
 
-export default withSingleIssueQuery(currentUserLogIn(IssueDetails));
+export default flowRight(withCurrentUser, withSingleIssueQuery)(IssueDetails);

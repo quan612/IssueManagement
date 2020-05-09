@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory, Redirect } from "react-router-dom";
-import { withUserSignIn } from "shared/HOC/withUserMutation";
+import { withSignIn } from "shared/HOC";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -19,6 +19,8 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
     email: "",
     password: "",
   };
+
+  console.log(authentication);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -88,7 +90,7 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
                 <div className="reset-password">
                   <a
                     href="/#"
-                    className="cursor-pointer text-blue-600 hover:text-blue-800 text-sm font-bold"
+                    className="cursor-pointer text-blue-600 hover:text-blue-800 font-bold"
                     onClick={(e) => {
                       e.preventDefault();
                       history.push("/reset");
@@ -109,4 +111,4 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
     );
 };
 
-export default withUserSignIn(SignIn);
+export default withSignIn(SignIn);

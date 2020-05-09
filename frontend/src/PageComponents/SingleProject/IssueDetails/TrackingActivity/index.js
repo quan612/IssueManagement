@@ -1,4 +1,5 @@
 import React from "react";
+import { withIssueLogsQuery } from "shared/HOC/Issue";
 
 import UserAvartar from "shared/components/Avatar";
 import { Section } from "shared/components/Section";
@@ -10,16 +11,14 @@ import {
 } from "shared/components/styles";
 
 import SingleComment from "../Comment/SingleComment";
-
-import { parseDateAndTime } from "shared/utils/dateUtils";
-import { withIssueLogsQuery } from "shared/HOC/withIssueQuery";
-
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 import { IssueStatusDescription } from "shared/constants/issues";
 
+import { parseDateAndTime } from "shared/utils/dateUtils";
+
 const TrackingActivity = ({ issue, logsOnIssue = [], loading }) => {
   return (
-    <Section title="Activites">
+    <Section title="Activity">
       <LogWrapper>
         {logsOnIssue.map((log) => {
           return (

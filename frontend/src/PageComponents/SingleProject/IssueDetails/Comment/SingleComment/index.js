@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { withCommentUpdate } from "shared/HOC/Comment";
-import { currentUserLogIn } from "shared/HOC/withUserQuery";
+import { withCurrentUser, withCommentUpdate } from "shared/HOC";
+import { flowRight } from "lodash";
 
 import {
   Container,
@@ -106,4 +106,4 @@ const SingleComment = ({
   );
 };
 
-export default withCommentUpdate(currentUserLogIn(SingleComment));
+export default flowRight(withCurrentUser, withCommentUpdate)(SingleComment);

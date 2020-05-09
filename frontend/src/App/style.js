@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import tw from "tailwind.macro";
 import { animated } from "react-spring";
 
 export const Container = styled(animated.div)`
@@ -7,12 +6,13 @@ export const Container = styled(animated.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  /* position: absolute; */
+
   position: relative;
   padding-top: 1rem;
+  padding-bottom: 1rem;
   border-radius: 1rem;
 
-  min-height: calc(100% - 60px);
+  /* min-height: calc(100% - 60px); */
   /* custom */
   width: auto;
   min-width: 968px;

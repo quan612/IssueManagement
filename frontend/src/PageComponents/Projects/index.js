@@ -1,21 +1,23 @@
-import React, { useState } from "react";
-import { withProjectsQuery } from "shared/HOC/withProjectsQuery";
+import React, { useRef } from "react";
+import { withProjectsQuery } from "shared/HOC";
+import { useInfiniteScroll } from "shared/hooks/useInfiniteScroll";
+
 import ProjectList from "./ProjectList";
 import Toggle from "./Toggle";
-import { ListContainer } from "./styles";
 import ProjectListLoader from "shared/components/Loaders/ProjectListLoader";
+import { ListContainer, LoadingContainer } from "./styles";
 
-const Projects = ({ loading, error, projects }) => {
+const Projects = ({ loading, error, projects, limit, fetchMore }) => {
+  let bottomRef = useRef(null);
+  useInfiniteScroll(bottomRef, fetchMore, projects.length, limit, loading);
+
   return (
     <ListContainer>
-      {loading ? (
-        <ProjectListLoader />
-      ) : (
-        <>
-          <ProjectList projects={projects} />
-          <Toggle />
-        </>
-      )}
+      <Toggle />
+      <ProjectList projects={projects} />
+      <LoadingContainer ref={bottomRef}>
+        {loading && <ProjectListLoader />}
+      </LoadingContainer>
     </ListContainer>
   );
 };

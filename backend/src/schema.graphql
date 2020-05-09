@@ -14,6 +14,8 @@ type Query {
   logsOnIssue(issueId: ID!): [Log!]!
   singleComment(id: ID!): Comment!
   singleUser(id: ID!): User!
+  getProjects(skip:Int!, first:Int!): [Project]!
+  projectsCount: Int!
 }
 
 type Mutation {
@@ -56,17 +58,4 @@ type Mutation {
 
   createComment(text: String!, issue: ID!, actionType: String): Comment!
   updateComment(id: ID!, text: String): Comment!
-}
-
-#define the user so that the reset token should not be exposed on the client side, means not going to be return back within User info obj
-# type User {
-#   id: ID!
-#   email: String!
-#   name: String!
-#   permissions: [Permission!]! #@scalarList(strategy: RELATION)
-# }
-
-input IssuesFilter {
-  queryString: String
-  assignee: ID
 }

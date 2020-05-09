@@ -1,18 +1,24 @@
 import React from "react";
-import { withProjectDelete } from "shared/HOC/withProjectsMutation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { withProjectDelete, withToastCreate } from "shared/HOC";
+import { flowRight } from "lodash";
+
 import Spinner from "shared/components/Spinner";
-
 import { IconContainer } from "./styles";
-
 import { FlexItemsWrapper } from "shared/components/styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const handleDeleteProject = (id, onDelete) => {
-  // eslint-disable-next-line no-restricted-globals
-  if (confirm("Want to delete?")) onDelete(id);
-};
+const ProjectDelete = ({ id, onDelete, loading, createToast }) => {
+  const handleDeleteProject = async (id) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Want to delete?")) {
+      let result = await onDelete(id);
+      if (result)
+        createToast({
+          variables: { type: "success", message: "Delete project success!" },
+        });
+    }
+  };
 
-const ProjectDelete = ({ id, onDelete, loading }) => {
   if (loading) {
     return (
       <FlexItemsWrapper className="hover:bg-gray-400 py-2">
@@ -27,7 +33,7 @@ const ProjectDelete = ({ id, onDelete, loading }) => {
   return (
     <FlexItemsWrapper
       className="hover:bg-gray-400 py-2"
-      onClick={() => handleDeleteProject(id, onDelete)}
+      onClick={() => handleDeleteProject(id)}
     >
       <IconContainer>
         <FontAwesomeIcon icon="trash-alt" style={{ color: "red" }} />
@@ -37,4 +43,4 @@ const ProjectDelete = ({ id, onDelete, loading }) => {
   );
 };
 
-export default withProjectDelete(ProjectDelete);
+export default flowRight(withProjectDelete, withToastCreate)(ProjectDelete);

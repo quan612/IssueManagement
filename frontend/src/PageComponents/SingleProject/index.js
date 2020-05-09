@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { withSingleProjectQuery } from "shared/HOC/withProjectsQuery";
-import { withUsersQuery } from "shared/HOC/withUserQuery";
-
 import { Route, useRouteMatch, useHistory } from "react-router-dom";
+import { withUsersQuery, withSingleProjectQuery } from "shared/HOC";
+
 import Modal from "shared/components/Modal";
 import Board from "./Board";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import { Button } from "shared/components/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { Container, Heading, BackIcon } from "./styles";
+import { Container, Heading, BackIcon, ButtonWrapper } from "./styles";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Project = ({ project, users }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -31,9 +31,11 @@ const Project = ({ project, users }) => {
 
       <Heading>Project: {project.name}</Heading>
 
-      <Button variant="primary" onClick={() => setModalOpen(true)}>
-        Create Issue
-      </Button>
+      <ButtonWrapper>
+        <Button variant="primary" onClick={() => setModalOpen(true)}>
+          Create Issue
+        </Button>
+      </ButtonWrapper>
 
       <Board users={users} />
 

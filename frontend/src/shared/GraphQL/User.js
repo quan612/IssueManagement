@@ -43,8 +43,8 @@ export const RESET_PASSWORD_MUTATION = gql`
   }
 `;
 
-export const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+export const SIGN_IN_MUTATION = gql`
+  mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
       id
       email
@@ -54,8 +54,8 @@ export const SIGNIN_MUTATION = gql`
   }
 `;
 
-export const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
+export const SIGN_UP_MUTATION = gql`
+  mutation SIGN_UP_MUTATION(
     $email: String!
     $name: String!
     $password: String!
@@ -69,8 +69,12 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
-export const USERINFO_MUTATION = gql`
-  mutation USERINFO_MUTATION($email: String!, $name: String!, $avatar: String) {
+export const EDIT_USER_MUTATION = gql`
+  mutation EDIT_USER_MUTATION(
+    $email: String!
+    $name: String!
+    $avatar: String
+  ) {
     updateUserInfo(email: $email, name: $name, avatar: $avatar) {
       id
       email
