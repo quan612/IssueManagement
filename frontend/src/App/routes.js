@@ -7,6 +7,7 @@ import Header from "../PageComponents/Header/index";
 import withAuth from "shared/HOC/Auth/withAuth";
 import { useTransition } from "react-spring";
 import { Container } from "./style";
+import Toast from "shared/components/Toast";
 
 export const SIGNUP = "/signup";
 export const SIGNIN = "/signin";
@@ -83,6 +84,7 @@ const Routes = ({ authentication }) => {
 
           {/* <Route component={PageError} />  */}
         </Switch>
+        <Toast position={"bottom-right"} />
       </Container>
       {/* ))} */}
     </>

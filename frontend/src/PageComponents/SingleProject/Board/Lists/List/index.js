@@ -3,6 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 import { IssueStatusDescription } from "shared/constants/issues";
 import Issue from "./Issue";
+import { SingeListContainer } from "./styles";
 
 const BoardList = ({ status, issues }) => {
   const filteredIssuesWithStatus = getIssuesWithStatus(issues, status);
@@ -12,14 +13,12 @@ const BoardList = ({ status, issues }) => {
 
   return (
     <Droppable droppableId={status}>
-      {(provided) => (
-        <div
-          className="single-list flex flex-col rounded bg-gray-300 w-1/4 p-2 mx-1 "
-          style={{ minHeight: "500px" }}
+      {(provided, snapshot) => (
+        <SingeListContainer
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          <div className="list-title text-gray-600 text-sm font-bold">
+          <div className="list-title text-gray-600 font-bold">
             {IssueStatusDescription[status]}
           </div>
 
@@ -32,7 +31,7 @@ const BoardList = ({ status, issues }) => {
             })}
             {provided.placeholder}
           </div>
-        </div>
+        </SingeListContainer>
       )}
     </Droppable>
   );

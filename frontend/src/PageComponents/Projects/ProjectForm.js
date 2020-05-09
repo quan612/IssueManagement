@@ -1,5 +1,11 @@
 import React, { useState, useRef } from "react";
-import { withProjectsMutation } from "../../shared/HOC/withProjectsMutation";
+import {
+  withProjectCreate,
+  withProjectUpdate,
+  withToastCreate,
+} from "shared/HOC";
+
+import { flowRight } from "lodash";
 
 import { Section } from "shared/components/Section";
 import { Input } from "shared/components/Input";
@@ -15,7 +21,8 @@ const ProjectForm = ({
   onCreate,
   onUpdate,
   loading,
-  error,
+  onCreating,
+  createToast,
 }) => {
   const [project, setProject] = useState({
     name: data.name || "",
@@ -23,7 +30,6 @@ const ProjectForm = ({
   });
 
   const [inputError, setError] = useState({});
-
   const inputRef = useRef();
 
   const handleOnChange = (e) => {
@@ -39,10 +45,27 @@ const ProjectForm = ({
       setError({ message: "Name cannot be null" });
       return;
     }
+
+    //add new
     if (!data.id) {
-      await onCreate(project);
-    } else {
-      await onUpdate(data.id, project);
+      let result = await onCreate(project);
+
+      if (result)
+        createToast({
+          variables: {
+            type: "success",
+            message: `Create project success!`,
+          },
+        });
+    }
+
+    //update
+    else {
+      let result = await onUpdate(data.id, project);
+      if (result)
+        createToast({
+          variables: { type: "success", message: "Modify project success!" },
+        });
     }
     onClose();
   };
@@ -79,8 +102,12 @@ const ProjectForm = ({
       {inputError && <ErrorMessage error={inputError.message} />}
 
       <ButtonWrapper>
-        <Button isWorking={loading} variant="info" onClick={handleOnSubmit}>
-          Save
+        <Button
+          isWorking={loading || onCreating}
+          variant="info"
+          onClick={handleOnSubmit}
+        >
+          Submit
         </Button>
         <Button disabled={loading} variant="secondary" onClick={onClose}>
           Cancel
@@ -90,4 +117,8 @@ const ProjectForm = ({
   );
 };
 
-export default withProjectsMutation(ProjectForm);
+export default flowRight(
+  withProjectCreate,
+  withProjectUpdate,
+  withToastCreate
+)(ProjectForm);

@@ -5,6 +5,7 @@ import { IssueStatus } from "shared/constants/issues";
 import List from "./List";
 
 import IssuesLoader from "shared/components/Loaders/IssuesLoader";
+import { BoardListWrapper } from "./styles";
 
 const BoardLists = ({
   issues,
@@ -67,7 +68,7 @@ const BoardLists = ({
       listPosition = (prevIssue.listPosition + nextIssue.listPosition) / 2;
     }
 
-    const res = await updateIssueAPI({
+    await updateIssueAPI({
       variables: {
         ...currentIssue,
         listPosition: listPosition,
@@ -84,9 +85,6 @@ const BoardLists = ({
         },
       },
     });
-
-    // console.log("res", res);
-    // handle notifications when issue is updated successfully
   };
 
   if (fetchingIssues) return <IssuesLoader />;
@@ -94,13 +92,11 @@ const BoardLists = ({
   if (issues) {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="styled-list w-full my-5">
-          <div className="flex pr-5 items-start ">
-            {Object.values(IssueStatus).map((status) => {
-              return <List key={status} status={status} issues={issues} />;
-            })}
-          </div>
-        </div>
+        <BoardListWrapper>
+          {Object.values(IssueStatus).map((status) => {
+            return <List key={status} status={status} issues={issues} />;
+          })}
+        </BoardListWrapper>
       </DragDropContext>
     );
   }

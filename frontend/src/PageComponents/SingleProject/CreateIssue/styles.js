@@ -17,5 +17,5 @@ export const SelectItemLabel = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
-  ${tw`flex justify-end pt-2 my-2`}
+  ${tw`flex justify-end pt-2 my-2 `}
 `;

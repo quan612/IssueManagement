@@ -11,10 +11,9 @@ export const OverlayContainer = styled.div`
 
 export const ModalContainer = styled.div`
   ${tw`bg-white w-11/12 sm:w-11/12 md:w-11/12 lg:w-1/2 mx-auto relative rounded shadow-lg z-40`}
-  min-width: 1024px;
-  min-height: 700px;
-
+  min-width: 800px;
   max-width: 1280px;
+  min-height: 700px;
 `;
 
 export const ModalContent = styled.div`

@@ -5,6 +5,7 @@ export const ErrorContainer = styled.div`
   margin-top: 1rem;
 `;
 
+//text-sm
 export const Message = styled.label`
-  ${tw`text-red-600 text-sm font-bold`}
+  ${tw`text-red-600  font-bold`}
 `;

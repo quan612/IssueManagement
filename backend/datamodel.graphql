@@ -27,8 +27,7 @@ enum IssuePriority {
 
 type Project {
   id: ID! @id
-  name: String!
-  # prefix: String!
+  name: String! 
   description: String
   issues: [Issue!]! @relation(name: "ProjectIssue", onDelete: CASCADE)
 }

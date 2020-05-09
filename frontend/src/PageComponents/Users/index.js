@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withEditUser } from "shared/HOC/withUserMutation";
+import { withUserUpdate } from "shared/HOC";
 
 import { PageContainer, Panel, FormWrapper, Title } from "./styles";
 import { Section } from "shared/components/Section";
@@ -84,7 +84,7 @@ const Users = ({ authentication, onUpdateUser, updating, error }) => {
   );
 };
 
-export default withEditUser(Users);
+export default withUserUpdate(Users);
 
 const UserDetails = ({ user, onEdit }) => {
   return (
@@ -97,7 +97,7 @@ const UserDetails = ({ user, onEdit }) => {
         ))}
       </Section>
       <label
-        className="cursor-pointer text-blue-600 hover:text-blue-800 text-sm font-bold"
+        className="cursor-pointer text-blue-600 hover:text-blue-800 font-bold"
         onClick={onEdit}
       >
         Edit

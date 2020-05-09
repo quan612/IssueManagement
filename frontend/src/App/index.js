@@ -11,24 +11,37 @@ import ApolloClient from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import Routes from "./routes";
-import { endpoint, prodEndpoint } from "./config";
+import { devEndpoint, prodEndpoint } from "./config";
+
+import resolvers from "./clientResolvers";
+
+const cache = new InMemoryCache({
+  cacheRedirects: {
+    Query: {
+      issue: (_, { id }, { getCacheKey }) =>
+        getCacheKey({ __typename: "Issue", id }),
+    },
+  },
+});
+
+const link = createHttpLink({
+  credentials: "include",
+  uri: "http://localhost:5555/",
+  //uri: "https://jira-yoga-clone.herokuapp.com",
+  //  uri: process.env.NODE_ENV === "development" ? devEndpoint : prodEndpoint,
+});
 
 const client = new ApolloClient({
-  cache: new InMemoryCache({
-    cacheRedirects: {
-      Query: {
-        issue: (_, { id }, { getCacheKey }) =>
-          getCacheKey({ __typename: "Issue", id }),
-      },
-    },
-  }),
+  cache,
+  resolvers,
+  link,
+});
 
-  link: createHttpLink({
-    // credentials: "include",
-    // uri: "http://localhost:5555/",
-    //uri: "https://jira-yoga-clone.herokuapp.com",
-    uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
-  }),
+//initialize the cache
+cache.writeData({
+  data: {
+    toasts: [],
+  },
 });
 
 function App() {

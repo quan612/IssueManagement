@@ -7,7 +7,7 @@ export const ListContainer = styled.div`
 `;
 
 export const ItemContainer = styled.div`
-  ${tw`w-full pt-3 px-3 md:pr-2`}
+  ${tw`w-full pt-3 px-3 md:pr-2 mb-7`}
 `;
 
 export const SmallIconContainer = styled.div`
@@ -32,7 +32,7 @@ export const ItemStyle = styled.div`
     ${EllipsisV} {
       display: block;
     }
-    transform: scale(1.05);
+    opacity: 0.9;
   }
   background: linear-gradient(135deg, #08979d 0%, #8474a1 100%);
 `;
@@ -68,4 +68,8 @@ export const IconContainer = styled.div`
   height: 1rem;
   margin-right: 1rem;
   margin-left: 5px;
+`;
+
+export const LoadingContainer = styled.div`
+  ${tw`leading-normal my-2`}
 `;

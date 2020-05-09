@@ -6,17 +6,19 @@ import UserAvartar from "shared/components/Avatar";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 
+import { StyledIssue } from "./styles";
+
 const BoardIssue = ({ issue, index }) => {
   const match = useRouteMatch();
   return (
     <Draggable draggableId={issue.id} index={index}>
       {(provided, snapshot) => (
         <Link to={`${match.url}/issues/${issue.id}`}>
-          <div
-            className="issue rounded bg-white mt-2 p-2 border-b cursor-pointer hover:bg-gray-100"
+          <StyledIssue
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            isDragging={snapshot.isDragging}
           >
             <section className="issue-title overflow-hidden">
               <p>{issue.title}</p>
@@ -33,7 +35,7 @@ const BoardIssue = ({ issue, index }) => {
                 )}
               </div>
             </div>
-          </div>
+          </StyledIssue>
         </Link>
       )}
     </Draggable>

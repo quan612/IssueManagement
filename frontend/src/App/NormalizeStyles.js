@@ -21,7 +21,7 @@ export default createGlobalStyle`
     overflow: visible;
   }
   pre {
-    font-family: monospace, monospace;
+    font-family: monospace;
     font-size: 1em;
   }
   a {
@@ -39,7 +39,7 @@ export default createGlobalStyle`
   code,
   kbd,
   samp {
-    font-family: monospace, monospace;
+    font-family: monospace;
     font-size: 1em;
   }
   small {

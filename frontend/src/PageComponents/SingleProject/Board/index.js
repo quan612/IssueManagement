@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { withIssuesQuery } from "shared/HOC/withIssueQuery";
-import { withIssueUpdate } from "shared/HOC/withIssueMutation";
+import { withIssuesQuery, withIssueUpdate } from "shared/HOC";
+import { flowRight } from "lodash";
 
 import Filters from "./Filters";
 import Lists from "./Lists";
@@ -21,7 +21,7 @@ const Board = ({
   useEffect(() => {}, [issues]);
 
   return (
-    <div className="mt-2">
+    <div className="mt-2" style={{ flex: 1 }}>
       <Filters onFilter={handleOnFilter} users={users} />
       <Lists
         issues={issues}
@@ -33,4 +33,4 @@ const Board = ({
   );
 };
 
-export default withIssueUpdate(withIssuesQuery(Board));
+export default flowRight(withIssueUpdate, withIssuesQuery)(Board);

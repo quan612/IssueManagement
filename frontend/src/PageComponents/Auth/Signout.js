@@ -2,7 +2,7 @@ import React from "react";
 
 import { useMutation } from "react-apollo";
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "shared/HOC/GraphQL/User";
+import { CURRENT_USER_QUERY } from "shared/GraphQL/User";
 
 import { useHistory } from "react-router-dom";
 

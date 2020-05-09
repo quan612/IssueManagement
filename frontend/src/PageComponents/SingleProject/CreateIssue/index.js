@@ -1,10 +1,12 @@
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
-import { withIssueCreate } from "shared/HOC/withIssueMutation";
+import { withIssueCreate, withToastCreate } from "shared/HOC";
+import { flowRight } from "lodash";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import UserAvatar from "shared/components/Avatar";
 import { Button } from "shared/components/Button";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
@@ -29,6 +31,7 @@ const CreateIssue = ({
   createIssueAPI,
   creatingIssue,
   creatingIssueError,
+  createToast,
 }) => {
   const match = useRouteMatch();
   const userOptions = [{ id: null, name: "Unassigned" }, ...users];
@@ -48,7 +51,7 @@ const CreateIssue = ({
         title: Yup.string().required(" Title is required!"),
       })}
       onSubmit={async (values, { setErrors }) => {
-        await createIssueAPI({
+        let res = await createIssueAPI({
           variables: {
             title: values.title,
             description: values.description,
@@ -60,7 +63,14 @@ const CreateIssue = ({
           },
         }).catch((error) => setErrors(error));
 
-        // console.log("res", res);
+        if (res)
+          createToast({
+            variables: {
+              type: "success",
+              message: `Create issue success!`,
+            },
+          });
+
         closeModal();
       }}
       validateOnBlur={false}
@@ -125,7 +135,7 @@ const CreateIssue = ({
               >
                 Submit
               </Button>
-              <Button variant="secondary" onClick={closeModal}>
+              <Button variant="secondary" onClick={closeModal} className="ml-2">
                 Cancel
               </Button>
             </ButtonWrapper>
@@ -136,7 +146,7 @@ const CreateIssue = ({
   );
 };
 
-export default withIssueCreate(CreateIssue);
+export default flowRight(withIssueCreate, withToastCreate)(CreateIssue);
 
 const renderPriority = (priority) => {
   return (
@@ -159,6 +169,16 @@ const renderType = (type) => {
 const renderAssignee = (user) => {
   return (
     <SelectItemWrapper>
+      <div>
+        {user.name !== "Unassigned" ? (
+          <UserAvatar
+            user={user}
+            size={25}
+            src={user.avatar}
+            className="mr-2"
+          />
+        ) : null}
+      </div>
       <SelectItemLabel>{user.name}</SelectItemLabel>
     </SelectItemWrapper>
   );

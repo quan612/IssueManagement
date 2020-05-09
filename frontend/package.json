@@ -22,6 +22,7 @@
     "formik": "^2.1.4",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "lodash": "^4.17.15",
     "postcss-cli": "^7.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
@@ -35,12 +36,12 @@
     "react-spinners": "^0.8.0",
     "react-spring": "^8.0.27",
     "styled-components": "^5.0.0",
-    "tailwindcss": "^1.1.4",
     "tailwind.macro": "^1.0.0-alpha.10",
+    "tailwindcss": "^1.1.4",
     "yup": "^0.28.1"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=4096 start",
+    "start": "set PORT=5554 && react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -62,6 +63,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },"babel": {
+    "presets": ["@babel/preset-react", "@babel/preset-env"],
+    "plugins": ["emotion"]
   }
-  
 }

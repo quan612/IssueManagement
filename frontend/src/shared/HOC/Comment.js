@@ -6,10 +6,10 @@ import {
   CREATE_COMMENT_MUTATION,
   UPDATE_COMMENT_MUTATION,
   SINGLE_COMMENT_QUERY,
-} from "./GraphQL/Comment";
+} from "../GraphQL/Comment";
 
-import { LOG_ISSUE_QUERY } from "shared/HOC/GraphQL/Issue";
-import { SINGLE_ISSUE_QUERY } from "shared/HOC/GraphQL/Issue";
+import { LOG_ISSUE_QUERY } from "shared/GraphQL/Issue";
+import { SINGLE_ISSUE_QUERY } from "shared/GraphQL/Issue";
 
 export const withCommentCreate = (BaseComponent) => ({ ...props }) => {
   const match = useRouteMatch();

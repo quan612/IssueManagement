@@ -18,29 +18,20 @@ import {
 
 import { FlexItemsWrapper } from "shared/components/styles";
 
-import { Switch, Route, useLocation } from "react-router-dom";
-import * as PAGES from "../../App/pages";
-
-const PROJECTS = "/projects";
-const SINGLE_PROJECT = "/projects/:projectId";
-
-const UpdatableProject = ({ data, onSetActive }) => {
+const UpdatableProject = ({ data }) => {
   const [edit, setEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const ellipsisRef = useRef();
 
   const handleFormOpen = () => setEdit(true);
   const handleFormClose = () => setEdit(false);
-  const handleOnProjectClick = (id) => {
-    onSetActive(id);
-  };
 
   if (!edit) {
     const { id, name, description } = data;
     return (
       <ItemStyle>
         <Link to={`/projects/${id}`} className="w-full">
-          <div className="w-full" onClick={() => handleOnProjectClick(id)}>
+          <div className="w-full">
             <ItemTitle>{name}</ItemTitle>
             <ItemDescription>{description}</ItemDescription>
           </div>

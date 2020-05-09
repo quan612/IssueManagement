@@ -14,6 +14,30 @@ const Query = {
     return project;
   },
 
+  async getProjects(parent, args, ctx, info) {
+    const { skip, first } = args;
+    console.log("skip", skip);
+    const projects = await ctx.prisma.projects(
+      {
+        skip,
+        first,
+      },
+      info
+    );
+
+    // console.log("```````````````````````````fetch more", projects);
+    return projects;
+  },
+
+  async projectsCount(parent, args, ctx, info) {
+    const projectsCount = await ctx.prisma
+      .projectsConnection({}, info)
+      .aggregate()
+      .count();
+
+    return projectsCount;
+  },
+
   async me(parent, args, ctx, info) {
     //check if there is current user Id
     if (!ctx.request.userId) {
@@ -26,7 +50,7 @@ const Query = {
       },
       info
     );
-    // console.log(user);
+
     return user;
   },
 
@@ -57,7 +81,6 @@ const Query = {
     //   return null;
     // }
 
-    console.log("project issue query is run again");
     let extraConditions = [];
 
     if (args.filter && args.filter.title)
