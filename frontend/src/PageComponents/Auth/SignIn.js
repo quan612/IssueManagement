@@ -48,7 +48,8 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setErrors }) => {
-          await onSignIn(values);
+          let a = await onSignIn(values);
+          console.log("login client", a);
         }}
         validateOnBlur={false}
         validateOnChange={false}
