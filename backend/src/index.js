@@ -34,13 +34,13 @@ server.express.use((req, res, next) => {
 });
 
 server.start(
-  {
-    cors: {
-      credentials: true,
-      // origin: process.env.FRONTEND_URL,
-      origin: `https://jira-client-prod.herokuapp.com/`,
-    },
-  },
+  // {
+  //   cors: {
+  //     credentials: true,
+  //     // origin: process.env.FRONTEND_URL,
+  //     origin: `https://jira-client-prod.herokuapp.com/`,
+  //   },
+  // },
   (deets) => {
     console.log(`Server is now running on http://localhost:${deets.port}`);
   }
