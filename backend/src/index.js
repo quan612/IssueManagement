@@ -36,6 +36,8 @@ server.express.use((req, res, next) => {
   next();
 });
 
+//https://jira-client-prod.herokuapp.com/
+//process.env.FRONTEND_URL
 server.start(
   {
     cors: {
