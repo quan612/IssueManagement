@@ -24,9 +24,11 @@ server.express.use(cookieParser());
 
 server.express.use((req, res, next) => {
   const { token } = req.cookies;
-  console.log("inside express");
+
+  console.log("in express middle ware");
+
   if (token) {
-    console.log("there is token");
+    console.log("in token");
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the user id onto the req
     req.userId = userId;
@@ -37,12 +39,11 @@ server.express.use((req, res, next) => {
 server.start(
   // {
   //   cors: {
-  //     credentials: false,
-  //     // origin: process.env.FRONTEND_URL,
-  //     origin: "*",
+  //     credentials: true,
+  //     origin: process.env.FRONTEND_URL,
   //   },
   // },
   (deets) => {
-    // console.log(`Server is now running on http://localhost:${deets.port}`);
+    console.log(`Server is now running on http://localhost:${deets.port}`);
   }
 );
