@@ -38,7 +38,7 @@ server.start(
     cors: {
       credentials: true,
       // origin: process.env.FRONTEND_URL,
-      origin: `https://jira-client-prod.herokuapp.com/`,
+      origin: "*",
     },
   },
   (deets) => {
