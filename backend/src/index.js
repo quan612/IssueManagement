@@ -39,7 +39,7 @@ server.express.use((req, res, next) => {
 server.start(
   {
     cors: {
-      // credentials: true,
+      credentials: true,
       origin: [process.env.FRONTEND_URL, `http://localhost:3000`],
     },
   },
