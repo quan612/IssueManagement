@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { withPasswordReset } from "shared/HOC";
 
-import { Formik, Form, useFormik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 
 import { KeyCodes } from "shared/constants/keyCodes";
@@ -50,7 +50,7 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
       onSubmit={async (values, { setErrors }) => {
         const result = await onResetPassword(values);
         // add notifcation that password reset successfully
-        if (result) setTimeout(history.push("/signin"), 3000);
+        if (result) setTimeout(history.push("/signin"), 2000);
       }}
       validateOnBlur={false}
       validateOnChange={false}
@@ -70,7 +70,7 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
               />
 
               <FormikInput
-                placeholder="Password"
+                placeholder="New Password"
                 type="password"
                 name="password"
                 onChange={(event) => handleOnChange(event, formik)}
@@ -85,11 +85,11 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
                 onKeyDown={(event) => handleKeyDown(event, formik)}
               />
 
-              <div className="mt-5">
+              <div className="mt-3">
                 <Button
                   type="submit"
                   isWorking={loading}
-                  variant="info"
+                  variant="primary"
                   onClick={() => {}}
                   width="100%"
                 >

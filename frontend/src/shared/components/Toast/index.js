@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { Container, ToastItem, ToastMessage, transitionStyle } from "./styles";

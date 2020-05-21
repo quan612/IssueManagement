@@ -1,7 +1,8 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { withSignUp } from "shared/HOC";
 
-import { Formik, Form, useFormik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 
 import { KeyCodes } from "shared/constants/keyCodes";
@@ -12,7 +13,7 @@ import { PageContainer, Panel, FormWrapper, Title } from "./styles";
 import { ErrorMessage } from "shared/components/ErrorMessage";
 
 const Signup = ({ loading, error, onSignUp, ...props }) => {
-  const { history } = props;
+  let history = useHistory();
 
   const initialValues = {
     email: "",
@@ -48,8 +49,9 @@ const Signup = ({ loading, error, onSignUp, ...props }) => {
       validationSchema={validationSchema}
       onSubmit={async (values, { setErrors }) => {
         const result = await onSignUp(values);
-        // ISSUE here
-        if (result) history.push("/projects");
+        if (result) {
+          setTimeout(history.push("/signin"), 2000);
+        }
       }}
       validateOnBlur={false}
       validateOnChange={false}
@@ -86,11 +88,11 @@ const Signup = ({ loading, error, onSignUp, ...props }) => {
                 onKeyDown={(event) => handleKeyDown(event, formik)}
               />
 
-              <div className="btn-wrapper text-center mt-5">
+              <div className="text-center mt-3">
                 <Button
                   type="submit"
                   isWorking={loading}
-                  variant="info"
+                  variant="primary"
                   onClick={() => {}}
                   width="100%"
                 >

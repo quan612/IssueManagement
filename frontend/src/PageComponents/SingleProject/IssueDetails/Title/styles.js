@@ -14,6 +14,12 @@ export const Title = styled.div`
   border: 1px solid transparent;
   border-radius: 1rem;
 
+  white-space: pre-wrap; /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -pre-wrap; /* Opera <7 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
+
   &:hover {
     cursor: pointer;
     border: 1px solid ${(props) => props.theme.colors.primary};

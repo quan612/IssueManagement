@@ -88,16 +88,6 @@ const Mutation = {
       info
     );
 
-    // create a jwt for this user
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-
-    //set the jwt as a cookie on the response
-    ctx.response.cookie("token", token, {
-      httpOnly: true,
-      // secure: false,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // cookie for 7 days
-    });
-
     // return the user
     return user;
   },

@@ -1,15 +1,14 @@
 import React, { useRef } from "react";
 import { Input } from "shared/components/Input";
-import { UtilContainer, ItemContainer } from "./styles";
 import { debounce } from "lodash";
 
 const Filter = ({ onFilter }) => {
   const searchRef = useRef();
 
-  const handleOnReset = () => {
-    onFilter({});
-    searchRef.current.value = "";
-  };
+  // const handleOnReset = () => {
+  //   onFilter({});
+  //   searchRef.current.value = "";
+  // };
 
   const handleOnFilter = debounce((val) => {
     onFilter(val);

@@ -7,7 +7,7 @@ export const IssueContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: 90px;
+  height: 95px;
   width: auto;
 
   background: ${(props) =>
@@ -25,10 +25,15 @@ export const IssueContainer = styled.div`
       : ""}
 `;
 
-export const IssueTitle = styled.section`
+export const IssueTitle = styled.p`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${(props) => (props.theme ? props.theme.card.title : "white")};
   font-weight: 600;
-  overflow: hidden;
+  word-wrap: break-word;
 `;
 
 export const IssueDetails = styled.div`

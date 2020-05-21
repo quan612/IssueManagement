@@ -38,14 +38,12 @@ const BoardFilters = ({ onFilter, users }) => {
         />
 
         <div>
-          {(filter.title || filter.assignee) && (
-            <label
-              className="text-white font-bold cursor-pointer"
-              onClick={handleOnReset}
-            >
-              Clear
-            </label>
-          )}
+          <label
+            className="text-white font-bold cursor-pointer hover:text-blue-500"
+            onClick={handleOnReset}
+          >
+            Clear filter
+          </label>
         </div>
       </div>
     </>

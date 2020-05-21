@@ -9,6 +9,7 @@ import { KeyCodes } from "shared/constants/keyCodes";
 import { Button } from "shared/components/Button";
 import { ButtonWrapper } from "shared/components/styles";
 import UserAvatar from "shared/components/Avatar";
+import { ErrorMessage } from "shared/components/ErrorMessage";
 
 const User = ({ authentication, onUpdateUser, updating }) => {
   const [isEdit, setEdit] = useState(false);
@@ -100,11 +101,11 @@ const UserEdit = ({
   submitting,
 }) => {
   const [updateUser, setUser] = useState(user);
-  const [inputError, setError] = useState({});
+  const [inputError, setError] = useState("");
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    if (name === "name" && value !== "") setError({});
+    if (name === "name" && value !== "") setError("");
     setUser((prev) => {
       return { ...prev, [name]: value };
     });
@@ -112,7 +113,7 @@ const UserEdit = ({
 
   const handleOnSubmit = async () => {
     if (updateUser.name === "") {
-      setError({ message: "Name cannot be null" });
+      setError("Name cannot be null");
       return;
     }
 
@@ -134,6 +135,8 @@ const UserEdit = ({
           }}
         />
       </Section>
+      {inputError && <ErrorMessage error={inputError} />}
+
       <Section title="Permission">
         {user.permissions.map((permission, index) => (
           <span key={index}>{permission}</span>
@@ -145,9 +148,10 @@ const UserEdit = ({
         name="file"
         placeholder="Upload Avatar"
         onChange={handleUploadAvatar}
+        className="mt-2"
       />
 
-      <ButtonWrapper>
+      <ButtonWrapper className="mt-2">
         <Button
           disable={submitting}
           isWorking={submitting}

@@ -1,10 +1,6 @@
 import React, { Fragment } from "react";
 import { ApolloProvider } from "@apollo/react-hooks";
-
 import { ThemeProvider } from "styled-components";
-import NormalizeStyles from "./NormalizeStyles";
-import BaseStyles from "./BaseStyles";
-import theme from "shared/themes/dark";
 
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes";
@@ -12,10 +8,13 @@ import Routes from "./routes";
 import ApolloClient from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import resolvers from "./clientResolvers";
+
+import NormalizeStyles from "./NormalizeStyles";
+import BaseStyles from "./BaseStyles";
+import theme from "shared/themes/dark";
 
 import { devEndpoint, prodEndpoint } from "./config";
-
-import resolvers from "./clientResolvers";
 
 const cache = new InMemoryCache({
   cacheRedirects: {

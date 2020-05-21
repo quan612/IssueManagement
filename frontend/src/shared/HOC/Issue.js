@@ -73,9 +73,11 @@ export const withSingleIssueQuery = (BaseComponent) => ({ ...props }) => {
   const match = useRouteMatch();
   const { issueId } = match.params;
 
-  const { data, loading, error } = useQuery(SINGLE_ISSUE_QUERY, {
+  const { data, loading, error, networkStatus } = useQuery(SINGLE_ISSUE_QUERY, {
     variables: { id: issueId },
   });
+
+  console.log("networkStatus", networkStatus);
 
   return (
     <BaseComponent

@@ -29,9 +29,7 @@ export const FormikInput = ({ label, ...props }) => {
   return (
     <Section title={label}>
       <Input {...field} {...props} invalid={meta.error} ref={ref} />
-      {meta.touched && meta.error ? (
-        <ErrorMessage>{meta.error}</ErrorMessage>
-      ) : null}
+      {meta.touched && meta.error ? <ErrorMessage error={meta.error} /> : null}
     </Section>
   );
 };

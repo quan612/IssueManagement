@@ -1,7 +1,7 @@
 import React from "react";
 import { withIssueLogsQuery } from "shared/HOC/Issue";
 
-import UserAvartar from "shared/components/Avatar";
+import UserAvatar from "shared/components/Avatar";
 import { Section } from "shared/components/Section";
 import { LogWrapper, LogItemWrapper } from "./styles";
 import {
@@ -24,7 +24,6 @@ const TrackingActivity = ({ issue, logsOnIssue = [], loading }) => {
           return (
             <LogItemWrapper key={log.id}>
               {handleRenderTracking(log, issue)}
-              {/* <DatesContainer>{parseDateAndTime(log.logDate)}</DatesContainer> */}
             </LogItemWrapper>
           );
         })}
@@ -37,7 +36,7 @@ export default withIssueLogsQuery(TrackingActivity);
 
 export const TrackingUser = ({ user }) => {
   if (!user) user = { name: "Unassigned", id: null, avatar: null };
-  return <UserAvartar className="mr-1" user={user} src={user.avatar} />;
+  return <UserAvatar className="mr-1" user={user} src={user.avatar} />;
 };
 
 const handleRenderTracking = (log, issue) => {
@@ -100,14 +99,12 @@ const handleRenderTracking = (log, issue) => {
 
     case "IssueComment":
       return (
-        <>
-          <SingleComment
-            commentOwner={user}
-            comment={
-              issue.comments.filter((comment) => comment.id === log.newValue)[0]
-            }
-          />
-        </>
+        <SingleComment
+          commentOwner={user}
+          comment={
+            issue.comments.filter((comment) => comment.id === log.newValue)[0]
+          }
+        />
       );
 
     default:

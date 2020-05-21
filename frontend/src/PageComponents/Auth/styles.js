@@ -6,7 +6,12 @@ export const PageContainer = styled.div`
 `;
 
 export const Panel = styled.div`
-  ${tw`w-full md:w-1/2 lg:w-4/12 px-3 shadow-lg rounded-lg bg-gray-300 border-0`}
+  ${tw`w-full md:w-1/2 lg:w-4/12 px-3 shadow-lg rounded-lg`}
+
+  background:${(props) => props.theme.card.background};
+  @media only screen and (min-width: 1280px) {
+    transform: scale(1.4);
+  }
 `;
 
 export const FormWrapper = styled.form`
@@ -14,5 +19,10 @@ export const FormWrapper = styled.form`
 `;
 
 export const Title = styled.div`
-  ${tw`text-gray-600 text-2xl font-bold text-center`}
+  ${tw` text-2xl font-bold text-center`}
+  color: ${(props) => props.theme.colors.textPrimary};
+`;
+
+export const ResetPassword = styled.a`
+  ${tw` cursor-pointer text-blue-600 hover:text-blue-400 font-bold`}
 `;

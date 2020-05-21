@@ -36,7 +36,7 @@ export default {
 
   list: {
     background: "#212E3C",
-    title: "#0AC6E0",
+    title: "#E3FBFF", //#0AC6E0
     subtitle: "#5A828A",
   },
 

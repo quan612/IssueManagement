@@ -12,6 +12,8 @@
   "cSpell.words": [
     "formik",
     "inprogress",
+    "maxlength",
+    "novalidatedform",
     "queries",
     "refetch",
     "resetpassword",

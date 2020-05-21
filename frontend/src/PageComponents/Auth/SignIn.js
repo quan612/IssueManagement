@@ -6,7 +6,13 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import { FormikInput } from "shared/components/FormikPrimitiveComponent";
-import { PageContainer, Panel, FormWrapper, Title } from "./styles";
+import {
+  PageContainer,
+  Panel,
+  FormWrapper,
+  Title,
+  ResetPassword,
+} from "./styles";
 import { ErrorMessage } from "shared/components/ErrorMessage";
 
 import { KeyCodes } from "shared/constants/keyCodes";
@@ -22,10 +28,10 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .required(" Email is required!")
-      .email("Please use a valid email"),
+      .required("Email is required!")
+      .email("Please use a valid email!"),
 
-    password: Yup.string().required(" Password is required!"),
+    password: Yup.string().required("Password is required!"),
   });
 
   const handleOnChange = (e, formik) => {
@@ -37,6 +43,8 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
   const handleKeyDown = (event, formik) => {
     if (event.keyCode === KeyCodes.ENTER) formik.handleSubmit();
   };
+
+  console.log("error", error);
 
   if (authentication) {
     return <Redirect to="/projects" />;
@@ -73,11 +81,11 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
                   onKeyDown={(event) => handleKeyDown(event, formik)}
                 />
 
-                <div className="btn-wrapper text-center mt-5">
+                <div className="text-center my-3">
                   <Button
                     type="submit"
                     isWorking={loading}
-                    variant="info"
+                    variant="primary"
                     onClick={() => {}}
                     width="100%"
                   >
@@ -86,16 +94,15 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
                 </div>
 
                 <div className="reset-password">
-                  <a
+                  <ResetPassword
                     href="/#"
-                    className="cursor-pointer text-blue-600 hover:text-blue-800 font-bold"
                     onClick={(e) => {
                       e.preventDefault();
                       history.push("/reset");
                     }}
                   >
                     Reset Password
-                  </a>
+                  </ResetPassword>
                 </div>
 
                 {error && (

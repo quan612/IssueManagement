@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 
-import UserAvartar from "shared/components/Avatar";
+import UserAvatar from "shared/components/Avatar";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 
@@ -20,17 +20,16 @@ const BoardIssue = ({ issue, index }) => {
             {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
           >
-            <IssueTitle className="issue-title overflow-hidden">
-              {issue.title}
-            </IssueTitle>
+            <IssueTitle>{issue.title}</IssueTitle>
             <IssueDetails>
               <IssueTypeIcon type={issue.type} />
               <IssuePriorityIcon priority={issue.priority} />
               <div className="ml-auto ">
                 {issue.assignee && (
-                  <UserAvartar
+                  <UserAvatar
                     user={issue.assignee}
                     src={issue.assignee.avatar}
+                    size={30}
                   />
                 )}
               </div>

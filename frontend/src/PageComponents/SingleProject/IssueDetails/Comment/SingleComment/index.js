@@ -9,7 +9,6 @@ import {
   DatesContainer,
   EditButton,
   CommentContainer,
-  Comment,
 } from "./styles";
 
 import { TrackingUser } from "../../TrackingActivity";
@@ -76,9 +75,7 @@ const SingleComment = ({
         </EditContainer>
       ) : (
         <Content>
-          <CommentContainer>
-            <Comment>{comment.text}</Comment>
-          </CommentContainer>
+          <CommentContainer>{comment.text}</CommentContainer>
           <DatesContainer>
             <span className="mr-2">
               Added on {toLocalDateTime(comment.createdAt)}

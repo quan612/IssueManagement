@@ -9,8 +9,6 @@ const ProjectList = ({ projects }) => {
     leave: { opacity: 0, transform: "translate3d(-80%,0,0)" },
   });
 
-  console.log("transitions", transitions);
-
   return (
     <>
       {transitions.map(({ item, props, key }) => (

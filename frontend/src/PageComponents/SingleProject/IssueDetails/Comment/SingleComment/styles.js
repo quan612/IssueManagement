@@ -14,7 +14,8 @@ export const CommentContainer = styled.div`
   display: inline-block;
   /* width: 98%; */
   min-width: 75px;
-  background: #b7d6f8;
+  background: ${(props) => props.theme.list.background};
+
   margin: 5px;
   padding: 3px 10px 3px 10px;
   border-radius: 10px;
@@ -24,10 +25,6 @@ export const CommentContainer = styled.div`
   white-space: -pre-wrap; /* Opera <7 */
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* IE */
-`;
-
-export const Comment = styled.p`
-  /* margin-top: -7px; */
 `;
 
 export const EditContainer = styled.div`
