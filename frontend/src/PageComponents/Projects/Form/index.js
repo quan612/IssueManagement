@@ -11,9 +11,9 @@ import { Section } from "shared/components/Section";
 import { Input } from "shared/components/Input";
 import { KeyCodes } from "shared/constants/keyCodes";
 import { Button } from "shared/components/Button";
-import { ButtonWrapper } from "shared/components/Button/styles";
+import { ButtonWrapper } from "shared/components/styles";
 import { ErrorMessage } from "shared/components/ErrorMessage";
-import { ItemFormContainer } from "./styles";
+import { FormContainer } from "./styles";
 
 const ProjectForm = ({
   data = [],
@@ -71,12 +71,11 @@ const ProjectForm = ({
   };
 
   return (
-    <ItemFormContainer>
+    <FormContainer>
       <Section title="Project Name">
         <Input
           type="text"
           name="name"
-          placeholder="Project Name"
           value={project.name}
           onChange={handleOnChange}
           onKeyDown={(event) => {
@@ -91,7 +90,6 @@ const ProjectForm = ({
         <Input
           type="text"
           name="description"
-          placeholder="Project Description"
           value={project.description}
           onChange={handleOnChange}
           onKeyDown={(event) => {
@@ -104,16 +102,16 @@ const ProjectForm = ({
       <ButtonWrapper>
         <Button
           isWorking={loading || onCreating}
-          variant="info"
+          variant="primary-outline"
           onClick={handleOnSubmit}
         >
           Submit
         </Button>
-        <Button disabled={loading} variant="secondary" onClick={onClose}>
+        <Button disabled={loading} variant="info" onClick={onClose}>
           Cancel
         </Button>
       </ButtonWrapper>
-    </ItemFormContainer>
+    </FormContainer>
   );
 };
 

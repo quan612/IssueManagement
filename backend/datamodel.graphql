@@ -25,6 +25,8 @@ enum IssuePriority {
   Lowest
 }
 
+
+
 type Project {
   id: ID! @id
   name: String! 
@@ -45,6 +47,8 @@ type User {
   comment: [Comment!]! @relation(name: "CommentByUser", onDelete: CASCADE)
   avatar: String
 }
+
+
 
 type Issue {
   id: ID! @id

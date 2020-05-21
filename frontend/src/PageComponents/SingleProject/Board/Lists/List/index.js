@@ -3,7 +3,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 import { IssueStatusDescription } from "shared/constants/issues";
 import Issue from "./Issue";
-import { SingeListContainer } from "./styles";
+import { ListContainer, ListTitle, ListSubTitle } from "./styles";
 
 const BoardList = ({ status, issues }) => {
   const filteredIssuesWithStatus = getIssuesWithStatus(issues, status);
@@ -14,24 +14,18 @@ const BoardList = ({ status, issues }) => {
   return (
     <Droppable droppableId={status}>
       {(provided, snapshot) => (
-        <SingeListContainer
+        <ListContainer
           ref={provided.innerRef}
           {...provided.droppableProps}
+          data-testid={`board-list:${status}`}
         >
-          <div className="list-title text-gray-600 font-bold">
-            {IssueStatusDescription[status]}
-          </div>
-
-          <div
-            className="issue-list h-100"
-            data-testid={`board-list:${status}`}
-          >
-            {filteredIssuesWithPosition.map((issue, index) => {
-              return <Issue key={issue.id} issue={issue} index={index} />;
-            })}
-            {provided.placeholder}
-          </div>
-        </SingeListContainer>
+          <ListTitle>{IssueStatusDescription[status]}</ListTitle>
+          <ListSubTitle>0 cards</ListSubTitle>
+          {filteredIssuesWithPosition.map((issue, index) => {
+            return <Issue key={issue.id} issue={issue} index={index} />;
+          })}
+          {provided.placeholder}
+        </ListContainer>
       )}
     </Droppable>
   );

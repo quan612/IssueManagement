@@ -1,49 +1,57 @@
 import gql from "graphql-tag";
 
-export const PROJECTS_QUERY = gql`
-  query ProjectsPagination($skip: Int = 0, $first: Int = 10) {
-    getProjects(skip: $skip, first: $first) {
-      id
-      name
-      description
-    }
-    # meta: projectsConnection(where: $where) {
-    #   aggregate {
-    #     count
-    #   }
-    # }
-    # data: projects(skip: $skip, first: $first) {
-    #   id
-    #   name
-    #   description
-    # }
+const PROJECT_FRAGMENT = gql`
+  fragment projectFragment on Project {
+    id
+    name
+    description
   }
 `;
 
+export const PROJECTS_QUERY = gql`
+  query ProjectsPagination(
+    $filter: String = ""
+    $skip: Int = 0
+    $first: Int = 10
+  ) {
+    getProjects(filter: $filter, skip: $skip, first: $first) {
+      ...projectFragment
+    }
+  }
+  ${PROJECT_FRAGMENT}
+`;
+
+export const PROJECTS = gql`
+  query Projects {
+    projects {
+      ...projectFragment
+    }
+  }
+  ${PROJECT_FRAGMENT}
+`;
+
 export const PROJECTS_COUNT = gql`
-  query PROJECTS_COUNT {
-    projectsCount
+  query PROJECTS_COUNT($filter: String = "") {
+    projectsCount(filter: $filter)
   }
 `;
 
 export const SINGLE_PROJECT_QUERY = gql`
   query SINGLE_PROJECT_QUERY($id: ID!) {
     project(id: $id) {
-      id
-      name
-      description
+      ...projectFragment
     }
   }
+  ${PROJECT_FRAGMENT}
 `;
 
 export const ADD_PROJECT_MUTATION = gql`
   mutation ADD_PROJECT_MUTATION($name: String!, $description: String!) {
     createProject(name: $name, description: $description) {
-      id
-      name
-      description
+      ...projectFragment
     }
   }
+  ${PROJECT_FRAGMENT}
 `;
 
 export const UPDATE_PROJECT_MUTATION = gql`
@@ -53,11 +61,10 @@ export const UPDATE_PROJECT_MUTATION = gql`
     $description: String
   ) {
     updateProject(id: $id, name: $name, description: $description) {
-      id
-      name
-      description
+      ...projectFragment
     }
   }
+  ${PROJECT_FRAGMENT}
 `;
 
 export const DELETE_PROJECT_MUTATION = gql`

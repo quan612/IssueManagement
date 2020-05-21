@@ -1,4 +1,9 @@
 #import * from './generated/prisma.graphql'
+input UserInput {
+  id: ID  
+  name: String
+  avatar: String  
+}
 
 type SuccessMessage {
   message: String
@@ -14,14 +19,15 @@ type Query {
   logsOnIssue(issueId: ID!): [Log!]!
   singleComment(id: ID!): Comment!
   singleUser(id: ID!): User!
-  getProjects(skip:Int!, first:Int!): [Project]!
-  projectsCount: Int!
+  getProjects(filter:String, skip:Int!, first:Int!): [Project!]!
+  projectsCount(filter:String): Int!
 }
 
 type Mutation {
   createProject(name: String!, description: String): Project!
   deleteProject(id: ID!): Project
   updateProject(id: ID!, name: String!, description: String): Project!
+
   signup(email: String!, name: String!, password: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
@@ -55,6 +61,7 @@ type Mutation {
     listPosition: Float
     actionType: String
   ): Issue!
+  
 
   createComment(text: String!, issue: ID!, actionType: String): Comment!
   updateComment(id: ID!, text: String): Comment!

@@ -32,7 +32,7 @@ const Project = ({ project, users }) => {
       <Heading>Project: {project.name}</Heading>
 
       <ButtonWrapper>
-        <Button variant="primary" onClick={() => setModalOpen(true)}>
+        <Button variant="primary-outline" onClick={() => setModalOpen(true)}>
           Create Issue
         </Button>
       </ButtonWrapper>

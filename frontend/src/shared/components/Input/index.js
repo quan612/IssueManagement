@@ -1,6 +1,8 @@
 import React, { forwardRef, useEffect } from "react";
 import { InputContainer, StyledInput } from "./styles";
 
+//todo: add input count
+
 export const Input = forwardRef(
   ({ icon, onChange, focus = false, invalid, ...props }, ref) => {
     useEffect(() => {

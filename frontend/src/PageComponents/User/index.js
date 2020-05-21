@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { withUserUpdate } from "shared/HOC";
 
-import { PageContainer, Panel, FormWrapper, Title } from "./styles";
+import { PageContainer, Wrapper, Panel, UserDetailsWrapper } from "./styles";
 import { Section } from "shared/components/Section";
 
 import { Input } from "shared/components/Input";
 import { KeyCodes } from "shared/constants/keyCodes";
 import { Button } from "shared/components/Button";
-import { ButtonWrapper } from "shared/components/Button/styles";
+import { ButtonWrapper } from "shared/components/styles";
 import UserAvatar from "shared/components/Avatar";
 
-const Users = ({ authentication, onUpdateUser, updating, error }) => {
+const User = ({ authentication, onUpdateUser, updating }) => {
   const [isEdit, setEdit] = useState(false);
   const [image, setImg] = useState(authentication.avatar);
   const [userData, setUserData] = useState(authentication);
@@ -36,55 +36,44 @@ const Users = ({ authentication, onUpdateUser, updating, error }) => {
   const handleUpdateUserInfo = async (user) => {
     const newUserInfo = { ...user, avatar: image };
     setUserData(newUserInfo);
-    const res = await onUpdateUser(newUserInfo);
+    await onUpdateUser(newUserInfo);
   };
 
   return (
     <PageContainer>
-      <div
-        className="flex flex-col "
-        style={{
-          top: "100px",
-          height: "300px",
-          width: "500px",
-          position: "relative",
-        }}
-      >
-        <div className=" flex flex-col min-w-0 break-words bg-white w-full h-full mb-6 shadow-xl rounded-lg bg-gray-800">
-          <div className="px-6">
-            <div className="flex justify-center">
-              <UserAvatar
-                className=" border-none absolute -ml-6 -mt-8"
-                user={userData}
-                size={125}
-                src={image}
-              />
-            </div>
-            <div className="mt-16">
-              {isEdit ? (
-                <UserEdit
-                  user={userData}
-                  onSubmit={handleUpdateUserInfo}
-                  onCancel={() => {
-                    setImg(userData.avatar);
-                    setEdit(false);
-                  }}
-                  handleUploadAvatar={handleUploadAvatar}
-                  submitting={updating}
-                />
-              ) : (
-                <UserDetails user={userData} onEdit={() => setEdit(true)} />
-              )}
-              <br />
-            </div>
+      <Wrapper>
+        <Panel>
+          <div className="flex justify-center">
+            <UserAvatar
+              className="-mt-24"
+              user={userData}
+              size={200}
+              src={image}
+            />
           </div>
-        </div>
-      </div>
+          <UserDetailsWrapper>
+            {isEdit ? (
+              <UserEdit
+                user={userData}
+                onSubmit={handleUpdateUserInfo}
+                onCancel={() => {
+                  setImg(userData.avatar);
+                  setEdit(false);
+                }}
+                handleUploadAvatar={handleUploadAvatar}
+                submitting={updating}
+              />
+            ) : (
+              <UserDetails user={userData} onEdit={() => setEdit(true)} />
+            )}
+          </UserDetailsWrapper>
+        </Panel>
+      </Wrapper>
     </PageContainer>
   );
 };
 
-export default withUserUpdate(Users);
+export default withUserUpdate(User);
 
 const UserDetails = ({ user, onEdit }) => {
   return (
@@ -96,12 +85,9 @@ const UserDetails = ({ user, onEdit }) => {
           <span key={index}>{permission}</span>
         ))}
       </Section>
-      <label
-        className="cursor-pointer text-blue-600 hover:text-blue-800 font-bold"
-        onClick={onEdit}
-      >
+      <Button variant="primary-outline" onClick={onEdit} className="mt-2">
         Edit
-      </label>
+      </Button>
     </>
   );
 };

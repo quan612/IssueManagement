@@ -32,13 +32,18 @@ export const IssueDetailsDescription = ({ issue, updateIssue, isWorking }) => {
             }}
           />
           <ButtonWrapper>
-            <Button isWorking={isWorking} variant="info" onClick={handleUpdate}>
+            <Button
+              isWorking={isWorking}
+              disable={isWorking}
+              variant="primary-outline"
+              onClick={handleUpdate}
+            >
               Save
             </Button>
 
             <Button
-              isWorking={isWorking}
-              variant="secondary"
+              disable={isWorking}
+              variant="info"
               onClick={() => setEditing(false)}
             >
               Cancel

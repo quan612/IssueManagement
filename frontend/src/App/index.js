@@ -1,16 +1,18 @@
 import React, { Fragment } from "react";
-import { ApolloProvider } from "react-apollo";
-// import GlobalStyles from "./components/styles/Global";
-import styled, { ThemeProvider } from "styled-components";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+import { ThemeProvider } from "styled-components";
 import NormalizeStyles from "./NormalizeStyles";
 import BaseStyles from "./BaseStyles";
+import theme from "shared/themes/dark";
 
 import { BrowserRouter } from "react-router-dom";
+import Routes from "./routes";
 
 import ApolloClient from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import Routes from "./routes";
+
 import { devEndpoint, prodEndpoint } from "./config";
 
 import resolvers from "./clientResolvers";
@@ -27,8 +29,8 @@ const cache = new InMemoryCache({
 const link = createHttpLink({
   credentials: "include",
   // uri: "http://localhost:5555/",
-  uri: `https://jira-yoga-clone.herokuapp.com`,
-  // uri: process.env.NODE_ENV === "development" ? devEndpoint : prodEndpoint,
+  // uri: `https://jira-yoga-clone.herokuapp.com`,
+  uri: process.env.NODE_ENV === "development" ? devEndpoint : prodEndpoint,
 });
 
 const client = new ApolloClient({
@@ -49,10 +51,12 @@ function App() {
     <ApolloProvider client={client}>
       <Fragment>
         <NormalizeStyles />
-        <BaseStyles />
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <BaseStyles />
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </ThemeProvider>
       </Fragment>
     </ApolloProvider>
   );

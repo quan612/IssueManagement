@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { useLazyQuery, useQuery, useMutation } from "react-apollo";
+import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useRouteMatch } from "react-router-dom";
 
 import {
@@ -98,11 +98,12 @@ export const withIssueCreate = (BaseComponent) => ({ ...props }) => {
         variables: { projectId: projectId, filter: {} },
       });
 
-      data.issues = data.issues.push(createIssue);
-
       cache.writeQuery({
         query: PROJECT_ISSUES_QUERY,
-        data,
+        data: {
+          issues: [...data.issues, createIssue],
+        },
+        variables: { projectId: projectId, filter: {} },
       });
     },
   });
@@ -119,6 +120,7 @@ export const withIssueCreate = (BaseComponent) => ({ ...props }) => {
 
 export const withIssueUpdate = (BaseComponent) => ({ ...props }) => {
   const [updateIssue, { loading, error }] = useMutation(UPDATE_ISSUE_MUTATION);
+
   return (
     <BaseComponent
       {...props}

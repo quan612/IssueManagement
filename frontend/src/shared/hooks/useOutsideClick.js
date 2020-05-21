@@ -6,7 +6,6 @@ export const useOutsideClick = (ref, outsideRef = null, callback) => {
      * Execute callback function clicked on outside of element
      */
     function handleClickOutside(event) {
-      console.log("outsideRef", outsideRef);
       if (outsideRef && outsideRef.current)
         if (
           ref.current &&
@@ -17,7 +16,6 @@ export const useOutsideClick = (ref, outsideRef = null, callback) => {
         }
 
       if (outsideRef === null) {
-        console.log("indeie");
         if (ref.current && !ref.current.contains(event.target)) {
           callback();
         }

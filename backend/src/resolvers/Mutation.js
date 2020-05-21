@@ -292,7 +292,6 @@ const Mutation = {
   async updateIssue(parent, args, ctx, info) {
     //check if user is log in
     //check if the project existed
-    // const project = await ctx.prisma.project(id: args.)
 
     const {
       id,
@@ -308,13 +307,9 @@ const Mutation = {
       actionType,
     } = args;
 
-    // console.log("args", args);
-
     let currentIssue = await ctx.prisma.issue({ id }, info);
     let currentAssignee = await ctx.prisma.issue({ id }, info).assignee();
     currentIssue.assignee = currentAssignee;
-
-    console.log("acurrentIssue.assigneegs", currentIssue.assignee);
 
     const issueFragment = {
       title,
@@ -325,19 +320,25 @@ const Mutation = {
       estimate,
       timeSpent,
       listPosition,
-      assignee,
     };
 
     let updateIssue;
-    if (assignee === null) {
+
+    if (actionType === "IssueAssigneeChange") {
+      let assigneeCondition = assignee
+        ? {
+            connect: {
+              id: assignee,
+            },
+          }
+        : { disconnect: true };
+
       updateIssue = await ctx.prisma.updateIssue(
         {
           where: { id },
           data: {
             ...issueFragment,
-            assignee: {
-              disconnect: currentAssignee === null ? false : true,
-            },
+            assignee: assigneeCondition,
           },
         },
         info
@@ -348,11 +349,6 @@ const Mutation = {
           where: { id },
           data: {
             ...issueFragment,
-            assignee: {
-              connect: {
-                id: assignee,
-              },
-            },
           },
         },
         info
@@ -362,12 +358,8 @@ const Mutation = {
     //due to relation, assignee is not available in updateIssue, we must assign it for log
     updateIssue.assignee = await ctx.prisma.issue({ id }, info).assignee();
 
-    // console.log("update issue", updateIssue);
-
     // update Log table
-    let log = await handleCreateLog(ctx, actionType, currentIssue, updateIssue);
-
-    // console.log("log test", log);
+    await handleCreateLog(ctx, actionType, currentIssue, updateIssue);
 
     return updateIssue;
   },
@@ -409,7 +401,6 @@ const Mutation = {
   async updateComment(parent, args, ctx, info) {
     //check if user is log in
     //check if the project existed
-    // const project = await ctx.prisma.project(id: args.)
     //check if current issue existed
 
     const updatedComment = await ctx.prisma.updateComment(

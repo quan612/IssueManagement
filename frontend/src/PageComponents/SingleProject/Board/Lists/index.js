@@ -68,12 +68,21 @@ const BoardLists = ({
       listPosition = (prevIssue.listPosition + nextIssue.listPosition) / 2;
     }
 
+    const currentAssignee = currentIssue.assignee
+      ? currentIssue.assignee.id
+      : null;
+
     await updateIssueAPI({
       variables: {
         ...currentIssue,
+        assignee: currentAssignee,
         listPosition: listPosition,
         status: destination.droppableId,
-        actionType: "IssueStatusChange",
+        // actionType: "IssueStatusChange",
+        actionType:
+          destination.droppableId !== currentIssue.status
+            ? "IssueStatusChange"
+            : "MovingWithinList",
       },
 
       optimisticResponse: {

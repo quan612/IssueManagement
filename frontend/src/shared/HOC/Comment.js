@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation, useQuery } from "react-apollo";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { useRouteMatch } from "react-router-dom";
 
 import {
@@ -15,52 +15,69 @@ export const withCommentCreate = (BaseComponent) => ({ ...props }) => {
   const match = useRouteMatch();
   const { issueId } = match.params;
 
-  const [createComment, { loading, error }] = useMutation(
-    CREATE_COMMENT_MUTATION,
-    {
-      refetchQueries: [{ query: LOG_ISSUE_QUERY, variables: { issueId } }],
+  const [createComment, { loading }] = useMutation(CREATE_COMMENT_MUTATION, {
+    refetchQueries: [{ query: LOG_ISSUE_QUERY, variables: { issueId } }],
+    // need to update cache manually for this type of action
+    update: (cache, { data: { createComment } }) => {
+      const data = cache.readQuery({
+        query: SINGLE_ISSUE_QUERY,
+        variables: { id: issueId },
+      });
 
-      // need to update cache manually for this type of action
-      update: (cache, { data: { createComment } }) => {
-        // Read the data from our cache for this query.
-        const data = cache.readQuery({
-          query: SINGLE_ISSUE_QUERY,
-          variables: { id: issueId },
-        });
+      createComment.createdAt = new Date().toISOString();
+      createComment.updatedAt = null;
+      data.issue.comments = [...data.issue.comments, createComment];
 
-        createComment.createdAt = new Date().toISOString();
-        createComment.updatedAt = null;
-        data.issue.comments = [...data.issue.comments, createComment];
+      cache.writeQuery({
+        query: SINGLE_ISSUE_QUERY,
+        data,
+      });
+    },
+  });
 
-        cache.writeQuery({
-          query: SINGLE_ISSUE_QUERY,
-          data,
-        });
+  const handleCreateComment = async (text) => {
+    await createComment({
+      variables: {
+        text,
+        issue: issueId,
+        createdAt: new Date(),
+        actionType: "IssueComment",
       },
-    }
-  );
+    });
+  };
 
   return (
     <BaseComponent
       {...props}
-      loading={loading}
-      error={error}
-      createComment={createComment}
+      creatingComment={loading}
+      createComment={(text) => handleCreateComment(text)}
     />
   );
 };
 
 export const withCommentUpdate = (BaseComponent) => ({ ...props }) => {
-  const [updateComment, { loading, error }] = useMutation(
-    UPDATE_COMMENT_MUTATION
-  );
+  const [updateComment, { loading }] = useMutation(UPDATE_COMMENT_MUTATION);
+
+  const handleUpdateComment = async (comment, text) => {
+    await updateComment({
+      variables: { id: comment.id, text },
+      optimisticResponse: {
+        __typeName: "Mutation",
+        updateComment: {
+          __typeName: "Comment",
+          ...comment,
+          text,
+          updatedAt: new Date().toISOString(),
+        },
+      },
+    });
+  };
 
   return (
     <BaseComponent
       {...props}
       loading={loading}
-      error={error}
-      updateComment={updateComment}
+      updateComment={(comment, text) => handleUpdateComment(comment, text)}
     />
   );
 };

@@ -1,9 +1,13 @@
 import React from "react";
-import { useMutation } from "react-apollo";
-import { withSingleIssueQuery, withCurrentUser } from "shared/HOC";
+
+import {
+  withSingleIssueQuery,
+  withCurrentUser,
+  withIssueUpdate,
+} from "shared/HOC";
+
 import { flowRight } from "lodash";
 
-import { UPDATE_ISSUE_MUTATION } from "shared/GraphQL/Issue";
 import { LOG_ISSUE_QUERY } from "shared/GraphQL/Issue";
 
 import { IssueDetailsType } from "./Type";
@@ -24,50 +28,65 @@ import { FlexColContainer, FlexRowContainer, Left, Right } from "./styles";
 import ModelLoader from "shared/components/Loaders/ModalLoader";
 
 const IssueDetails = ({
-  closeModal,
+  currentLogInUser,
   users,
   issue,
   fetchingIssue,
-  fetchingIssueError,
-  currentLogInUser,
+  updatingIssue,
+  updateIssueAPI,
 }) => {
-  const [
-    updateIssue,
-    { loading: updateLoading, error: updateError },
-  ] = useMutation(UPDATE_ISSUE_MUTATION);
-
   const handleUpdate = async (updateFields) => {
-    const currentAssignee = issue.assignee ? issue.assignee.id : null;
-    const res = await updateIssue({
-      variables: { ...issue, assignee: currentAssignee, ...updateFields },
+    let assigneeId =
+      updateFields.actionType === "IssueAssigneeChange"
+        ? updateFields.assignee
+        : issue.assignee
+        ? issue.assignee.id
+        : null;
+
+    await updateIssueAPI({
+      variables: {
+        ...issue,
+        ...updateFields,
+        assignee: assigneeId,
+      },
       refetchQueries: [
         { query: LOG_ISSUE_QUERY, variables: { issueId: issue.id } },
       ],
       optimisticResponse: {
         __typeName: "Mutation",
         updateIssue: {
+          __typeName: "Issue",
           ...issue,
-          assignee: issue.assignee ? issue.assignee : null,
           ...updateFields,
+
+          /** Custom handle cache update
+           * if there is assignee, we must support a typeName for apollo to update the object
+           */
+          assignee: assigneeId
+            ? {
+                id: assigneeId,
+                __typename: "User",
+              }
+            : null,
         },
       },
     });
-    console.log("res", res);
   };
 
   if (fetchingIssue) return <ModelLoader />;
+
   if (issue) {
     return (
       <FlexColContainer>
         <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
-        {/* done */}
+
         <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
         <FlexRowContainer>
           <Left>
             <IssueDetailsDescription
               issue={issue}
               updateIssue={handleUpdate}
-              isWorking={updateLoading}
+              isWorking={updatingIssue}
             />
             <IssueDetailsComment
               currentLogInUser={currentLogInUser}
@@ -92,7 +111,10 @@ const IssueDetails = ({
       </FlexColContainer>
     );
   }
-  //  else return null;
 };
 
-export default flowRight(withCurrentUser, withSingleIssueQuery)(IssueDetails);
+export default flowRight(
+  withCurrentUser,
+  withSingleIssueQuery,
+  withIssueUpdate
+)(IssueDetails);

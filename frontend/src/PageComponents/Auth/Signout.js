@@ -1,10 +1,10 @@
 import React from "react";
-
-import { useMutation } from "react-apollo";
+import { useHistory } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { CURRENT_USER_QUERY } from "shared/GraphQL/User";
-
-import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import tw from "tailwind.macro";
 
 const SIGN_OUT_MUTATION = gql`
   mutation SIGN_OUT_MUTATION {
@@ -15,7 +15,7 @@ const SIGN_OUT_MUTATION = gql`
 `;
 
 const Signout = () => {
-  const [signout, { loading, error }] = useMutation(SIGN_OUT_MUTATION, {
+  const [signout] = useMutation(SIGN_OUT_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
@@ -24,19 +24,22 @@ const Signout = () => {
   const handleSignout = async (e) => {
     e.preventDefault();
     const result = await signout();
-    // ISSUE HERE
     if (result) history.push("/signin");
   };
 
-  return (
-    <a
-      href="/#"
-      className="no-underline text-indigo-600 border-b-2 border-transparent uppercase tracking-wide font-bold text-xs py-4 mr-8 hover:border-indigo-600"
-      onClick={handleSignout}
-    >
-      Sign Out
-    </a>
-  );
+  return <NavItem onClick={handleSignout}>Sign Out</NavItem>;
 };
 
 export default Signout;
+
+const NavItem = styled.a`
+${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold text-xl py-4 mr-8`}
+  color: ${(props) => props.theme.colors.textPrimary};
+  &.${(props) => props.activeClassName} {
+    border-bottom-color: ${(props) => props.theme.colors.textPrimary};
+  }
+
+  &:hover{
+    border-bottom-color: ${(props) => props.theme.colors.textPrimary};
+  }
+`;

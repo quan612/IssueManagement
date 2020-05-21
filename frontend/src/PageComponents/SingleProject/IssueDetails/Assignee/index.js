@@ -14,6 +14,8 @@ export const IssueDetailsAssignee = ({ issue, updateIssue, users }) => {
         items={userOptions}
         renderMenuOption={renderUsers}
         onChange={(userObj) => {
+          //when selecting the same assignee -> do not update
+          if (issue.assignee && userObj.id === issue.assignee.id) return;
           updateIssue({
             assignee: userObj.name !== "Unassigned" ? userObj.id : null,
             actionType: "IssueAssigneeChange",
@@ -32,7 +34,7 @@ const renderUsers = (userObj) => {
         {userObj.name !== "Unassigned" ? (
           <UserAvatar
             user={userObj}
-            size={25}
+            size={30}
             src={userObj.avatar}
             className="mr-2"
           />

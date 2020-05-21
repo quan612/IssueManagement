@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  SelectContainer,
-  SelectValueContainer,
-  MenuContainer,
-  MenuItemContainer,
-} from "./styles";
+import { SelectContainer, SelectItem, MenuContainer, MenuItem } from "./styles";
 
 export const Select = ({
   title,
@@ -40,7 +35,7 @@ export const Select = ({
 
   return (
     <SelectContainer ref={ref} variant={variant} width={width}>
-      <SelectValueContainer onClick={toggle}>
+      <SelectItem onClick={toggle}>
         {renderMenuOption(title)}
         {withArrow && (
           <FontAwesomeIcon
@@ -49,16 +44,16 @@ export const Select = ({
             size="1x"
           />
         )}
-      </SelectValueContainer>
+      </SelectItem>
       {isOpen && (
         <MenuContainer>
           {items.map((item) => (
-            <MenuItemContainer
+            <MenuItem
               key={item.id ? item.id : item}
               onClick={() => handleSelect(item)}
             >
               {renderMenuOption(item)}
-            </MenuItemContainer>
+            </MenuItem>
           ))}
         </MenuContainer>
       )}

@@ -1,6 +1,33 @@
 import styled from "styled-components";
 import tw from "tailwind.macro";
-import { statusColor, statusColorWithBorder } from "shared/utils/styles";
+import { IssueStatus } from "shared/constants/issues";
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  padding-top: 6px;
+  & > button {
+    margin-right: 6px;
+  }
+`;
+
+export const CardBackgroundStyled = styled.div`
+  background: ${(props) =>
+    props.theme ? props.theme.card.background : "white"};
+`;
+
+export const InputBackgroundStyled = styled.div`
+  background: ${(props) =>
+    props.theme.input ? props.theme.input.background : "white"};
+`;
+
+export const SelectBackgroundStyled = styled(InputBackgroundStyled)`
+  border: 1px solid #264a54;
+  &:hover,
+  :focus {
+    border-color: ${(props) => props.theme.colors.primary};
+    border-width: 1px;
+  }
+`;
 
 export const IconContainer = styled.div`
   margin-right: 5px;
@@ -14,17 +41,31 @@ export const FlexItemsWrapper = styled.div`
   ${tw`flex flex-wrap items-center`}
 `;
 
-export const StatusStyle = styled.div`
-  ${(props) => statusColor[props.status]}
-  ${tw`font-semibold `}
-`;
-
 export const SelectItemLabel = styled.div`
   ${tw`text-gray-600 font-semibold `}
 `;
+
+export const statusColor = {
+  [IssueStatus.BACKLOG]: tw`text-gray-600 `,
+  [IssueStatus.SELECTED]: tw` text-gray-600 `,
+  [IssueStatus.INPROGRESS]: tw`text-blue-700`,
+  [IssueStatus.DONE]: tw` text-green-600`,
+};
+
+export const statusColorWithBorder = {
+  [IssueStatus.BACKLOG]: tw`bg-gray-500 `,
+  [IssueStatus.SELECTED]: tw` bg-gray-700 `,
+  [IssueStatus.INPROGRESS]: tw`bg-blue-700`,
+  [IssueStatus.DONE]: tw` bg-green-600`,
+};
 
 export const IssueStatusStyleWithBorder = styled.div`
   ${(props) => statusColorWithBorder[props.status]}
   ${tw`font-semibold text-white px-1 py-1 rounded-lg ml-1 mr-1`}
   display: inline-flex;
+`;
+
+export const StatusStyle = styled.div`
+  ${(props) => statusColor[props.status]}
+  ${tw`font-semibold `}
 `;

@@ -88,8 +88,6 @@ const CreateIssue = ({
               onChange={(item) => formik.setFieldValue("type", item)}
             />
 
-            <hr />
-
             <FormikInput
               label="Title"
               placeholder="Summarise the issue"

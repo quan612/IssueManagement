@@ -10,7 +10,18 @@ export const BoxContainer = styled.div`
 `;
 
 export const Box = styled.div`
-  ${tw` ml-2 p-3 border border-gray-500 text-gray-600`}
+  ${tw` ml-2 p-3 `}
+  
+  background: ${(props) =>
+    props.theme.input ? props.theme.input.background : "white"};
+
+  border: 1px solid #264a54;
+  border-radius: 1rem;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid ${(props) => props.theme.colors.primary};
+    border-radius: 1rem;
+  }
 `;
 
 export const TextAreaContainer = styled.div`

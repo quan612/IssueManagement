@@ -1,21 +1,21 @@
 import { createGlobalStyle } from "styled-components";
 
-import { color, font, mixin } from "shared/utils/styles";
-
 export default createGlobalStyle`
   html, body, #root {
     height: 100%;
-    min-height: 100%;
-    min-width: 768px;
-    background-color:#e9ebee;
+    min-height: 100%;   
+    background-color: ${(props) =>
+      props.theme ? props.theme.colors.background : "white"};    
   }
+
   body {
-    color: ${color.textDarkest};
+    color: ${(props) => props.theme.colors.textPrimary};
     -webkit-tap-highlight-color: transparent;
     line-height: 1.2;
-    ${font.size(16)}
-    ${font.regular}
-
+    font-size:16px;
+    font-family: "CircularStdBook"; 
+    font-weight: normal;
+    
   }
   #root {
     display: flex;
@@ -27,7 +27,7 @@ export default createGlobalStyle`
   optgroup,
   select,
   textarea {
-    ${font.regular}
+    font: inherit;
   }
   *, *:after, *:before, input[type="search"] {
     box-sizing: border-box;
@@ -44,11 +44,10 @@ export default createGlobalStyle`
     margin: 0;
   }
   h1, h2, h3, h4, h5, h6, strong {
-    ${font.bold}
+   font-weight: bold;
   }
   button {
-    background: none;
-    /* border: none; */
+    background: none;    
   }
   /* Workaround for IE11 focus highlighting for select elements */
   select::-ms-value {
@@ -74,14 +73,9 @@ export default createGlobalStyle`
   select::-ms-expand {
     display: none;
   }
-  select option {
-    color: ${color.textDarkest};
-  }
+  
   p {
     line-height: 1.4285;
-    a {
-      ${mixin.link()}
-    }
   }
   textarea {
     line-height: 1.4285;
@@ -93,14 +87,59 @@ export default createGlobalStyle`
   html {
     touch-action: manipulation;
   }
-  ${mixin.placeholderColor(color.textLight)}
 
-  /* set height for editable content area, by default it is just 1 line 
+
+/* set height for editable content area, by default it is just 1 line 
 https://stackoverflow.com/questions/46559354/how-to-set-the-height-of-ckeditor-5-classic-editor
 */
 .ck-editor__editable_inline {
-  min-height: 135px;
-  max-height: 135px;
+  min-height: 125px;
+  max-height: 125px;
+  margin-left: 1px;
+  margin-right: 1px;
 }
+
+.ck-content code {
+    background-color: hsla(0, 0%, 78%, 0.3);
+    padding: .15em;
+    border-radius: 2px;
+}
+
+.ck-content:hover, .ck-content:focus{
+  border: 1px solid #0AC6E0!important;
+}
+
+/** Custom toolbar */
+
+
+/* #style-7::-webkit-scrollbar { */
+  ::-webkit-scrollbar {
+  height: 12px;
+  width: 10px;
+  /* background-color: #f5f5f5; */
+}
+
+/** STYLE 7 */
+::-webkit-scrollbar-track { 
+  background-color: transparent; 
+  border-radius: 10px;   
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  border-radius: 10px; 
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: ${(props) => props.theme.colors.primary};
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  border-radius: 10px; 
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: ${(props) => props.theme.colors.primary};
+}
+
 
 `;

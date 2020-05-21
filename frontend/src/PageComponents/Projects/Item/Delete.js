@@ -3,7 +3,7 @@ import { withProjectDelete, withToastCreate } from "shared/HOC";
 import { flowRight } from "lodash";
 
 import Spinner from "shared/components/Spinner";
-import { IconContainer } from "./styles";
+import { IconWrapper, Label } from "./styles";
 import { FlexItemsWrapper } from "shared/components/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -19,28 +19,22 @@ const ProjectDelete = ({ id, onDelete, loading, createToast }) => {
     }
   };
 
-  if (loading) {
-    return (
-      <FlexItemsWrapper className="hover:bg-gray-400 py-2">
-        <IconContainer>
-          <Spinner color="#D7363C" size={20} />
-        </IconContainer>
-        <div>Delete</div>
-      </FlexItemsWrapper>
-    );
-  }
-
   return (
     <FlexItemsWrapper
       className="hover:bg-gray-400 py-2"
       onClick={() => handleDeleteProject(id)}
     >
-      <IconContainer>
-        <FontAwesomeIcon icon="trash-alt" style={{ color: "red" }} />
-      </IconContainer>
-      <div>Delete</div>
+      <IconWrapper>
+        {loading ? (
+          <Spinner color="#D7363C" size={20} />
+        ) : (
+          <FontAwesomeIcon icon="trash-alt" style={{ color: "red" }} />
+        )}
+      </IconWrapper>
+      <Label>Delete</Label>
     </FlexItemsWrapper>
   );
 };
+ProjectDelete.displayName = "ProjectDelete";
 
 export default flowRight(withProjectDelete, withToastCreate)(ProjectDelete);

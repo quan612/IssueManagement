@@ -1,30 +1,26 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
-
-import { useOutsideClick } from "shared/hooks/useOutsideClick";
-import ProjectDelete from "./ProjectDelete";
-import ProjectForm from "./ProjectForm";
+import React, { useState, useRef, forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useOutsideClick } from "shared/hooks/useOutsideClick";
+
+import ProjectForm from "../Form";
+import ProjectDelete from "./Delete";
+import ProjectEdit from "./Edit";
 
 import {
   ItemStyle,
-  ItemTitle,
-  ItemDescription,
-  SmallIconContainer,
+  Name,
+  Description,
+  EllipsisVContainer,
   EllipsisV,
   Menu,
-  IconContainer,
 } from "./styles";
 
-import { FlexItemsWrapper } from "shared/components/styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const UpdatableProject = ({ data }) => {
   const [edit, setEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const ellipsisRef = useRef();
-
-  const handleFormOpen = () => setEdit(true);
-  const handleFormClose = () => setEdit(false);
 
   if (!edit) {
     const { id, name, description } = data;
@@ -32,11 +28,11 @@ const UpdatableProject = ({ data }) => {
       <ItemStyle>
         <Link to={`/projects/${id}`} className="w-full">
           <div className="w-full">
-            <ItemTitle>{name}</ItemTitle>
-            <ItemDescription>{description}</ItemDescription>
+            <Name>{name}</Name>
+            <Description>{description}</Description>
           </div>
         </Link>
-        <SmallIconContainer>
+        <EllipsisVContainer>
           <EllipsisV ref={ellipsisRef}>
             <FontAwesomeIcon
               icon="ellipsis-v"
@@ -45,32 +41,32 @@ const UpdatableProject = ({ data }) => {
               onClick={() => setShowMenu(!showMenu)}
             />
           </EllipsisV>
-        </SmallIconContainer>
+        </EllipsisVContainer>
         {showMenu && (
           <ProjectMenu
             ref={ellipsisRef}
             onMenuClose={() => setShowMenu(!showMenu)}
-            handleFormOpen={handleFormOpen}
+            onOpen={() => setEdit(true)}
             id={id}
           />
         )}
       </ItemStyle>
     );
   } else {
-    return <ProjectForm data={data} onClose={handleFormClose} />;
+    return <ProjectForm data={data} onClose={() => setEdit(false)} />;
   }
 };
 
-const ProjectMenu = forwardRef(({ onMenuClose, handleFormOpen, id }, ref) => {
+export const ProjectMenu = forwardRef(({ onMenuClose, onOpen, id }, ref) => {
   const menuRef = useRef();
   useOutsideClick(menuRef, ref, onMenuClose);
 
   return (
     <Menu ref={menuRef}>
-      <ProjectEditIcon
+      <ProjectEdit
         onOpen={() => {
           onMenuClose();
-          handleFormOpen();
+          onOpen();
         }}
       />
       <ProjectDelete id={id} />
@@ -78,15 +74,6 @@ const ProjectMenu = forwardRef(({ onMenuClose, handleFormOpen, id }, ref) => {
   );
 });
 
-const ProjectEditIcon = ({ onOpen }) => {
-  return (
-    <FlexItemsWrapper onClick={onOpen} className="hover:bg-gray-400 py-2">
-      <IconContainer>
-        <FontAwesomeIcon icon="edit" style={{ color: "black" }} />
-      </IconContainer>
-      <div>Edit</div>
-    </FlexItemsWrapper>
-  );
-};
-
 export default UpdatableProject;
+
+ProjectMenu.displayName = "ProjectMenu";

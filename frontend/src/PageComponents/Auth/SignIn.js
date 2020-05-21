@@ -20,8 +20,6 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
     password: "",
   };
 
-  console.log(authentication);
-
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .required(" Email is required!")
@@ -48,8 +46,7 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setErrors }) => {
-          let a = await onSignIn(values);
-          console.log("login client", a);
+          await onSignIn(values);
         }}
         validateOnBlur={false}
         validateOnChange={false}

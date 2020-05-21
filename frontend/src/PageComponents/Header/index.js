@@ -1,10 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-
 import * as ROUTES from "../../App/routes";
 
 import Signout from "../Auth/Signout";
-import { Container, HeaderItem } from "./style";
+import { Container, HeaderItem } from "./styles";
 
 const Header = ({ authentication }) => (
   <Container>
@@ -20,11 +18,10 @@ const Header = ({ authentication }) => (
           <HeaderItem to={ROUTES.FEEDS} activeClassName="true">
             Feeds
           </HeaderItem>
+
           <Signout />
         </>
       ) : (
-        // console.log(data);
-
         <>
           <HeaderItem to={ROUTES.SIGNUP} activeClassName="true">
             Sign Up

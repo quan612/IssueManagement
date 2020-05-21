@@ -1,5 +1,4 @@
-import styled, { css } from "styled-components";
-import tw from "tailwind.macro";
+import styled from "styled-components";
 
 export const TextAreaContainer = styled.div`
   display: inline-block;
@@ -16,15 +15,20 @@ export const StyledTextArea = styled.textarea`
   height: ${(props) => (props.height ? props.height : "100px")};
   padding: 0.5em;
   font-size: 14px;
-  color: #060628;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.25);
-  border: 1px solid #dfdfe6;
+
+  background: ${(props) =>
+    props.theme.input ? props.theme.input.background : "white"};
+  color: ${(props) =>
+    props.theme.input ? props.theme.input.textColor : "black"};
+
+  border-radius: 2px;
+  /* box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.25); */
+  border: 1px solid ${(props) => props.theme.colors.primary};
   outline: none;
 
   &:active,
   &:focus {
-    box-shadow: 0 0 0 2px #0b45d9;
+    box-shadow: 0 0 0 2px ${(props) => props.theme.colors.primary};
+    border: 1px solid ${(props) => props.theme.colors.primary};
   }
 `;
-// overflow y hidden for not having scroll in case title is long

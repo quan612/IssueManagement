@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Input } from "shared/components/Input";
-import { Button } from "shared/components/Button";
 import AssignedTo from "./AssignedTo";
 
 const BoardFilters = ({ onFilter, users }) => {
@@ -38,9 +37,16 @@ const BoardFilters = ({ onFilter, users }) => {
           reset={filter.assignee}
         />
 
-        <Button variant="primary-outline" onClick={handleOnReset}>
-          Clear Filter
-        </Button>
+        <div>
+          {(filter.title || filter.assignee) && (
+            <label
+              className="text-white font-bold cursor-pointer"
+              onClick={handleOnReset}
+            >
+              Clear
+            </label>
+          )}
+        </div>
       </div>
     </>
   );

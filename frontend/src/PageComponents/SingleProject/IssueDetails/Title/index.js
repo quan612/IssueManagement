@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Wrapper, Title, ErrorContainer } from "./styles";
+import { Wrapper, Title } from "./styles";
 import { Input } from "shared/components/Input";
 import { KeyCodes } from "shared/constants/keyCodes";
+import { ErrorMessage } from "shared/components/ErrorMessage";
 
 export const IssueDetailsTitle = ({ issue, updateIssue }) => {
   const [isEdit, setEdit] = useState(false);
@@ -34,6 +35,7 @@ export const IssueDetailsTitle = ({ issue, updateIssue }) => {
         <Input
           type="text"
           ref={ref}
+          focus={true}
           defaultValue={issue.title}
           onChange={() => setError(null)}
           onBlur={() => handleChange(updateIssue)}
@@ -48,7 +50,7 @@ export const IssueDetailsTitle = ({ issue, updateIssue }) => {
           invalid={error}
         />
       )}
-      {error && <ErrorContainer>{error}</ErrorContainer>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </Wrapper>
   );
 };

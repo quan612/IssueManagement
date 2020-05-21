@@ -10,18 +10,19 @@ export const useInfiniteScroll = (
   const fetchCall = useCallback(
     (entries) => {
       const target = entries[0];
+
       if (target.isIntersecting && itemLength !== limit) {
         !isLoading && action(itemLength);
       }
     },
-    [isLoading, action, limit]
+    [action, limit, itemLength, isLoading]
   );
 
   useEffect(() => {
     const options = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.25,
+      threshold: 1,
     };
 
     const observer = new IntersectionObserver(fetchCall, options);

@@ -1,5 +1,5 @@
-import React from "react";
-import { useQuery, useMutation } from "react-apollo";
+import React, { useState } from "react";
+import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
 
 import {
   SINGLE_PROJECT_QUERY,
@@ -8,38 +8,69 @@ import {
   ADD_PROJECT_MUTATION,
   UPDATE_PROJECT_MUTATION,
   DELETE_PROJECT_MUTATION,
+  PROJECTS,
 } from "shared/GraphQL/Project";
 
-export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(
-    PROJECTS_QUERY,
-    {
-      notifyOnNetworkStatusChange: true,
-    }
-  );
+export const withProjects = (BaseComponent) => ({ ...props }) => {
+  const { loading, error, data, networkStatus } = useQuery(PROJECTS);
 
-  const { data: summary } = useQuery(PROJECTS_COUNT);
+  return (
+    <BaseComponent
+      loading={loading || networkStatus === 3}
+      error={error}
+      projects={data && data.projects}
+      {...props}
+    />
+  );
+};
+
+export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
+  const [filter, setFilter] = useState("");
+  const client = useApolloClient();
+
+  const {
+    loading,
+    error,
+    data: { getProjects } = {},
+    fetchMore,
+    networkStatus,
+  } = useQuery(PROJECTS_QUERY, {
+    variables: { filter },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const { data: summary } = useQuery(PROJECTS_COUNT, { variables: { filter } });
+
+  const handleFilter = async (value) => {
+    setFilter(value);
+    await client.query({
+      query: PROJECTS_QUERY,
+      variables: { filter: value },
+    });
+  };
 
   return (
     <BaseComponent
       limit={summary ? summary.projectsCount : 0}
       loading={loading || networkStatus === 3}
       error={error}
-      projects={data ? data.getProjects : []}
+      projects={getProjects}
+      onFilter={(value) => handleFilter(value)}
       fetchMore={(currentItems) => {
         if (
           loading ||
           networkStatus === 3 ||
           networkStatus === 4 ||
-          currentItems === summary
+          (currentItems === summary && summary !== 0)
         ) {
           return;
         } else {
           fetchMore({
-            variables: { skip: currentItems },
+            variables: { filter, skip: currentItems },
             updateQuery: (prev, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return prev;
-
+              if (!fetchMoreResult) {
+                return prev;
+              }
               let newList = [
                 ...prev.getProjects,
                 ...fetchMoreResult.getProjects,
