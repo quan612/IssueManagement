@@ -29,8 +29,8 @@ const cache = new InMemoryCache({
 const link = createHttpLink({
   credentials: "include",
   // uri: "http://localhost:5555/",
-  // uri: `https://jira-yoga-clone.herokuapp.com`,
-  uri: process.env.NODE_ENV === "development" ? devEndpoint : prodEndpoint,
+  uri: `https://jira-yoga-clone.herokuapp.com`,
+  // uri: process.env.NODE_ENV === "development" ? devEndpoint : prodEndpoint,
 });
 
 const client = new ApolloClient({
