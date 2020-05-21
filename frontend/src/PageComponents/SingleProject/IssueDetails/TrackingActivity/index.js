@@ -14,7 +14,7 @@ import SingleComment from "../Comment/SingleComment";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 import { IssueStatusDescription } from "shared/constants/issues";
 
-import { parseDateAndTime } from "shared/utils/dateUtils";
+import { toLocalDateTime } from "shared/utils/dateUtils";
 
 const TrackingActivity = ({ issue, logsOnIssue = [], loading }) => {
   return (
@@ -56,7 +56,7 @@ const handleRenderTracking = (log, issue) => {
         <FlexItemsWrapper>
           <TrackingUser user={user} />
           opened this issue
-          <DatesContainer>{parseDateAndTime(log.logDate)}</DatesContainer>
+          <DatesContainer>{toLocalDateTime(log.logDate)}</DatesContainer>
         </FlexItemsWrapper>
       );
 
@@ -67,7 +67,7 @@ const handleRenderTracking = (log, issue) => {
           changed&nbsp;<b>Priority</b>&nbsp;from {previousValue}&nbsp;
           <IssuePriorityIcon priority={previousValue} /> to {newValue}&nbsp;
           <IssuePriorityIcon priority={newValue} />
-          <DatesContainer>{parseDateAndTime(log.logDate)}</DatesContainer>
+          <DatesContainer>{toLocalDateTime(log.logDate)}</DatesContainer>
         </FlexItemsWrapper>
       );
 
@@ -77,7 +77,7 @@ const handleRenderTracking = (log, issue) => {
           <TrackingUser user={user} />
           changed&nbsp;<b>Status</b>&nbsp;from <Status status={previousValue} />{" "}
           to <Status status={newValue} />
-          <DatesContainer>{parseDateAndTime(log.logDate)}</DatesContainer>
+          <DatesContainer>{toLocalDateTime(log.logDate)}</DatesContainer>
         </FlexItemsWrapper>
       );
 
@@ -87,7 +87,7 @@ const handleRenderTracking = (log, issue) => {
           <TrackingUser user={user} /> changed assignee from&nbsp;
           <TrackingUser user={prevAssignee} /> to&nbsp;
           <TrackingUser user={newAssignee} />
-          <DatesContainer>{parseDateAndTime(log.logDate)}</DatesContainer>
+          <DatesContainer>{toLocalDateTime(log.logDate)}</DatesContainer>
         </FlexItemsWrapper>
       );
 

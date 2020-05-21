@@ -15,23 +15,24 @@ const Query = {
   },
 
   async getProjects(parent, args, ctx, info) {
-    const { skip, first } = args;
-    console.log("skip", skip);
+    const { filter, skip, first } = args;
     const projects = await ctx.prisma.projects(
       {
+        where: { name_contains: filter },
+
         skip,
         first,
       },
       info
     );
 
-    // console.log("```````````````````````````fetch more", projects);
     return projects;
   },
 
   async projectsCount(parent, args, ctx, info) {
+    const { filter } = args;
     const projectsCount = await ctx.prisma
-      .projectsConnection({}, info)
+      .projectsConnection({ where: { name_contains: filter } }, info)
       .aggregate()
       .count();
 

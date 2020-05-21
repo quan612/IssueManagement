@@ -1,35 +1,36 @@
 export const IssueType = {
   TASK: "Task",
   BUG: "Bug",
-  STORY: "Story"
+  STORY: "Story",
 };
 
 export const IssueStatus = {
   BACKLOG: "Backlog",
   SELECTED: "Selected",
   INPROGRESS: "Inprogress",
-  DONE: "Done"
+  DONE: "Done",
 };
 
+//ok
 export const IssuePriority = {
   HIGHEST: "Highest",
   HIGH: "High",
   MEDIUM: "Medium",
   LOW: "Low",
-  LOWEST: "Lowest"
+  LOWEST: "Lowest",
 };
 
 export const IssueTypeDescription = {
   [IssueType.TASK]: "Task",
   [IssueType.BUG]: "Bug",
-  [IssueType.STORY]: "Story"
+  [IssueType.STORY]: "Story",
 };
 
 export const IssueStatusDescription = {
   [IssueStatus.BACKLOG]: "Backlog",
   [IssueStatus.SELECTED]: "Selected for development",
   [IssueStatus.INPROGRESS]: "In progress",
-  [IssueStatus.DONE]: "Done"
+  [IssueStatus.DONE]: "Done",
 };
 
 export const IssuePriorityDescription = {
@@ -37,5 +38,5 @@ export const IssuePriorityDescription = {
   [IssuePriority.HIGH]: "High",
   [IssuePriority.MEDIUM]: "Medium",
   [IssuePriority.LOW]: "Low",
-  [IssuePriority.LOWEST]: "Lowest"
+  [IssuePriority.LOWEST]: "Lowest",
 };

@@ -17,8 +17,6 @@ const resolvers = {
         },
       });
 
-      console.log("create toast at cache");
-
       return data;
     },
     deleteToast(_, variables, { cache }) {

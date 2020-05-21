@@ -20,8 +20,6 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
     password: "",
   };
 
-  console.log(authentication);
-
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .required(" Email is required!")

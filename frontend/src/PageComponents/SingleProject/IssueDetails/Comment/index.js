@@ -1,19 +1,17 @@
 import React, { useRef, useState } from "react";
-import { withCommentCreate } from "shared/HOC/Comment";
+import { withCommentCreate } from "shared/HOC";
 
 import { Section } from "shared/components/Section";
 import { TextArea } from "shared/components/TextArea";
 import { Button } from "shared/components/Button";
-import { ButtonWrapper } from "shared/components/Button/styles";
-import UserAvartar from "shared/components/Avatar";
+import { ButtonWrapper } from "shared/components/styles";
+import UserAvatar from "shared/components/Avatar";
 
 import { FlexContainer, TextAreaContainer, BoxContainer, Box } from "./styles";
 
 const IssueDetailsComments = ({
-  issue,
-  loading,
-  error,
   createComment,
+  creatingComment,
   currentLogInUser,
 }) => {
   const [isAddComment, setAddComment] = useState(false);
@@ -21,15 +19,7 @@ const IssueDetailsComments = ({
 
   const handleSaveComment = async () => {
     if (commentRef.current.value !== "") {
-      await createComment({
-        variables: {
-          text: commentRef.current.value,
-          issue: issue.id,
-          createdAt: new Date(),
-          actionType: "IssueComment",
-        },
-      });
-
+      await createComment(commentRef.current.value);
       setAddComment(false);
     } else return;
   };
@@ -37,26 +27,26 @@ const IssueDetailsComments = ({
   return (
     <Section title="Comment">
       <FlexContainer>
-        <UserAvartar user={currentLogInUser} src={currentLogInUser.avatar} />
+        <UserAvatar user={currentLogInUser} src={currentLogInUser.avatar} />
         {isAddComment ? (
           <TextAreaContainer>
             <TextArea
               ref={commentRef}
-              disabled={loading}
+              disabled={creatingComment}
               focus={true}
               height={"70px"}
             />
             <ButtonWrapper>
               <Button
-                isWorking={loading}
-                variant="info"
+                isWorking={creatingComment}
+                variant="primary-outline"
                 onClick={handleSaveComment}
               >
                 Save
               </Button>
               <Button
-                disabled={loading}
-                variant="secondary"
+                disabled={creatingComment}
+                variant="info"
                 onClick={() => setAddComment(false)}
               >
                 Cancel

@@ -15,6 +15,7 @@ import {
   withProjectUpdate,
   withProjectDelete,
   withSingleProjectQuery,
+  withProjects,
 } from "./Project";
 
 import {
@@ -33,6 +34,7 @@ import {
 
 export {
   withToastCreate,
+  withProjects,
   withUsersQuery,
   withSingleUserQuery,
   withCurrentUser,

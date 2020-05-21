@@ -6,6 +6,7 @@ export const BoardListWrapper = styled.div`
 
   ${tw`w-full h-full mt-4 pb-2`}
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
   grid-gap: 1rem;
+  /* overflow: auto; */
 `;

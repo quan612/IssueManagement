@@ -1,6 +1,7 @@
 import React from "react";
 import ContentLoader from "react-content-loader";
 
+//not responsive
 const IssuesLoader = () => (
   <ContentLoader
     speed={2}

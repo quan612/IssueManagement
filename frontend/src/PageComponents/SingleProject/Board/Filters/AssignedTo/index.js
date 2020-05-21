@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Select } from "shared/components/Select";
-import UserAvartar from "shared/components/Avatar";
+import UserAvatar from "shared/components/Avatar";
 
 import { Title } from "./styles";
 import { OptionContainer } from "shared/components/Select/styles";
@@ -43,7 +43,7 @@ const renderUsers = (userObj) => {
     <OptionContainer>
       <div>{name}</div>
       <div className="mr-2">
-        {userObj.name !== "Reset" ? <UserAvartar user={userObj} /> : null}
+        {userObj.name !== "Reset" ? <UserAvatar user={userObj} /> : null}
       </div>
     </OptionContainer>
   );

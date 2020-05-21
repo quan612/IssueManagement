@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "react-apollo";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   ALL_USERS_QUERY,
   SINGLE_USER_QUERY,

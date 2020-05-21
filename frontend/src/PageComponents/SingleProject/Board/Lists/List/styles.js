@@ -1,10 +1,21 @@
 import styled from "styled-components";
 import tw from "tailwind.macro";
 
-export const SingeListContainer = styled.div`
-  ${tw`flex flex-col rounded bg-gray-200 p-2 `}
-  /* ${tw` bg-gray-200 p-2 `} */
+export const ListContainer = styled.div`
+  ${tw`flex flex-col rounded  p-3 `}
+ 
+   background: ${(props) =>
+     props.theme ? props.theme.list.background : "white"};
   min-height:500px;
 
 `;
-// mx-1
+
+export const ListTitle = styled.div`
+  font-weight: 600;
+  color: ${(props) => (props.theme ? props.theme.list.title : "white")};
+`;
+
+export const ListSubTitle = styled.div`
+  font-weight: 500;
+  color: ${(props) => (props.theme ? props.theme.list.subtitle : "white")};
+`;

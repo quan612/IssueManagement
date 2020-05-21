@@ -8,5 +8,15 @@
   "cSpell.ignoreWords": [
     "fontawesome",
     "fortawesome"
+  ],
+  "cSpell.words": [
+    "formik",
+    "inprogress",
+    "queries",
+    "refetch",
+    "resetpassword",
+    "semibold",
+    "signin",
+    "signout"
   ]
 }

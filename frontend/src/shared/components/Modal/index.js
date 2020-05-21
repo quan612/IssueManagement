@@ -11,8 +11,6 @@ import {
 } from "./styles";
 
 const Modal = ({ isOpen, onClose, render }) => {
-  //   const [modalOpen, setModalOpen] = useState(false);
-
   const modalRef = useRef();
   useOutsideClick(modalRef, null, onClose);
 

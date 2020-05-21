@@ -1,49 +1,48 @@
 import gql from "graphql-tag";
+import { COMMENT_FRAGMENT } from "./Comment";
+
+const ISSUE_FRAGMENT = gql`
+  fragment issueFragment on Issue {
+    id
+    title
+    description
+    type
+    status
+    priority
+    assignee {
+      id
+      name
+      avatar
+    }
+    reporter {
+      id
+      name
+      avatar
+    }
+    project {
+      id
+      name
+    }
+    estimate
+    timeSpent
+    timeRemaining
+    listPosition
+    createdAt
+    updatedAt
+  }
+`;
 
 export const SINGLE_ISSUE_QUERY = gql`
   query SINGLE_ISSUE_QUERY($id: ID!) {
     issue(id: $id) {
-      id
-      title
-      description
-      type
-      status
-      priority
-      assignee {
-        id
-        name
-        avatar
-      }
-      reporter {
-        id
-        name
-        avatar
-      }
-      project {
-        id
-        name
-      }
-      estimate
-      timeSpent
-      timeRemaining
-      listPosition
-      createdAt
-      updatedAt
+      ...issueFragment
       comments {
-        id
-        text
-        owner {
-          name
-          avatar
-        }
-        issue {
-          id
-        }
-        createdAt
-        updatedAt
+        ...commentFragment
       }
     }
   }
+  ${ISSUE_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `;
 
 export const UPDATE_ISSUE_MUTATION = gql`
@@ -73,79 +72,27 @@ export const UPDATE_ISSUE_MUTATION = gql`
       listPosition: $listPosition
       actionType: $actionType
     ) {
-      id
-      title
-      description
-      type
-      status
-      priority
-      assignee {
-        id
-        name
-        avatar
-      }
-      reporter {
-        id
-        name
-        avatar
-      }
-      project {
-        id
-        name
-      }
-      estimate
-      timeSpent
-      timeRemaining
-      listPosition
-      createdAt
-      updatedAt
+      ...issueFragment
       comments {
-        id
-        text
-        owner {
-          name
-        }
-        issue {
-          id
-        }
-        createdAt
-        updatedAt
+        ...commentFragment
       }
     }
   }
+  ${ISSUE_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `;
 
 export const PROJECT_ISSUES_QUERY = gql`
   query PROJECT_ISSUES_QUERY($projectId: ID!, $filter: IssueWhereInput) {
     issues(projectId: $projectId, filter: $filter) {
-      id
-      title
-      description
-      type
-      status
-      priority
-      assignee {
-        id
-        name
-        avatar
+      ...issueFragment
+      comments {
+        ...commentFragment
       }
-      reporter {
-        id
-        name
-        avatar
-      }
-      project {
-        id
-        name
-      }
-      estimate
-      timeSpent
-      timeRemaining
-      listPosition
-      createdAt
-      updatedAt
     }
   }
+  ${ISSUE_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `;
 
 export const CREATE_ISSUE_MUTATION = gql`
@@ -165,34 +112,14 @@ export const CREATE_ISSUE_MUTATION = gql`
       priority: $priority
       project: $project
     ) {
-      id
-      title
-      description
-      type
-      status
-      priority
-      assignee {
-        id
-        name
-        avatar
+      ...issueFragment
+      comments {
+        ...commentFragment
       }
-      reporter {
-        id
-        name
-        avatar
-      }
-      project {
-        id
-        name
-      }
-      estimate
-      timeSpent
-      timeRemaining
-      listPosition
-      createdAt
-      updatedAt
     }
   }
+  ${ISSUE_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `;
 
 export const LOG_ISSUE_QUERY = gql`

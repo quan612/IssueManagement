@@ -6,7 +6,7 @@ import UserAvartar from "shared/components/Avatar";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 
-import { StyledIssue } from "./styles";
+import { IssueContainer, IssueTitle, IssueDetails } from "./styles";
 
 const BoardIssue = ({ issue, index }) => {
   const match = useRouteMatch();
@@ -14,16 +14,16 @@ const BoardIssue = ({ issue, index }) => {
     <Draggable draggableId={issue.id} index={index}>
       {(provided, snapshot) => (
         <Link to={`${match.url}/issues/${issue.id}`}>
-          <StyledIssue
+          <IssueContainer
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
           >
-            <section className="issue-title overflow-hidden">
-              <p>{issue.title}</p>
-            </section>
-            <div className="flex items-end mt-2">
+            <IssueTitle className="issue-title overflow-hidden">
+              {issue.title}
+            </IssueTitle>
+            <IssueDetails>
               <IssueTypeIcon type={issue.type} />
               <IssuePriorityIcon priority={issue.priority} />
               <div className="ml-auto ">
@@ -34,8 +34,8 @@ const BoardIssue = ({ issue, index }) => {
                   />
                 )}
               </div>
-            </div>
-          </StyledIssue>
+            </IssueDetails>
+          </IssueContainer>
         </Link>
       )}
     </Draggable>

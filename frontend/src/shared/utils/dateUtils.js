@@ -1,4 +1,4 @@
-export const parseDate = (isoDate) => {
+export const toLocalDate = (isoDate) => {
   let date = new Date(isoDate);
   let year = date.getFullYear();
   let month = date.getMonth() + 1;
@@ -9,7 +9,7 @@ export const parseDate = (isoDate) => {
   return `${month}/${day}/${year}`;
 };
 
-export const parseDateAndTime = (isoDate) => {
+export const toLocalDateTime = (isoDate) => {
   let date = new Date(isoDate);
   let year = date.getFullYear();
   let month = date.getMonth() + 1;
