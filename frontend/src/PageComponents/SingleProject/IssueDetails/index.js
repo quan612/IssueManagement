@@ -60,8 +60,8 @@ const IssueDetails = ({
           ...updateFields,
 
           /** Custom handle cache update
-           * if there is assignee, we must support a typeName for apollo to update the object
-           */
+           ** if there is assignee, we must support a typeName for apollo to update the object
+           **/
           assignee: assigneeId
             ? {
                 id: assigneeId,
