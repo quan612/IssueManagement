@@ -77,8 +77,6 @@ export const withSingleIssueQuery = (BaseComponent) => ({ ...props }) => {
     variables: { id: issueId },
   });
 
-  console.log("networkStatus", networkStatus);
-
   return (
     <BaseComponent
       issue={data ? data.issue : []}

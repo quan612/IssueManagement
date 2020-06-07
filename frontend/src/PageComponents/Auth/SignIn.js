@@ -44,8 +44,6 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
     if (event.keyCode === KeyCodes.ENTER) formik.handleSubmit();
   };
 
-  console.log("error", error);
-
   if (authentication) {
     return <Redirect to="/projects" />;
   } else
