@@ -16,18 +16,20 @@ import theme from "shared/themes/dark";
 
 import { devEndpoint, prodEndpoint } from "./config";
 
+console.log("Currently running at " + process.env.NODE_ENV);
+
 const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
-      issue: (_, { id }, { getCacheKey }) =>
-        getCacheKey({ __typename: "Issue", id }),
+      issue: (_, { id }, { getCacheKey }) => getCacheKey({ __typename: "Issue", id }),
     },
   },
 });
 
 const link = createHttpLink({
   credentials: "include",
-  uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
+  //uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
+  uri: prodEndpoint,
 });
 
 const client = new ApolloClient({

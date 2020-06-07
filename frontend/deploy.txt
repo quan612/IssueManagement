@@ -1,1 +1,3 @@
 set PORT=5554 &&
+git subtree push --prefix frontend heroku-frontend master 
+heroku logs --tail --app jira-client-prod
