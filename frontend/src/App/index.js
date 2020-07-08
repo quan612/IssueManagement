@@ -27,7 +27,7 @@ const cache = new InMemoryCache({
 const link = createHttpLink({
   credentials: "include",
   //uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
-  uri: devEndpoint,
+  uri: prodEndpoint,
 });
 
 const client = new ApolloClient({
