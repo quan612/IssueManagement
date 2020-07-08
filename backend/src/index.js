@@ -25,8 +25,10 @@ server.start(
       credentials: true,
       origin: [
         process.env.FRONTEND_URL,
+        `http://localhost:5555`,
         `http://localhost:5554`,
         `http://localhost:3000`,
+        `*`,
       ],
     },
   },
