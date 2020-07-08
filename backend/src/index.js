@@ -2,6 +2,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "variables.env" });
 const createServer = require("./createServer");
+//var cors = require("cors");
 
 const server = createServer();
 
@@ -10,7 +11,8 @@ server.express.use(cookieParser());
 
 server.express.use((req, res, next) => {
   const { token } = req.cookies;
-
+  //res.header("Access-Control-Allow-Credentials", true);
+  console.log(req);
   if (token) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the user id onto the req
@@ -24,11 +26,14 @@ server.start(
     cors: {
       credentials: true,
       origin: [
-        process.env.FRONTEND_URL,
         `http://localhost:5555`,
         `http://localhost:5554`,
         `http://localhost:3000`,
         `*`,
+        `http://jira-client-prod.herokuapp.com`,
+        `https://jira-client-prod.herokuapp.com`,
+        `http://192.168.0.11:5554`,
+        `https://192.168.0.11:5554`,
       ],
     },
   },
