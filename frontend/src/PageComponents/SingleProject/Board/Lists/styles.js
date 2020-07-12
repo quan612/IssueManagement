@@ -9,7 +9,7 @@ export const BoardListWrapper = styled.div`
   /* overflow: auto; */
 
   @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
-    ${tw` mt-4 pb-2 ml-2 mr-2`}
+    ${tw` mt-4 pb-2  mr-1`}
     display: block;
   }
 `;

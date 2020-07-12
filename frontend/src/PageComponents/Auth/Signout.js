@@ -41,5 +41,6 @@ ${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bol
 
   &:hover{
     border-bottom-color: ${(props) => props.theme.colors.textPrimary};
+    cursor: pointer;
   }
 `;

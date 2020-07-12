@@ -17,9 +17,9 @@ export const ModalContainer = styled(CardBackgroundStyled)`
 
   @media only screen and (min-device-width: 360px) 
   and (max-device-width: 667px) {
-    top: 16rem;
+    top: 17rem;
     font-size: 0.9rem;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
   }
 `;
 
