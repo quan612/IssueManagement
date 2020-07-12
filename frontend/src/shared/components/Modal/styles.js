@@ -3,7 +3,8 @@ import tw from "tailwind.macro";
 import { CardBackgroundStyled } from "shared/components/styles";
 
 export const Wrapper = styled.div`
-  ${tw`justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none`}
+  ${tw`flex justify-center items-center  overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none`}
+  top:52px;
 `;
 
 export const OverlayContainer = styled.div`
@@ -12,10 +13,14 @@ export const OverlayContainer = styled.div`
 `;
 
 export const ModalContainer = styled(CardBackgroundStyled)`
-  ${tw` w-11/12 sm:w-11/12 md:w-11/12 lg:w-1/2 mx-auto relative rounded shadow-lg z-40`}
-  min-width: 640px;
-  max-width: 1280px;
-  min-height: 700px;
+  ${tw`sm:w-full md:w-full lg:w-1/2 mx-auto relative rounded shadow-lg z-40`}
+
+  @media only screen and (min-device-width: 360px) 
+  and (max-device-width: 667px) {
+    top: 16rem;
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+  }
 `;
 
 export const ModalContent = styled.div`

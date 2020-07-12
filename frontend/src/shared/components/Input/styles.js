@@ -7,16 +7,11 @@ export const InputContainer = styled.div`
 
 export const StyledInput = styled.input`
   ${tw`w-full h-full shadow appearance-none rounded  px-2 outline-none focus:outline-none`}
+  min-height:2.5rem;
+  font-size: inherit;
 
-  min-height:2.8rem;
-  font-size: 1.1rem;
-
-  background: ${(props) =>
-    props.theme.input ? props.theme.input.background : "white"};
-
-  color: ${(props) =>
-    props.theme.input ? props.theme.input.textColor : "black"};
-
+  background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
+  color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
   border: 1px solid ${(props) => props.theme.colors.borderNotFocused};
 
   &:hover,
@@ -27,8 +22,7 @@ export const StyledInput = styled.input`
   }
 
   &::placeholder {
-    color: ${(props) =>
-      props.theme.input ? props.theme.input.textColor : "black"};
+    color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
     opacity: 1;
   }
 

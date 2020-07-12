@@ -4,20 +4,18 @@ import { IssueStatus } from "shared/constants/issues";
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  padding-top: 6px;
+  padding: 0.5rem 0 1rem 0;
   & > button {
     margin-right: 6px;
   }
 `;
 
 export const CardBackgroundStyled = styled.div`
-  background: ${(props) =>
-    props.theme ? props.theme.card.background : "white"};
+  background: ${(props) => (props.theme ? props.theme.card.background : "white")};
 `;
 
 export const InputBackgroundStyled = styled.div`
-  background: ${(props) =>
-    props.theme.input ? props.theme.input.background : "white"};
+  background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
 `;
 
 export const SelectBackgroundStyled = styled(InputBackgroundStyled)`

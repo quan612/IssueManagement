@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 import { withIssuesQuery, withIssueUpdate } from "shared/HOC";
 import { flowRight } from "lodash";
 
 import Filters from "./Filters";
 import Lists from "./Lists";
+import { UtilityWrapper } from "./styles";
+
+import { Button } from "shared/components/Button";
 
 const Board = ({
   issues,
@@ -11,6 +15,7 @@ const Board = ({
   fetchIssuesAPI,
   updatingIssue,
   updateIssueAPI,
+  openModal,
   ...rest
 }) => {
   const { users } = rest;
@@ -22,7 +27,14 @@ const Board = ({
 
   return (
     <div className="mt-2" style={{ flex: 1 }}>
-      <Filters onFilter={handleOnFilter} users={users} />
+      <UtilityWrapper>
+        <ButtonWrapper>
+          <Button variant="primary-outline" onClick={openModal}>
+            Create Issue
+          </Button>
+        </ButtonWrapper>
+        <Filters onFilter={handleOnFilter} users={users} />
+      </UtilityWrapper>
       <Lists
         issues={issues}
         fetchingIssues={fetchingIssues}
@@ -34,3 +46,7 @@ const Board = ({
 };
 
 export default flowRight(withIssueUpdate, withIssuesQuery)(Board);
+
+const ButtonWrapper = styled.div`
+  max-width: 350px;
+`;

@@ -10,8 +10,7 @@ export const IssueContainer = styled.div`
   height: 95px;
   width: auto;
 
-  background: ${(props) =>
-    props.theme ? props.theme.card.background : "white"};
+  background: ${(props) => (props.theme ? props.theme.card.background : "white")};
 
   border-color: transparent;
 
@@ -34,6 +33,7 @@ export const IssueTitle = styled.p`
   color: ${(props) => (props.theme ? props.theme.card.title : "white")};
   font-weight: 600;
   word-wrap: break-word;
+  text-align: left;
 `;
 
 export const IssueDetails = styled.div`

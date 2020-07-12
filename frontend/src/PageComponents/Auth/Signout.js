@@ -33,7 +33,7 @@ const Signout = () => {
 export default Signout;
 
 const NavItem = styled.a`
-${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold text-xl py-4 mr-8`}
+${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold py-4`}
   color: ${(props) => props.theme.colors.textPrimary};
   &.${(props) => props.activeClassName} {
     border-bottom-color: ${(props) => props.theme.colors.textPrimary};

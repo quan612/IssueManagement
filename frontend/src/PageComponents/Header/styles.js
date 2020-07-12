@@ -12,7 +12,7 @@ export const Container = styled.header`
 `;
 
 export const HeaderItem = styled(NavLink)`
-  ${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold text-xl py-4 mr-8`}  
+  ${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold  py-4 mr-8`}  
   
   color: ${(props) => props.theme.colors.textPrimary};
   &.${(props) => props.activeClassName} {

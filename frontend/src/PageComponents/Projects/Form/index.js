@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  withProjectCreate,
-  withProjectUpdate,
-  withToastCreate,
-} from "shared/HOC";
+import { withProjectCreate, withProjectUpdate, withToastCreate } from "shared/HOC";
 
 import { flowRight } from "lodash";
 
@@ -15,15 +11,7 @@ import { ButtonWrapper } from "shared/components/styles";
 import { ErrorMessage } from "shared/components/ErrorMessage";
 import { FormContainer } from "./styles";
 
-const ProjectForm = ({
-  data = [],
-  onClose,
-  onCreate,
-  onUpdate,
-  loading,
-  onCreating,
-  createToast,
-}) => {
+const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreating, createToast }) => {
   const [project, setProject] = useState({
     name: data.name || "",
     description: data.description || "",
@@ -100,11 +88,7 @@ const ProjectForm = ({
       {inputError && <ErrorMessage error={inputError.message} />}
 
       <ButtonWrapper>
-        <Button
-          isWorking={loading || onCreating}
-          variant="primary-outline"
-          onClick={handleOnSubmit}
-        >
+        <Button isWorking={loading || onCreating} variant="primary-outline" onClick={handleOnSubmit}>
           Submit
         </Button>
         <Button disabled={loading} variant="info" onClick={onClose}>
@@ -115,8 +99,4 @@ const ProjectForm = ({
   );
 };
 
-export default flowRight(
-  withProjectCreate,
-  withProjectUpdate,
-  withToastCreate
-)(ProjectForm);
+export default flowRight(withProjectCreate, withProjectUpdate, withToastCreate)(ProjectForm);

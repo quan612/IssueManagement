@@ -6,7 +6,6 @@ import Modal from "shared/components/Modal";
 import Board from "./Board";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
-import { Button } from "shared/components/Button";
 
 import { Container, Heading, BackIcon, ButtonWrapper } from "./styles";
 
@@ -19,34 +18,16 @@ const Project = ({ project, users }) => {
 
   return (
     <Container>
-      <BackIcon>
-        <FontAwesomeIcon
-          size={"lg"}
-          icon="arrow-left"
-          onClick={() => {
-            history.push("/projects");
-          }}
-        />
-      </BackIcon>
-
       <Heading>Project: {project.name}</Heading>
 
-      <ButtonWrapper>
-        <Button variant="primary-outline" onClick={() => setModalOpen(true)}>
-          Create Issue
-        </Button>
-      </ButtonWrapper>
-
-      <Board users={users} />
+      <Board users={users} openModal={() => setModalOpen(true)} />
 
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
           title="Create Issue"
-          render={(modal) => (
-            <CreateIssue closeModal={() => setModalOpen(false)} users={users} />
-          )}
+          render={(modal) => <CreateIssue closeModal={() => setModalOpen(false)} users={users} />}
         />
       )}
 

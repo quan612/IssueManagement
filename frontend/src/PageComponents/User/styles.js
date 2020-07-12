@@ -18,6 +18,12 @@ export const Wrapper = styled.div`
   @media only screen and (min-width: 1280px) {
     transform: scale(1.3);
   }
+
+  @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
+    /* width:2rem; */
+    top: 100px;
+    padding: 0.3rem;
+  }
 `;
 
 export const Panel = styled.div`

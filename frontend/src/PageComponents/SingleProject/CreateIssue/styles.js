@@ -2,9 +2,8 @@ import styled from "styled-components";
 import tw from "tailwind.macro";
 
 export const Heading = styled.div`
-  /* padding-bottom: 0.5rem; */
   margin-top: 1rem;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 600;
 `;
 

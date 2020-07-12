@@ -5,11 +5,10 @@ export const FormContainer = styled.div`
   flex-direction: column;
 
   margin: 1rem 0;
-  padding: 1rem;
+  padding: 0rem 1rem;
   border-radius: 1rem;
 
-  background: ${(props) =>
-    props.theme ? props.theme.card.background : "white"};
+  background: ${(props) => (props.theme ? props.theme.card.background : "white")};
 `;
 
 export const ButtonWrapper = styled.div`

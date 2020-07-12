@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import tw from "tailwind.macro";
 
-export const Title = styled.span`
-  ${tw` text-gray-600 text-md font-bold my-2 text-base mr-1`}
+export const Wrapper = styled.div`
+  @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
+    display: none;
+  }
 `;
-
-export const StyledUserName = styled.div``;

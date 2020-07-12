@@ -1,10 +1,6 @@
 import React from "react";
 
-import {
-  withSingleIssueQuery,
-  withCurrentUser,
-  withIssueUpdate,
-} from "shared/HOC";
+import { withSingleIssueQuery, withCurrentUser, withIssueUpdate } from "shared/HOC";
 
 import { flowRight } from "lodash";
 
@@ -26,15 +22,9 @@ import TrackingActivity from "./TrackingActivity";
 import { FlexColContainer, FlexRowContainer, Left, Right } from "./styles";
 
 import ModelLoader from "shared/components/Loaders/ModalLoader";
+import { BrowserView, MobileView } from "react-device-detect";
 
-const IssueDetails = ({
-  currentLogInUser,
-  users,
-  issue,
-  fetchingIssue,
-  updatingIssue,
-  updateIssueAPI,
-}) => {
+const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingIssue, updateIssueAPI }) => {
   const handleUpdate = async (updateFields) => {
     let assigneeId =
       updateFields.actionType === "IssueAssigneeChange"
@@ -49,9 +39,7 @@ const IssueDetails = ({
         ...updateFields,
         assignee: assigneeId,
       },
-      refetchQueries: [
-        { query: LOG_ISSUE_QUERY, variables: { issueId: issue.id } },
-      ],
+      refetchQueries: [{ query: LOG_ISSUE_QUERY, variables: { issueId: issue.id } }],
       optimisticResponse: {
         __typeName: "Mutation",
         updateIssue: {
@@ -77,44 +65,47 @@ const IssueDetails = ({
 
   if (issue) {
     return (
-      <FlexColContainer>
-        <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
-
-        <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
-        <FlexRowContainer>
-          <Left>
-            <IssueDetailsDescription
-              issue={issue}
-              updateIssue={handleUpdate}
-              isWorking={updatingIssue}
-            />
-            <IssueDetailsComment
-              currentLogInUser={currentLogInUser}
-              issue={issue}
-            />
-            <TrackingActivity users={users} issue={issue} />
-          </Left>
-          <Right>
+      <>
+        <BrowserView>
+          <FlexColContainer>
+            <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
+            <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
+            <FlexRowContainer>
+              <Left>
+                <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} />
+                <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
+                <TrackingActivity users={users} issue={issue} />
+              </Left>
+              <Right>
+                <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
+                <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
+                <IssueDetailsReporter reporter={issue.reporter} />
+                <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
+                <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
+                <IssueDetailsTracking issue={issue} updateIssue={handleUpdate} />
+                <IssueDetailsDates issue={issue} />
+              </Right>
+            </FlexRowContainer>
+          </FlexColContainer>
+        </BrowserView>
+        <MobileView>
+          <FlexColContainer>
+            <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
+            <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
+            {/* <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} /> */}
             <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
-            <IssueDetailsAssignee
-              issue={issue}
-              updateIssue={handleUpdate}
-              users={users}
-            />
-            <IssueDetailsReporter reporter={issue.reporter} />
+            <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
+            {/* <IssueDetailsReporter reporter={issue.reporter} /> */}
             <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsTracking issue={issue} updateIssue={handleUpdate} />
-            <IssueDetailsDates issue={issue} />
-          </Right>
-        </FlexRowContainer>
-      </FlexColContainer>
+            <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
+            <TrackingActivity users={users} issue={issue} />
+          </FlexColContainer>
+        </MobileView>
+      </>
     );
   }
 };
 
-export default flowRight(
-  withCurrentUser,
-  withSingleIssueQuery,
-  withIssueUpdate
-)(IssueDetails);
+export default flowRight(withCurrentUser, withSingleIssueQuery, withIssueUpdate)(IssueDetails);

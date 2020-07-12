@@ -7,6 +7,7 @@ export const Container = styled(SelectBackgroundStyled)`
 `;
 
 export const Wrapper = styled.div`
-  ${tw`flex items-center px-2 py-2`}
-  font-size: 1.1rem;
+  ${tw`flex items-center px-1 `}
+  font-size: inherit;
+  min-height: 2.5rem;
 `;

@@ -29,14 +29,18 @@ export const ItemStyle = styled(CardBackgroundStyled)`
     opacity: 0.8;
     cursor: pointer;
   }
+
+  @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
+    height: 100px;
+  }
 `;
 
 export const Name = styled.h3`
-  ${tw`text-white text-4xl`}
+  ${tw`text-white text-lg lg:text-4xl`}
 `;
 
 export const Description = styled.span`
-  ${tw`text-white text-xl`}
+  ${tw`text-gray-500 text-sm lg:text-xl`}
 `;
 
 export const EllipsisVContainer = styled.div`

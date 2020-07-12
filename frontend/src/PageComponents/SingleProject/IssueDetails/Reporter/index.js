@@ -9,12 +9,7 @@ export const IssueDetailsReporter = ({ reporter }) => {
     <Section title="Reporter">
       <Container>
         <Wrapper>
-          <UserAvatar
-            user={reporter}
-            size={30}
-            src={reporter.avatar}
-            className="mr-2"
-          />
+          <UserAvatar user={reporter} size={30} src={reporter.avatar} className="mr-2" />
           <SelectItemLabel>{reporter.name}</SelectItemLabel>
         </Wrapper>
       </Container>

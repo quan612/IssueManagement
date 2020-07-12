@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import { Select } from "shared/components/Select";
+import { OptionContainer } from "shared/components/Select/styles";
 import UserAvatar from "shared/components/Avatar";
 
-import { Title } from "./styles";
-import { OptionContainer } from "shared/components/Select/styles";
+import { Wrapper } from "./styles";
 
 const AssignedTo = ({ handleOnFilter, users, reset }) => {
   const userOptions = [{ name: "Reset" }, ...users];
@@ -11,13 +12,12 @@ const AssignedTo = ({ handleOnFilter, users, reset }) => {
 
   useEffect(() => {
     if (reset === null) {
-      setSelected({ name: "Reset" });
+      setSelected({ name: "Assigned To" });
     }
   }, [reset]);
 
   return (
-    <div className="flex flex-wrap w-1/3">
-      <Title>Assigned:</Title>
+    <Wrapper>
       <Select
         title={selected}
         items={userOptions}
@@ -32,7 +32,7 @@ const AssignedTo = ({ handleOnFilter, users, reset }) => {
         }}
         width={"220px"}
       />
-    </div>
+    </Wrapper>
   );
 };
 export default AssignedTo;
@@ -43,7 +43,7 @@ const renderUsers = (userObj) => {
     <OptionContainer>
       <div>{name}</div>
       <div className="mr-2">
-        {userObj.name !== "Reset" ? <UserAvatar user={userObj} /> : null}
+        {userObj.name !== "Assigned To" && userObj.name !== "Reset" ? <UserAvatar user={userObj} /> : null}
       </div>
     </OptionContainer>
   );

@@ -21,9 +21,9 @@ const variant = {
 
 export const StyledButton = styled.button`
   ${(props) => variant[props.variant]}
-  ${tw` rounded text-lg font-bold px-4 py-2`}
+  ${tw` rounded text-base px-2 py-2`}
 
-  width: ${(props) => (props ? props.width : "5.5rem")};
+  width: ${(props) => (props ? props.width : "3rem")};
   opacity: 0.8;
   
   &:hover {
@@ -33,6 +33,12 @@ export const StyledButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: none;
+  }
+
+  @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
+    /* width:2rem; */
+    font-size:0.9rem;
+    padding:0.3rem;
   }
  
 `;

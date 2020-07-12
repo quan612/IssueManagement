@@ -18,34 +18,33 @@ const BoardFilters = ({ onFilter, users }) => {
     searchRef.current.value = "";
   };
 
-  return (
-    <>
-      <div className="flex items-center justify-between">
-        <div className="w-1/4 mr-2">
-          <Input
-            type="text"
-            name="search"
-            placeholder="Search"
-            ref={searchRef}
-            onChange={() => handleOnFilter({ title: searchRef.current.value })}
-          />
-        </div>
-
-        <AssignedTo
-          handleOnFilter={handleOnFilter}
-          users={users}
-          reset={filter.assignee}
-        />
-
+  const handleRenderFilter = () => {
+    if (filter.assignee || filter.title) {
+      return (
         <div>
-          <label
-            className="text-white font-bold cursor-pointer hover:text-blue-500"
-            onClick={handleOnReset}
-          >
-            Clear filter
+          <label className="text-white font-bold cursor-pointer hover:text-blue-500" onClick={handleOnReset}>
+            Clear
           </label>
         </div>
+      );
+    } else return null;
+  };
+
+  return (
+    <>
+      <div className=" mr-2">
+        <Input
+          type="text"
+          name="search"
+          placeholder="Search"
+          ref={searchRef}
+          onChange={() => handleOnFilter({ title: searchRef.current.value })}
+        />
       </div>
+
+      <AssignedTo handleOnFilter={handleOnFilter} users={users} reset={filter.assignee} />
+
+      {/* <div style={{ width: "100px" }}>{handleRenderFilter()}</div> */}
     </>
   );
 };

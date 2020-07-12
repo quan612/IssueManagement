@@ -7,13 +7,11 @@ import List from "./List";
 import IssuesLoader from "shared/components/Loaders/IssuesLoader";
 import { BoardListWrapper } from "./styles";
 
-const BoardLists = ({
-  issues,
-  fetchingIssues,
-  updatingIssue,
-  updateIssueAPI,
-  ...rest
-}) => {
+import { BrowserView, MobileView } from "react-device-detect";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
+
+const BoardLists = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...rest }) => {
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
@@ -21,11 +19,7 @@ const BoardLists = ({
     if (!destination) return;
 
     // if we dropped into the same place
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
-      return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
     // dropped to a valid position then need to find the list position for this item
 
@@ -68,9 +62,7 @@ const BoardLists = ({
       listPosition = (prevIssue.listPosition + nextIssue.listPosition) / 2;
     }
 
-    const currentAssignee = currentIssue.assignee
-      ? currentIssue.assignee.id
-      : null;
+    const currentAssignee = currentIssue.assignee ? currentIssue.assignee.id : null;
 
     await updateIssueAPI({
       variables: {
@@ -78,11 +70,8 @@ const BoardLists = ({
         assignee: currentAssignee,
         listPosition: listPosition,
         status: destination.droppableId,
-        // actionType: "IssueStatusChange",
         actionType:
-          destination.droppableId !== currentIssue.status
-            ? "IssueStatusChange"
-            : "MovingWithinList",
+          destination.droppableId !== currentIssue.status ? "IssueStatusChange" : "MovingWithinList",
       },
 
       optimisticResponse: {
@@ -100,20 +89,33 @@ const BoardLists = ({
 
   if (issues) {
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <BoardListWrapper>
-          {Object.values(IssueStatus).map((status) => {
-            return <List key={status} status={status} issues={issues} />;
-          })}
-        </BoardListWrapper>
-      </DragDropContext>
+      <>
+        <BrowserView>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <BoardListWrapper>
+              {Object.values(IssueStatus).map((status) => {
+                return <List key={status} status={status} issues={issues} />;
+              })}
+            </BoardListWrapper>
+          </DragDropContext>
+        </BrowserView>
+        <MobileView>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <BoardListWrapper>
+              <Carousel>
+                {Object.values(IssueStatus).map((status) => {
+                  return <List key={status} status={status} issues={issues} />;
+                })}
+              </Carousel>
+            </BoardListWrapper>
+          </DragDropContext>
+        </MobileView>
+      </>
     );
   }
 };
 
 const getSortedListIssues = (issues, status) =>
-  issues
-    .filter((issue) => issue.status === status)
-    .sort((a, b) => a.listPosition - b.listPosition);
+  issues.filter((issue) => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
 
 export default BoardLists;

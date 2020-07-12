@@ -7,9 +7,9 @@ import { ListContainer, ListTitle, ListSubTitle } from "./styles";
 
 const BoardList = ({ status, issues }) => {
   const filteredIssuesWithStatus = getIssuesWithStatus(issues, status);
-  const filteredIssuesWithPosition = getIssuesWithPosition(
-    filteredIssuesWithStatus
-  );
+  const filteredIssuesWithPosition = getIssuesWithPosition(filteredIssuesWithStatus);
+
+  const totalCards = filteredIssuesWithStatus.length;
 
   return (
     <Droppable droppableId={status}>
@@ -20,7 +20,7 @@ const BoardList = ({ status, issues }) => {
           data-testid={`board-list:${status}`}
         >
           <ListTitle>{IssueStatusDescription[status]}</ListTitle>
-          <ListSubTitle>0 cards</ListSubTitle>
+          <ListSubTitle>{totalCards} cards</ListSubTitle>
           {filteredIssuesWithPosition.map((issue, index) => {
             return <Issue key={issue.id} issue={issue} index={index} />;
           })}
@@ -35,7 +35,6 @@ const getIssuesWithStatus = (issues, status) => {
   return issues.filter((issue) => issue.status === status);
 };
 
-const getIssuesWithPosition = (issues) =>
-  issues.sort((a, b) => a.listPosition - b.listPosition);
+const getIssuesWithPosition = (issues) => issues.sort((a, b) => a.listPosition - b.listPosition);
 
 export default BoardList;
