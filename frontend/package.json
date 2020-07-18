@@ -37,11 +37,11 @@
     "styled-components": "^5.0.0",
     "tailwind.macro": "^1.0.0-alpha.10",
     "tailwindcss": "^1.4.5",
-    "yup": "^0.28.1",
-    "serve": "^9.4.0"
+    "yup": "^0.28.1"
+    
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "react-scripts --max_old_space_size=4096 start",
     "dev": "set PORT=5554 && react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test --watch",
