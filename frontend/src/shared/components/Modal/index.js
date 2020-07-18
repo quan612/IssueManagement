@@ -7,7 +7,13 @@ import { Wrapper, OverlayContainer, ModalContainer, ModalContent } from "./style
 
 const Modal = ({ isOpen, onClose, render }) => {
   const modalRef = useRef();
-  useOutsideClick(modalRef, null, onClose);
+
+  const handleCloseModal = () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Any unsaved changes will be lost?")) onClose();
+  };
+
+  useOutsideClick(modalRef, null, handleCloseModal);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

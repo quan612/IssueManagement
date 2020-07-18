@@ -11,8 +11,7 @@ server.express.use(cookieParser());
 
 server.express.use((req, res, next) => {
   const { token } = req.cookies;
-  //res.header("Access-Control-Allow-Credentials", true);
-  console.log(token);
+
   if (token) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the user id onto the req

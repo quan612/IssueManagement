@@ -16,6 +16,8 @@ import theme from "shared/themes/dark";
 
 import { devEndpoint, prodEndpoint } from "./config";
 
+console.log(process.env.NODE_ENV);
+
 const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {

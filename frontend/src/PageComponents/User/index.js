@@ -22,13 +22,10 @@ const User = ({ authentication, onUpdateUser, updating }) => {
     data.append("file", files[0]);
     data.append("upload_preset", "worldwatch");
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/mrleewatch/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+    const res = await fetch("https://api.cloudinary.com/v1_1/mrleewatch/image/upload", {
+      method: "POST",
+      body: data,
+    });
 
     const file = await res.json();
     setImg(file.secure_url);
@@ -45,12 +42,7 @@ const User = ({ authentication, onUpdateUser, updating }) => {
       <Wrapper>
         <Panel>
           <div className="flex justify-center">
-            <UserAvatar
-              className="-mt-24"
-              user={userData}
-              size={200}
-              src={image}
-            />
+            <UserAvatar className="-mt-24" user={userData} size={200} src={image} />
           </div>
           <UserDetailsWrapper>
             {isEdit ? (
@@ -93,13 +85,7 @@ const UserDetails = ({ user, onEdit }) => {
   );
 };
 
-const UserEdit = ({
-  user,
-  onSubmit,
-  onCancel,
-  handleUploadAvatar,
-  submitting,
-}) => {
+const UserEdit = ({ user, onSubmit, onCancel, handleUploadAvatar, submitting }) => {
   const [updateUser, setUser] = useState(user);
   const [inputError, setError] = useState("");
 
@@ -143,21 +129,18 @@ const UserEdit = ({
         ))}
       </Section>
 
-      <input
-        type="file"
-        name="file"
-        placeholder="Upload Avatar"
-        onChange={handleUploadAvatar}
-        className="mt-2"
-      />
+      <Section title="Change Avatar">
+        <input
+          type="file"
+          name="file"
+          placeholder="Upload Avatar"
+          onChange={handleUploadAvatar}
+          className="mt-2"
+        />
+      </Section>
 
       <ButtonWrapper className="mt-2">
-        <Button
-          disable={submitting}
-          isWorking={submitting}
-          variant="info"
-          onClick={handleOnSubmit}
-        >
+        <Button disable={submitting} isWorking={submitting} variant="info" onClick={handleOnSubmit}>
           Save
         </Button>
         <Button disabled={submitting} variant="secondary" onClick={onCancel}>

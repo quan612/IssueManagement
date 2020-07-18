@@ -41,6 +41,13 @@ export const Name = styled.h3`
 
 export const Description = styled.span`
   ${tw`text-gray-500 text-sm lg:text-xl`}
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+  }
 `;
 
 export const EllipsisVContainer = styled.div`

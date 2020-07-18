@@ -100,10 +100,7 @@ const Mutation = {
       email: email,
     });
 
-    if (!user)
-      throw new Error(
-        `There is no user with this email in ur record: ${email}`
-      );
+    if (!user) throw new Error(`There is no user with this email in ur record: ${email}`);
 
     // check if the password is correct by comparing the its hashed password with the database
     const isValid = await bcrypt.compare(password, user.password);
@@ -132,8 +129,7 @@ const Mutation = {
   async resetPassword(parent, args, ctx, info) {
     const { email, password, confirmPassword } = args;
     //check if pw and confirm pw match
-    if (password !== confirmPassword)
-      throw new Error("Password and Confirm password must match");
+    if (password !== confirmPassword) throw new Error("Password and Confirm password must match");
 
     //find the user
     const user = await ctx.prisma.user({
@@ -183,8 +179,6 @@ const Mutation = {
     if (name) updateData = { ...updateData, name: name };
     if (avatar) updateData = { ...updateData, avatar: avatar };
 
-    console.log("update data", updateData);
-
     const updatedUser = await ctx.prisma.updateUser(
       {
         where: {
@@ -195,7 +189,6 @@ const Mutation = {
       info
     );
 
-    console.log("updatedUser", updatedUser);
     return updatedUser;
   },
 
@@ -207,15 +200,7 @@ const Mutation = {
       // const project = await ctx.prisma.project(id: args.)
 
       // create an issue within the project
-      const {
-        title,
-        description,
-        type,
-        status,
-        priority,
-        project,
-        assignee,
-      } = args;
+      const { title, description, type, status, priority, project, assignee } = args;
 
       // finding the highest position based on current issues
       let listPosition;
@@ -224,13 +209,8 @@ const Mutation = {
       });
 
       if (projectIssues.length > 0) {
-        const issuesSameType = projectIssues.filter(
-          (issue) => issue.type === type
-        );
-        const issueWithMaxPosition = issuesSameType.reduce(function(
-          prev,
-          curr
-        ) {
+        const issuesSameType = projectIssues.filter((issue) => issue.type === type);
+        const issueWithMaxPosition = issuesSameType.reduce(function(prev, curr) {
           return prev.listPosition > curr.listPosition ? prev : curr;
         });
         listPosition = issueWithMaxPosition.listPosition + 1;
