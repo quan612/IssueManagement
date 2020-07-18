@@ -41,7 +41,7 @@
     
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=4096 start",
+    "start": "serve -s build",
     "dev": "set PORT=5554 && react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test --watch",
