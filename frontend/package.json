@@ -37,7 +37,8 @@
     "styled-components": "^5.0.0",
     "tailwind.macro": "^1.0.0-alpha.10",
     "tailwindcss": "^1.4.5",
-    "yup": "^0.28.1"
+    "yup": "^0.28.1",
+    "serve": "^9.4.0"
   },
   "scripts": {
     "start": "serve -s build",
