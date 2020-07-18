@@ -49,7 +49,7 @@
     "build:styles": "postcss src/styles/tailwind.css -o src/styles/tailwind.out.css",
     "prebuild": "npm run build:styles",
     "prestart": "npm run build:styles",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm install -g serve -s build"
   },
   "eslintConfig": {
     "extends": "react-app"
