@@ -16,7 +16,7 @@ import theme from "shared/themes/dark";
 
 import { devEndpoint, prodEndpoint } from "./config";
 
-console.log(process.env.NODE_ENV);
+import "../styles/tailwind.out.css";
 
 const cache = new InMemoryCache({
   cacheRedirects: {
@@ -25,11 +25,11 @@ const cache = new InMemoryCache({
     },
   },
 });
-
+console.log(process.env.NODE_ENV);
 const link = createHttpLink({
   credentials: "include",
-  //uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
-  uri: prodEndpoint,
+  uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
+  //uri: prodEndpoint,
 });
 
 const client = new ApolloClient({

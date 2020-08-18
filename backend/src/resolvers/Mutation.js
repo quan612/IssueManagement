@@ -151,18 +151,6 @@ const Mutation = {
       info
     );
 
-    // // generate the json token
-    // const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-
-    // //set the jwt as a cookie on the response
-
-    // ctx.response.cookie("token", token, {
-    //   httpOnly: true,
-    //   // secure: false,
-    //   maxAge: 1000 * 60 * 60 * 24 * 7 // cookie for 7 days
-    // });
-
-    // return the user
     return updatedUser;
   },
 
@@ -194,10 +182,8 @@ const Mutation = {
 
   async createIssue(parent, args, ctx, info) {
     try {
-      // const {title, description, }
       //check if user is log in
       //check if the project existed
-      // const project = await ctx.prisma.project(id: args.)
 
       // create an issue within the project
       const { title, description, type, status, priority, project, assignee } = args;
@@ -250,8 +236,6 @@ const Mutation = {
         previousValue: null,
         newValue: null,
       });
-
-      // console.log("log test", log);
 
       return issue;
     } catch (error) {

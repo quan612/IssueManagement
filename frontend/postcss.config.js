@@ -1,3 +1,17 @@
+const purgeCSS = require("@fullhuman/postcss-purgecss");
+
 module.exports = {
-  plugins: [require("tailwindcss"), require("autoprefixer")]
+  purge: ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "public/**/*.html"],
+  theme: {
+    extend: {},
+  },
+  variants: {},
+  plugins: [
+    require("tailwindcss"),
+    require("autoprefixer"),
+    purgeCSS({
+      content: ["./src/**/*.js"],
+      css: ["./src/**/*.css"],
+    }),
+  ],
 };
