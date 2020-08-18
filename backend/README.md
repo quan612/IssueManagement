@@ -21,15 +21,15 @@
 
 ## Configuration File
 
-In prisma.yml, modify the endpoint to use local endpoint or any external endpoint.
+In prisma.yml, modify the endpoint below to use local endpoint or any external endpoint.
 The endpoint is configured based on .env
 
 ```ENV
-FRONTEND_URL="http://localhost:5554"
-PRISMA_SECRET="mysecret123"
-PRISMA_ENDPOINT="https://eu1.prisma.sh/quan612-a4534e/jira-clone/dev"
-APP_SECRET="jwtsecret123"
-PORT=5555
+FRONTEND_URL="the front-end url"
+PRISMA_SECRET="any secret"
+PRISMA_ENDPOINT="your end point"
+APP_SECRET="any secret"
+PORT=any port
 ```
 
 ## Installation
