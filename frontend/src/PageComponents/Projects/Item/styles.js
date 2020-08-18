@@ -37,6 +37,11 @@ export const ItemStyle = styled(CardBackgroundStyled)`
 
 export const Name = styled.h3`
   ${tw`text-white text-lg lg:text-4xl`}
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Description = styled.span`

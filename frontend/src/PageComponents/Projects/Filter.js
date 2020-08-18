@@ -12,7 +12,7 @@ const Filter = ({ onFilter }) => {
 
   const handleOnFilter = debounce((val) => {
     onFilter(val);
-  }, 500);
+  }, 2000);
 
   return (
     <>
