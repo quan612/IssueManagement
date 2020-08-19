@@ -1,11 +1,6 @@
-# Issue Management - Back End
+# Issue Management - FrontEnd
 
 > This is a Jira clone front end site built with React, Apollo, Tailwind.
-
-
-## API
-
-Backend RESTFUL API Repository [API](https://github.com/techreagan/youtube-clone-nodejs-api)
 
 ## Features
 
