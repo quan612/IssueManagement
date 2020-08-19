@@ -2,6 +2,7 @@
 
 > This is a Jira clone built with nodejs, expressjs, graphQL and prisma.
 
+
 ## Features
 
 > CRUD (Create, Read, Update And Delete)
@@ -50,7 +51,7 @@ npm install -g nodemon
 ## Start backend
 
 ```console
-node start
+npm start
 ```
 This will start up an instance of prisma endpoint locally if you have it configured to run it locally
 By default it is accessible at http://localhost:5555/
