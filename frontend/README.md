@@ -36,7 +36,7 @@ npm install
 ```
 
 
-## Start backend
+## Start
 
 ```console
 npm run dev
