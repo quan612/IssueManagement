@@ -49,11 +49,11 @@ Testing with Jest and enzyme (still need more tests, only covering a few tests)
 
 ### Sign In (/signin)
 
-![Screenshot](screenshots/signin.jpg)
+![Screenshot](screenshots/signin.JPG)
 
 ### Sign Up (/signup)
 
-![Screenshot](screenshots/signup.jpg)
+![Screenshot](screenshots/signup.JPG)
 
 ### Reset Password Page (/reset)
 
@@ -61,7 +61,7 @@ Testing with Jest and enzyme (still need more tests, only covering a few tests)
 
 ### Projects Page (/projects)
 
-![Screenshot](screenshots/projects-page.jpg)
+![Screenshot](screenshots/projects-page.JPG)
 
 ### Listing Issues (/projects/:projectId)
 
@@ -73,4 +73,4 @@ Testing with Jest and enzyme (still need more tests, only covering a few tests)
 
 ### Edit Issue (/issues/:issueId)
 
-![Screenshot](screenshots/create-issue.JPG)
+![Screenshot](screenshots/edit-issue.JPG)
