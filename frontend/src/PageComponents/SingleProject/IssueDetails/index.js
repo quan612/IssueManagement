@@ -68,7 +68,6 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
       <>
         <BrowserView>
           <FlexColContainer>
-            <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
             <FlexRowContainer>
               <Left>
@@ -77,6 +76,7 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
                 <TrackingActivity users={users} issue={issue} />
               </Left>
               <Right>
+                <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
                 <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
                 <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
                 <IssueDetailsReporter reporter={issue.reporter} />

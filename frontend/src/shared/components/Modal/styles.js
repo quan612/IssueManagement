@@ -9,11 +9,11 @@ export const Wrapper = styled.div`
 
 export const OverlayContainer = styled.div`
   ${tw`absolute w-full h-full bg-gray-900`}
-  opacity:0.9;
+  opacity:0.6;
 `;
 
 export const ModalContainer = styled(CardBackgroundStyled)`
-  ${tw`sm:w-full md:w-full lg:w-1/2 mx-auto relative rounded shadow-lg z-40`}
+  ${tw`sm:w-full md:w-full lg:w-4/5 mx-auto relative rounded shadow-lg z-40`}
 
   @media only screen and (min-device-width: 360px) 
   and (max-device-width: 667px) {

@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Wrapper, OverlayContainer, ModalContainer, ModalContent } from "./styles";
 
-const Modal = ({ isOpen, onClose, render }) => {
+const Modal = ({ isOpen, onClose, render, isConfirm = false }) => {
   const modalRef = useRef();
 
   const handleCloseModal = () => {
-    // eslint-disable-next-line no-restricted-globals
-    if (confirm("Any unsaved changes will be lost?")) onClose();
+    if (isConfirm === true) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm("Any unsaved changes will be lost?")) onClose();
+    } else onClose();
   };
 
   useOutsideClick(modalRef, null, handleCloseModal);

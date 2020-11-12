@@ -1,13 +1,24 @@
 import styled from "styled-components";
 import tw from "tailwind.macro";
 
+export const Container = styled.div`
+  ul {
+    list-style: disc !important;
+    padding-left: 1rem;
+  }
+
+  ol {
+    list-style: decimal !important;
+    padding-left: 1rem;
+  }
+`;
+
 export const EmptyLabel = styled.div`
   ${tw`cursor-pointer w-full py-2 px-2 rounded text-gray-700 leading-tight `}
   transition: background-color 0.1s ease-in-out;
   margin-left: -4px;
   height: 135px;
-  background: ${(props) =>
-    props.theme.input ? props.theme.input.background : "white"};
+  background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
 
   &:hover {
     opacity: 0.8;
@@ -23,13 +34,18 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const ContentEditable = styled.div`
+  background-color: ${(props) => props.theme.input.background};
   min-height: 100px;
+  max-height: 250px;
   white-space: pre-line;
   padding: 5px;
   border: 1px solid transparent;
+  border-radius: 0.2rem;
+  overflow-y: scroll;
+
   &:hover {
     cursor: pointer;
     border: 1px solid ${(props) => props.theme.colors.primary};
-    border-radius: 1rem;
+    border-radius: 0.2rem;
   }
 `;

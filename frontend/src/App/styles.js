@@ -7,9 +7,9 @@ export const Body = styled.section`
   bottom: 0;
 
   position: absolute;
-
   width: 100%;
   max-width: 1280px;
+
   margin: 0 auto !important;
   background-color: inherit;
   padding-top: 1rem;

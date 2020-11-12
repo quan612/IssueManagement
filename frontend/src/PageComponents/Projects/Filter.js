@@ -5,25 +5,18 @@ import { debounce } from "lodash";
 const Filter = ({ onFilter }) => {
   const searchRef = useRef();
 
-  // const handleOnReset = () => {
-  //   onFilter({});
-  //   searchRef.current.value = "";
-  // };
-
   const handleOnFilter = debounce((val) => {
     onFilter(val);
-  }, 2000);
+  }, 1200);
 
   return (
-    <>
-      <Input
-        type="text"
-        name="search"
-        placeholder="Search"
-        ref={searchRef}
-        onChange={() => handleOnFilter(searchRef.current.value)}
-      />
-    </>
+    <Input
+      type="text"
+      name="search"
+      placeholder="Search"
+      ref={searchRef}
+      onChange={() => handleOnFilter(searchRef.current.value)}
+    />
   );
 };
 

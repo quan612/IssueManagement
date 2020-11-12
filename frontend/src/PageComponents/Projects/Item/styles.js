@@ -36,7 +36,8 @@ export const ItemStyle = styled(CardBackgroundStyled)`
 `;
 
 export const Name = styled.h3`
-  ${tw`text-white text-lg lg:text-4xl`}
+  ${tw`text-lg lg:text-4xl`}
+  color: ${(props) => props.theme.colors.textPrimary};
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -45,30 +46,30 @@ export const Name = styled.h3`
 `;
 
 export const Description = styled.span`
-  ${tw`text-gray-500 text-sm lg:text-xl`}
+  ${tw` text-sm lg:text-xl`}
+  color: ${(props) => props.theme.colors.textSecondary};
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  &:hover {
-  }
 `;
 
 export const EllipsisVContainer = styled.div`
-  min-width: 1.2rem;
+  min-width: 1.5rem;
+  padding-right: 0.5rem;
 `;
 
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 2rem;
-  right: 1px;
-  width: 100px;
+  top: 2.5rem;
+  right: 0.2rem;
+  width: 150px;
   padding: 0.5rem 0;
 
-  background-color: whitesmoke;
+  background-color: ${(props) => props.theme.colors.backgroundLight};
   border-radius: 0.2rem;
 `;
 

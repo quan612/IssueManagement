@@ -1,5 +1,6 @@
 import React from "react";
 import { useTransition, animated } from "react-spring";
+
 import UpdatableProject from "../Item/UpdatableProject";
 
 const ProjectList = ({ projects }) => {

@@ -18,7 +18,7 @@ const AssignedTo = ({ handleOnFilter, users, reset }) => {
 
   return (
     <Wrapper>
-      <Select
+      {/* <Select
         title={selected}
         items={userOptions}
         renderMenuOption={renderUsers}
@@ -31,7 +31,7 @@ const AssignedTo = ({ handleOnFilter, users, reset }) => {
           setSelected(userObj);
         }}
         width={"220px"}
-      />
+      /> */}
     </Wrapper>
   );
 };

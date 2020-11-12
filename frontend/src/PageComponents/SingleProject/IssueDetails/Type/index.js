@@ -1,32 +1,25 @@
 import React from "react";
+
+import { Section } from "shared/components/Section";
 import { Select } from "shared/components/Select";
 import { IssueType } from "shared/constants/issues";
-
-import { Wrapper, SelectItemWrapper, SelectItemLabel } from "./styles";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 
 export const IssueDetailsType = ({ issue, updateIssue }) => {
   return (
-    <Wrapper>
+    <Section title="Type">
       <Select
-        title={issue.type}
+        selected={issue.type}
         items={Object.values(IssueType)}
-        renderMenuOption={renderIssueType}
+        renderIcon={renderIssueType}
         onChange={(type) => {
           updateIssue({ type, actionType: "IssueTypeChange" });
         }}
         variant="empty"
         withArrow={false}
       />
-    </Wrapper>
+    </Section>
   );
 };
 
-const renderIssueType = (type) => {
-  return (
-    <SelectItemWrapper>
-      <IssueTypeIcon type={type} />
-      <SelectItemLabel>{type}</SelectItemLabel>
-    </SelectItemWrapper>
-  );
-};
+const renderIssueType = (type) => <IssueTypeIcon type={type} />;

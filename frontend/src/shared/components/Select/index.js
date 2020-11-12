@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectContainer, SelectItem, MenuContainer, MenuItem } from "./styles";
+import { SelectContainer, SelectedItemWrapper, Item, MenuContainer, MenuItem } from "./styles";
 
 export const Select = ({
-  title,
+  selected,
   items,
-  renderMenuOption,
+  renderIcon = () => {},
   onChange,
   variant = "normal",
-  withArrow = true,
   width,
+  renderItem = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef();
-
   const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
@@ -35,26 +34,22 @@ export const Select = ({
 
   return (
     <SelectContainer ref={ref} variant={variant} width={width}>
-      <SelectItem onClick={toggle}>
-        {renderMenuOption(title)}
-        {withArrow && (
-          <FontAwesomeIcon
-            className="ml-auto"
-            icon={isOpen ? "angle-up" : "angle-down"}
-            size="1x"
-          />
-        )}
-      </SelectItem>
+      <SelectedItemWrapper onClick={toggle}>
+        {renderIcon(selected)}
+        {renderItem && <Item>{typeof selected === "object" ? selected.name : selected}</Item>}
+        <FontAwesomeIcon className="ml-auto" icon={isOpen ? "angle-up" : "angle-down"} size="1x" />
+      </SelectedItemWrapper>
       {isOpen && (
         <MenuContainer>
-          {items.map((item) => (
-            <MenuItem
-              key={item.id ? item.id : item}
-              onClick={() => handleSelect(item)}
-            >
-              {renderMenuOption(item)}
-            </MenuItem>
-          ))}
+          {items.map((item) => {
+            return (
+              <MenuItem key={item.id ? item.id : item} onClick={() => handleSelect(item)}>
+                {renderIcon(item)}
+                {renderItem && <Item>{typeof item === "object" ? item.name : item}</Item>}
+                {item === selected && <FontAwesomeIcon className="ml-auto" icon={"check"} color={"black"} />}
+              </MenuItem>
+            );
+          })}
         </MenuContainer>
       )}
     </SelectContainer>

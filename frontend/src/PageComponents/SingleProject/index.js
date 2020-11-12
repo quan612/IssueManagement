@@ -28,6 +28,7 @@ const Project = ({ project, users }) => {
           onClose={() => setModalOpen(false)}
           title="Create Issue"
           render={(modal) => <CreateIssue closeModal={() => setModalOpen(false)} users={users} />}
+          isConfirm={true}
         />
       )}
 

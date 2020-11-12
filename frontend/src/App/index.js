@@ -12,7 +12,8 @@ import resolvers from "./clientResolvers";
 
 import NormalizeStyles from "./NormalizeStyles";
 import BaseStyles from "./BaseStyles";
-import theme from "shared/themes/dark";
+import dark from "shared/themes/dark";
+import light from "shared/themes/light";
 
 import { devEndpoint, prodEndpoint } from "./config";
 
@@ -25,11 +26,11 @@ const cache = new InMemoryCache({
     },
   },
 });
-console.log(process.env.NODE_ENV);
+
+//console.log(process.env.NODE_ENV);
 const link = createHttpLink({
   credentials: "include",
   uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
-  //uri: prodEndpoint,
 });
 
 const client = new ApolloClient({
@@ -50,7 +51,7 @@ function App() {
     <ApolloProvider client={client}>
       <Fragment>
         <NormalizeStyles />
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={light}>
           <BaseStyles />
           <BrowserRouter>
             <Routes />

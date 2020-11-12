@@ -14,16 +14,9 @@ import { FormikSelect, FormikInput, FormikCKEditor } from "shared/components/For
 
 import { IssueType, IssueStatus, IssuePriority } from "shared/constants/issues";
 
-import { Heading, SelectItemWrapper, SelectItemLabel, ButtonWrapper } from "./styles";
+import { Heading, SelectItemWrapper, SelectItemLabel, ButtonWrapper, CheckMark } from "./styles";
 
-const CreateIssue = ({
-  closeModal,
-  users,
-  createIssueAPI,
-  creatingIssue,
-  creatingIssueError,
-  createToast,
-}) => {
+const CreateIssue = ({ closeModal, users, createIssueAPI, creatingIssue, createToast }) => {
   const match = useRouteMatch();
   const userOptions = [{ id: null, name: "Unassigned" }, ...users];
 
@@ -35,7 +28,7 @@ const CreateIssue = ({
         description: "",
         assignee: userOptions[0],
         status: IssueStatus.BACKLOG, // default for newly created issue
-        priority: IssuePriority.MEDIUM,
+        priority: IssuePriority.LOWEST,
         project: match.params.projectId,
       }}
       validationSchema={Yup.object().shape({
@@ -72,9 +65,9 @@ const CreateIssue = ({
           <Heading>Create Issue</Heading>
           <FormikSelect
             label="Issue Type"
-            title={formik.values.type}
+            selected={formik.values.type}
             items={Object.values(IssueType)}
-            renderMenuOption={renderType}
+            renderIcon={renderType}
             onChange={(item) => formik.setFieldValue("type", item)}
           />
 
@@ -96,9 +89,9 @@ const CreateIssue = ({
 
           <FormikSelect
             label="Assignee"
-            title={formik.values.assignee}
+            selected={formik.values.assignee.name}
             items={userOptions}
-            renderMenuOption={renderAssignee}
+            renderIcon={renderAssignee}
             onChange={(user) => {
               formik.setFieldValue("assignee", user);
             }}
@@ -106,9 +99,9 @@ const CreateIssue = ({
 
           <FormikSelect
             label="Priority"
-            title={formik.values.priority}
+            selected={formik.values.priority}
             items={Object.values(IssuePriority)}
-            renderMenuOption={renderPriority}
+            renderIcon={renderPriority}
             onChange={(item) => formik.setFieldValue("priority", item)}
           />
 
@@ -128,33 +121,6 @@ const CreateIssue = ({
 
 export default flowRight(withIssueCreate, withToastCreate)(CreateIssue);
 
-const renderPriority = (priority) => {
-  return (
-    <SelectItemWrapper>
-      <IssuePriorityIcon priority={priority} />
-      <SelectItemLabel>{priority}</SelectItemLabel>
-    </SelectItemWrapper>
-  );
-};
-
-const renderType = (type) => {
-  return (
-    <SelectItemWrapper>
-      <IssueTypeIcon type={type} />
-      <SelectItemLabel>{type}</SelectItemLabel>
-    </SelectItemWrapper>
-  );
-};
-
-const renderAssignee = (user) => {
-  return (
-    <SelectItemWrapper>
-      <div>
-        {user.name !== "Unassigned" ? (
-          <UserAvatar user={user} size={25} src={user.avatar} className="mr-2" />
-        ) : null}
-      </div>
-      <SelectItemLabel>{user.name}</SelectItemLabel>
-    </SelectItemWrapper>
-  );
-};
+const renderPriority = (priority) => <IssuePriorityIcon priority={priority} />;
+const renderType = (type) => <IssueTypeIcon type={type} />;
+const renderAssignee = (user) => <UserAvatar user={user} size={25} src={user.avatar} className="mr-2" />;

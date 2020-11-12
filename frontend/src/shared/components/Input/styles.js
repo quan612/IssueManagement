@@ -6,23 +6,22 @@ export const InputContainer = styled.div`
 `;
 
 export const StyledInput = styled.input`
-  ${tw`w-full h-full shadow appearance-none rounded  px-2 outline-none focus:outline-none`}
+  ${tw`w-full h-full appearance-none rounded px-2 outline-none focus:outline-none`}
   min-height:2.5rem;
   font-size: inherit;
-
-  background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
+  background-color: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
   color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
-  border: 1px solid ${(props) => props.theme.colors.borderNotFocused};
+  border: 1px solid ${(props) => (props.theme.input ? props.theme.input.borderColor : "black")};
 
   &:hover,
   &:focus {
-    border-bottom-width: 2px;
+    border-bottom-width: 1px;
     border-bottom-color: ${(props) => props.theme.colors.primary};
     outline: none;
   }
 
   &::placeholder {
-    color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
+    color: ${(props) => (props.theme.input ? props.theme.input.placeHolder : "black")};
     opacity: 1;
   }
 

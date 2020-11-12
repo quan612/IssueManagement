@@ -19,7 +19,7 @@ export const InputBackgroundStyled = styled.div`
 `;
 
 export const SelectBackgroundStyled = styled(InputBackgroundStyled)`
-  border: 1px solid #264a54;
+  border: 1px solid ${(props) => props.theme.input.borderColor};
   &:hover,
   :focus {
     border-color: ${(props) => props.theme.colors.primary};
@@ -59,11 +59,12 @@ export const statusColorWithBorder = {
 
 export const IssueStatusStyleWithBorder = styled.div`
   ${(props) => statusColorWithBorder[props.status]}
-  ${tw`font-semibold text-white px-1 py-1 rounded-lg ml-1 mr-1`}
+  ${tw`font-bold text-white px-1 py-1 rounded-lg ml-1 mr-1`}
   display: inline-flex;
 `;
 
 export const StatusStyle = styled.div`
   ${(props) => statusColor[props.status]}
-  ${tw`font-semibold `}
+  ${tw`font-bold `}
+  text-transform: uppercase;
 `;

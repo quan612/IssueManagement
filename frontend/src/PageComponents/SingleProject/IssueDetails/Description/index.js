@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ContentEditable, EmptyLabel, ButtonWrapper } from "./styles";
+import { ContentEditable, EmptyLabel, ButtonWrapper, Container } from "./styles";
 import { Section } from "shared/components/Section";
 import { Button } from "shared/components/Button";
 
@@ -22,7 +22,7 @@ export const IssueDetailsDescription = ({ issue, updateIssue, isWorking }) => {
   const handleRenderDescription = () => {
     if (isEditing === true) {
       return (
-        <>
+        <Container>
           <CKEditor
             editor={ClassicEditor}
             data={description}
@@ -41,23 +41,15 @@ export const IssueDetailsDescription = ({ issue, updateIssue, isWorking }) => {
               Save
             </Button>
 
-            <Button
-              disable={isWorking}
-              variant="info"
-              onClick={() => setEditing(false)}
-            >
+            <Button disable={isWorking} variant="info" onClick={() => setEditing(false)}>
               Cancel
             </Button>
           </ButtonWrapper>
-        </>
+        </Container>
       );
     } else {
       if (issue.description === "")
-        return (
-          <EmptyLabel onClick={() => setEditing(true)}>
-            Add a description...
-          </EmptyLabel>
-        );
+        return <EmptyLabel onClick={() => setEditing(true)}>Add a description...</EmptyLabel>;
       else
         return (
           <ContentEditable

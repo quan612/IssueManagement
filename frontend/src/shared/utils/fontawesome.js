@@ -16,6 +16,7 @@ import {
   faArrowLeft,
   faWindowClose,
   faEllipsisV,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -33,5 +34,6 @@ library.add(
   faMarker,
   faArrowLeft,
   faWindowClose,
-  faEllipsisV
+  faEllipsisV,
+  faCheck
 );

@@ -2,23 +2,23 @@ import { css } from "styled-components";
 
 export default {
   colors: {
-    primary: "#0AC6E0",
+    primary: "#0052cc",
     danger: "#E13C3C",
-    background: "#1B2126",
-    backgroundMedium: "#1B2126",
+    background: "#fff",
+    backgroundMedium: "#dfe1e6",
+    backgroundLight: "#e5e5f1",
     borderNotFocused: "#264a54",
     borderSecondary: "#162B31",
 
-    textDarkest: "#172b4d",
-    textDark: "#42526E",
     textMedium: "#5E6C84",
     textLight: "#8993a4",
     textLink: "#0052cc",
-    textPrimary: "#E3FBFF",
+    textPrimary: "#172b4d",
+    textSecondary: "#6e6e6e",
     textWhite: "#FFF",
 
     backgroundDarkPrimary: "#0747A6",
-    backgroundLight: "#ebecf0",
+
     backgroundLightest: "#F4F5F7",
     backgroundLightPrimary: "#D2E5FE",
     backgroundLightSuccess: "#E4FCEF",
@@ -29,21 +29,22 @@ export default {
   },
 
   card: {
-    background: "#2D3E51",
-    title: "#B5CCD3",
+    background: "#fff",
+    title: "#5E6C84",
     description: "#547784",
   },
 
   list: {
-    background: "#212E3C",
-    title: "#E3FBFF", //#0AC6E0
-    subtitle: "#5A828A",
+    background: "#f4f4f4",
+    title: "#42526E", //#0AC6E0
+    subtitle: "#8993a4",
   },
 
   input: {
-    background: "#161C20",
-    textColor: "#B5CCD3",
-    borderColor: "#162B31",
+    background: "#fff", //F4F5F7
+    textColor: "#303030",
+    placeholder: "#aba6c3",
+    borderColor: "#d2d6dc",
   },
 
   mixin: {

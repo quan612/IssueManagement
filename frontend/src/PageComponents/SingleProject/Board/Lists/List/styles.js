@@ -2,12 +2,9 @@ import styled from "styled-components";
 import tw from "tailwind.macro";
 
 export const ListContainer = styled.div`
-  ${tw`flex flex-col rounded  p-3 `}
- 
-   background: ${(props) =>
-     props.theme ? props.theme.list.background : "white"};
+  ${tw`flex flex-col rounded p-3 `}
   min-height:500px;
-
+  background: ${(props) => (props.theme ? props.theme.list.background : "white")};
 `;
 
 export const ListTitle = styled.div`

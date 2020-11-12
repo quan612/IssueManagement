@@ -42,7 +42,7 @@ const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreati
         createToast({
           variables: {
             type: "success",
-            message: `Create project success!`,
+            message: `Create project successful!`,
           },
         });
     }
@@ -52,7 +52,7 @@ const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreati
       let result = await onUpdate(data.id, project);
       if (result)
         createToast({
-          variables: { type: "success", message: "Modify project success!" },
+          variables: { type: "success", message: "Update project successful!" },
         });
     }
     onClose();
@@ -88,7 +88,7 @@ const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreati
       {inputError && <ErrorMessage error={inputError.message} />}
 
       <ButtonWrapper>
-        <Button isWorking={loading || onCreating} variant="primary-outline" onClick={handleOnSubmit}>
+        <Button isWorking={loading || onCreating} variant="primary" onClick={handleOnSubmit}>
           Submit
         </Button>
         <Button disabled={loading} variant="info" onClick={onClose}>

@@ -3,19 +3,17 @@ import React from "react";
 import { Section } from "shared/components/Section";
 import { Select } from "shared/components/Select";
 import { IssueStatus, IssueStatusDescription } from "shared/constants/issues";
-
 import { StatusStyle } from "shared/components/styles";
 
 export const IssueDetailsStatus = ({ issue, updateIssue }) => {
   return (
     <Section title="Status">
       <Select
-        title={issue.status}
+        selected={issue.status}
         items={Object.values(IssueStatus)}
-        renderMenuOption={renderIssueStatus}
-        onChange={(status) =>
-          updateIssue({ status, actionType: "IssueStatusChange" })
-        }
+        renderIcon={renderIssueStatus}
+        onChange={(status) => updateIssue({ status, actionType: "IssueStatusChange" })}
+        renderItem={false}
       />
     </Section>
   );

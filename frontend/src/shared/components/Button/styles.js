@@ -6,6 +6,10 @@ const variant = {
     background: "transparent";
     color: ${(props) => props.theme.colors.primary};
     border: 1px solid ${(props) => props.theme.colors.primary};
+    &:hover {
+      background: ${(props) => props.theme.colors.primary};
+      color: white;
+    }
   `,
   "secondary-outline": tw`bg-transparent text-gray-700 hover:bg-gray-500 hover:text-white border-transparent `,
 
@@ -21,11 +25,11 @@ const variant = {
 
 export const StyledButton = styled.button`
   ${(props) => variant[props.variant]}
-  ${tw` rounded text-base px-2 py-2`}
-
+  ${tw` rounded px-2 py-2`}
+  font-weight:600;
   width: ${(props) => (props ? props.width : "3rem")};
   opacity: 0.8;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -37,10 +41,9 @@ export const StyledButton = styled.button`
 
   @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
     /* width:2rem; */
-    font-size:0.9rem;
-    padding:0.3rem;
+    font-size: 0.9rem;
+    padding: 0.3rem;
   }
- 
 `;
 
 export const StyledChildren = styled.div`

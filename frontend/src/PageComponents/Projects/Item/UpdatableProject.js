@@ -1,4 +1,5 @@
 import React, { useState, useRef, forwardRef } from "react";
+import { withTheme } from "styled-components";
 import { Link } from "react-router-dom";
 import { useOutsideClick } from "shared/hooks/useOutsideClick";
 
@@ -6,18 +7,11 @@ import ProjectForm from "../Form";
 import ProjectDelete from "./Delete";
 import ProjectEdit from "./Edit";
 
-import {
-  ItemStyle,
-  Name,
-  Description,
-  EllipsisVContainer,
-  EllipsisV,
-  Menu,
-} from "./styles";
+import { ItemStyle, Name, Description, EllipsisVContainer, EllipsisV, Menu } from "./styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const UpdatableProject = ({ data }) => {
+const UpdatableProject = ({ data, ...props }) => {
   const [edit, setEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const ellipsisRef = useRef();
@@ -32,14 +26,9 @@ const UpdatableProject = ({ data }) => {
             <Description>{description}</Description>
           </div>
         </Link>
-        <EllipsisVContainer>
+        <EllipsisVContainer onClick={() => setShowMenu(!showMenu)}>
           <EllipsisV ref={ellipsisRef}>
-            <FontAwesomeIcon
-              icon="ellipsis-v"
-              color="white"
-              size={"lg"}
-              onClick={() => setShowMenu(!showMenu)}
-            />
+            <FontAwesomeIcon icon="ellipsis-v" color={props.theme.colors.primary} size={"lg"} />
           </EllipsisV>
         </EllipsisVContainer>
         {showMenu && (
@@ -74,6 +63,6 @@ export const ProjectMenu = forwardRef(({ onMenuClose, onOpen, id }, ref) => {
   );
 });
 
-export default UpdatableProject;
+export default withTheme(UpdatableProject);
 
 ProjectMenu.displayName = "ProjectMenu";

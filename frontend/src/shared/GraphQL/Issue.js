@@ -97,20 +97,22 @@ export const PROJECT_ISSUES_QUERY = gql`
 
 export const CREATE_ISSUE_MUTATION = gql`
   mutation CREATE_ISSUE_MUTATION(
-    $type: IssueType!
     $title: String!
     $description: String!
+    $type: IssueType!
     $status: IssueStatus!
     $priority: IssuePriority!
     $project: ID!
+    $assignee: ID
   ) {
     createIssue(
-      type: $type
       title: $title
       description: $description
+      type: $type
       status: $status
       priority: $priority
       project: $project
+      assignee: $assignee
     ) {
       ...issueFragment
       comments {

@@ -4,14 +4,11 @@ import { withIssueLogsQuery } from "shared/HOC/Issue";
 import UserAvatar from "shared/components/Avatar";
 import { Section } from "shared/components/Section";
 import { LogWrapper, LogItemWrapper } from "./styles";
-import {
-  DatesContainer,
-  FlexItemsWrapper,
-  IssueStatusStyleWithBorder,
-} from "shared/components/styles";
+import { DatesContainer, FlexItemsWrapper, IssueStatusStyleWithBorder } from "shared/components/styles";
 
 import SingleComment from "../Comment/SingleComment";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
+import IssueTypeIcon from "shared/components/IssueTypeIcon";
 import { IssueStatusDescription } from "shared/constants/issues";
 
 import { toLocalDateTime } from "shared/utils/dateUtils";
@@ -21,11 +18,7 @@ const TrackingActivity = ({ issue, logsOnIssue = [], loading }) => {
     <Section title="Activity">
       <LogWrapper>
         {logsOnIssue.map((log) => {
-          return (
-            <LogItemWrapper key={log.id}>
-              {handleRenderTracking(log, issue)}
-            </LogItemWrapper>
-          );
+          return <LogItemWrapper key={log.id}>{handleRenderTracking(log, issue)}</LogItemWrapper>;
         })}
       </LogWrapper>
     </Section>
@@ -40,14 +33,7 @@ export const TrackingUser = ({ user }) => {
 };
 
 const handleRenderTracking = (log, issue) => {
-  const {
-    logType,
-    user,
-    prevAssignee,
-    newAssignee,
-    previousValue,
-    newValue,
-  } = log;
+  const { logType, user, prevAssignee, newAssignee, previousValue, newValue } = log;
 
   switch (logType) {
     case "IssueCreate":
@@ -74,8 +60,8 @@ const handleRenderTracking = (log, issue) => {
       return (
         <FlexItemsWrapper>
           <TrackingUser user={user} />
-          changed&nbsp;<b>Status</b>&nbsp;from <Status status={previousValue} />{" "}
-          to <Status status={newValue} />
+          changed&nbsp;<b>Status</b>&nbsp;from <Status status={previousValue} /> to{" "}
+          <Status status={newValue} />
           <DatesContainer>{toLocalDateTime(log.logDate)}</DatesContainer>
         </FlexItemsWrapper>
       );
@@ -93,7 +79,11 @@ const handleRenderTracking = (log, issue) => {
     case "IssueTypeChange":
       return (
         <FlexItemsWrapper>
-          <TrackingUser user={user} /> changed <b>Type</b> to {newValue}
+          <TrackingUser user={user} /> changed type from {previousValue}&nbsp;
+          <Type type={previousValue} />
+          &nbsp;to&nbsp;
+          {newValue}&nbsp;
+          <Type type={newValue} />
         </FlexItemsWrapper>
       );
 
@@ -101,9 +91,7 @@ const handleRenderTracking = (log, issue) => {
       return (
         <SingleComment
           commentOwner={user}
-          comment={
-            issue.comments.filter((comment) => comment.id === log.newValue)[0]
-          }
+          comment={issue.comments.filter((comment) => comment.id === log.newValue)[0]}
         />
       );
 
@@ -119,3 +107,5 @@ const Status = ({ status }) => {
     </IssueStatusStyleWithBorder>
   );
 };
+
+const Type = ({ type }) => <IssueTypeIcon type={type} />;

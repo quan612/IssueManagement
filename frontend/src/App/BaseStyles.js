@@ -1,11 +1,11 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, withTheme } from "styled-components";
 
 export default createGlobalStyle`
-  html, body, #root {
+
+html, body, #root {
     height: 100%;
-    min-height: 100%;   
-    background-color: ${(props) =>
-      props.theme ? props.theme.colors.background : "white"};    
+    min-height: 100%;       
+    background-color: ${(props) => (props.theme ? props.theme.colors.backgroundMedium : "white")};   
   }
 
   body {
@@ -42,6 +42,7 @@ export default createGlobalStyle`
   ul, li, ol, dd, h1, h2, h3, h4, h5, h6, p {
     padding: 0;
     margin: 0;
+    
   }
   h1, h2, h3, h4, h5, h6, strong {
    font-weight: bold;
@@ -100,13 +101,27 @@ https://stackoverflow.com/questions/46559354/how-to-set-the-height-of-ckeditor-5
 }
 
 .ck-content code {
-    background-color: hsla(0, 0%, 78%, 0.3);
+    background-color: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
+    // background-color: hsla(0, 0%, 78%, 0.3);
     padding: .15em;
     border-radius: 2px;
 }
 
+//new customize Sep 2020
+.ck.ck-editor__main>.ck-editor__editable {
+  background-color: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
+}
+
+.ck.ck-toolbar {
+  background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
+  // padding: 0 var(--ck-spacing-small);
+  border: none;
+}
+
+
+
 .ck-content:hover, .ck-content:focus{
-  border: 1px solid #0AC6E0!important;
+  border: 1px solid ${(props) => (props.theme.colors ? props.theme.colors.primary : "black")}!important;
 }
 
 /** Custom toolbar */
@@ -141,5 +156,25 @@ https://stackoverflow.com/questions/46559354/how-to-set-the-height-of-ckeditor-5
 	background-color: ${(props) => props.theme.colors.primary};
 }
 
+.ck.ck-editor {
+  border: 1px solid ${(props) => (props.theme.input ? props.theme.input.borderColor : "black")};
+}
+
+.ck.ck-toolbar {
+  border-bottom: 1px solid ${(props) =>
+    props.theme.input ? props.theme.input.borderColor : "black"}!important;
+}
+
+.ck.ck-editor__editable_inline  ul, ol {  
+  padding-left:1rem;
+}
+
+.ck.ck-editor__editable_inline  ul {
+  list-style-type: disc!important;
+}
+
+.ck.ck-editor__editable_inline  ol {
+  list-style-type: upper-roman!important;
+}
 
 `;

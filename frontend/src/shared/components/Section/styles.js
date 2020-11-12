@@ -7,5 +7,5 @@ export const SectionContainer = styled.div`
 
 export const SectionTitle = styled.div`
   ${tw` font-bold mb-2 mt-3 `}
-  color:${(props) => (props.theme.card ? props.theme.card.title : "black")}
+  color:${(props) => (props.theme.card ? props.theme.colors.textPrimary : "black")}
 `;
