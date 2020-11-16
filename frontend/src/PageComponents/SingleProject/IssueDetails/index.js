@@ -12,14 +12,15 @@ import { IssueDetailsDescription } from "./Description";
 import IssueDetailsComment from "./Comment";
 import { IssueDetailsStatus } from "./Status";
 import { IssueDetailsAssignee } from "./Assignee";
-import { IssueDetailsReporter } from "./Reporter";
 import { IssueDetailsPriority } from "./Priority";
 import { IssueDetailsEstimate } from "./Estimate";
 import { IssueDetailsTracking } from "./Tracking";
-import { IssueDetailsDates } from "./Dates";
-import TrackingActivity from "./TrackingActivity";
+import { UploadAttachments } from "./Attachments";
 
-import { FlexColContainer, FlexRowContainer, Left, Right } from "./styles";
+import TrackingActivity from "./TrackingActivity";
+import { TrackingHeader } from "./TrackingActivity/TrackingHeader";
+
+import { PanelContainer, FlexWrap, FlexColContainer, FlexRowContainer, Left, Right } from "./styles";
 
 import ModelLoader from "shared/components/Loaders/ModalLoader";
 import { BrowserView, MobileView } from "react-device-detect";
@@ -64,45 +65,58 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
   if (fetchingIssue) return <ModelLoader />;
 
   if (issue) {
+    const { createdAt, reporter } = issue;
     return (
       <>
         <BrowserView>
-          <FlexColContainer>
-            <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
-            <FlexRowContainer>
-              <Left>
+          <div className="p-5">
+            <FlexColContainer>
+              <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
+              <PanelContainer>
+                <TrackingHeader user={reporter} date={createdAt} isCreated={true} />
                 <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} />
-                <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
-                <TrackingActivity users={users} issue={issue} />
-              </Left>
-              <Right>
-                <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
-                <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
-                <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
-                <IssueDetailsReporter reporter={issue.reporter} />
-                <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
-                <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
-                <IssueDetailsTracking issue={issue} updateIssue={handleUpdate} />
-                <IssueDetailsDates issue={issue} />
-              </Right>
-            </FlexRowContainer>
-          </FlexColContainer>
+                <FlexWrap>
+                  <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
+                  <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
+                  <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
+
+                  <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
+                  <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
+                  <IssueDetailsTracking issue={issue} updateIssue={handleUpdate} />
+                </FlexWrap>
+              </PanelContainer>
+
+              <div className="comment-area mb-10 relative">
+                <div className="comment-heading table w-full mt-16 mb-5">
+                  <h3>Comments (19)</h3>
+                </div>
+                <PanelContainer>
+                  <TrackingActivity users={users} issue={issue} />
+                </PanelContainer>
+              </div>
+
+              <UploadAttachments />
+            </FlexColContainer>
+          </div>
+          <div className="detail-footer w-full sticky rounded bottom-0  p-1 z-100 px-6 bg-white shadow border-t-2">
+            <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
+          </div>
         </BrowserView>
-        <MobileView>
+        {/* <MobileView>
           <FlexColContainer>
             <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
-            <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
-            {/* <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} /> */}
-            <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
-            <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
-            {/* <IssueDetailsReporter reporter={issue.reporter} /> */}
-            <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
+            <IssueDetailsType issue={issue} updateIssue={handleUpdate} /> */}
+        {/* <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} /> */}
+        {/* <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
+            <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} /> */}
+        {/* <IssueDetailsReporter reporter={issue.reporter} /> */}
+        {/* <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsTracking issue={issue} updateIssue={handleUpdate} />
             <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
             <TrackingActivity users={users} issue={issue} />
           </FlexColContainer>
-        </MobileView>
+        </MobileView> */}
       </>
     );
   }

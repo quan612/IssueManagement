@@ -4,7 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 import UserAvatar from "shared/components/Avatar";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
-import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
+import IssuePriorityIcon, { IssuePriorityBulletIcon } from "shared/components/IssuePriorityIcon";
 
 import { IssueContainer, IssueTitle, IssueDetails } from "./styles";
 
@@ -20,18 +20,19 @@ const BoardIssue = ({ issue, index }) => {
             {...provided.dragHandleProps}
             isDragging={snapshot.isDragging}
           >
-            <IssueTitle>{issue.title}</IssueTitle>
+            <div className="flex items-center">
+              <span>
+                <IssuePriorityBulletIcon priority={issue.priority} />
+              </span>
+            </div>
+            <span>
+              <IssueTitle>{issue.title}</IssueTitle>
+            </span>
             <IssueDetails>
               <IssueTypeIcon type={issue.type} />
-              <IssuePriorityIcon priority={issue.priority} />
+
               <div className="ml-auto ">
-                {issue.assignee && (
-                  <UserAvatar
-                    user={issue.assignee}
-                    src={issue.assignee.avatar}
-                    size={30}
-                  />
-                )}
+                {issue.assignee && <UserAvatar user={issue.assignee} src={issue.assignee.avatar} size={30} />}
               </div>
             </IssueDetails>
           </IssueContainer>

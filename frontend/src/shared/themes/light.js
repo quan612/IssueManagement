@@ -2,10 +2,10 @@ import { css } from "styled-components";
 
 export default {
   colors: {
-    primary: "#0052cc",
+    primary: "#667eea", //#667eea 0052cc
     danger: "#E13C3C",
-    background: "#fff",
-    backgroundMedium: "#dfe1e6",
+    backgroundPrimary: "#fff",
+    backgroundSecondary: "#f5f7fb",
     backgroundLight: "#e5e5f1",
     borderNotFocused: "#264a54",
     borderSecondary: "#162B31",
@@ -18,7 +18,7 @@ export default {
     textWhite: "#FFF",
 
     backgroundDarkPrimary: "#0747A6",
-
+    backgroundLight: "#eeeef2",
     backgroundLightest: "#F4F5F7",
     backgroundLightPrimary: "#D2E5FE",
     backgroundLightSuccess: "#E4FCEF",

@@ -26,12 +26,13 @@ const variant = {
 export const StyledButton = styled.button`
   ${(props) => variant[props.variant]}
   ${tw` rounded px-2 py-2`}
-  font-weight:600;
+  font-weight:500;
+  font-size: 1.2rem;
   width: ${(props) => (props ? props.width : "3rem")};
-  opacity: 0.8;
+  opacity: 1;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.8;
   }
 
   &:disabled {
@@ -41,7 +42,7 @@ export const StyledButton = styled.button`
 
   @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
     /* width:2rem; */
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 0.3rem;
   }
 `;

@@ -4,8 +4,7 @@ import { withIssuesQuery, withIssueUpdate } from "shared/HOC";
 import { flowRight } from "lodash";
 
 import Filters from "./Filters";
-import Lists from "./Lists";
-import { UtilityWrapper } from "./styles";
+import ListsManager from "./ListsManager";
 
 import { Button } from "shared/components/Button";
 
@@ -27,15 +26,15 @@ const Board = ({
 
   return (
     <div className="mt-2" style={{ flex: 1 }}>
-      <UtilityWrapper>
+      <div>
         <ButtonWrapper>
           <Button variant="primary-outline" onClick={openModal}>
             Create Issue
           </Button>
         </ButtonWrapper>
-        <Filters onFilter={handleOnFilter} users={users} />
-      </UtilityWrapper>
-      <Lists
+        {/* <Filters onFilter={handleOnFilter} users={users} /> */}
+      </div>
+      <ListsManager
         issues={issues}
         fetchingIssues={fetchingIssues}
         updatingIssue={updatingIssue}

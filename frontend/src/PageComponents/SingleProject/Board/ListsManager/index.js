@@ -11,7 +11,7 @@ import { BrowserView, MobileView } from "react-device-detect";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 
-const BoardLists = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...rest }) => {
+const ListsManager = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...rest }) => {
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
@@ -90,16 +90,16 @@ const BoardLists = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...
   if (issues) {
     return (
       <>
-        <BrowserView>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <BoardListWrapper>
-              {Object.values(IssueStatus).map((status) => {
-                return <List key={status} status={status} issues={issues} />;
-              })}
-            </BoardListWrapper>
-          </DragDropContext>
-        </BrowserView>
-        <MobileView>
+        {/* <BrowserView> */}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <BoardListWrapper name="ListManager">
+            {Object.values(IssueStatus).map((status) => {
+              return <List key={status} status={status} issues={issues} />;
+            })}
+          </BoardListWrapper>
+        </DragDropContext>
+        {/* </BrowserView> */}
+        {/* <MobileView>
           <DragDropContext onDragEnd={onDragEnd}>
             <BoardListWrapper>
               <Carousel>
@@ -109,7 +109,7 @@ const BoardLists = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...
               </Carousel>
             </BoardListWrapper>
           </DragDropContext>
-        </MobileView>
+        </MobileView> */}
       </>
     );
   }
@@ -118,4 +118,4 @@ const BoardLists = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, ...
 const getSortedListIssues = (issues, status) =>
   issues.filter((issue) => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
 
-export default BoardLists;
+export default ListsManager;

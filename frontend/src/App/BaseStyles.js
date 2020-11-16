@@ -5,7 +5,7 @@ export default createGlobalStyle`
 html, body, #root {
     height: 100%;
     min-height: 100%;       
-    background-color: ${(props) => (props.theme ? props.theme.colors.backgroundMedium : "white")};   
+    background-color: ${(props) => (props.theme ? props.theme.colors.backgroundSecondary : "white")};   
   }
 
   body {
@@ -13,7 +13,9 @@ html, body, #root {
     -webkit-tap-highlight-color: transparent;
     line-height: 1.2;
     font-size:16px;
-    font-family: "CircularStdBook"; 
+    font-family: "benton-sans,'Helvetica Neue',helvetica,arial,sans-serif"; 
+    //benton-sans,'Helvetica Neue',helvetica,arial,sans-serif;
+    //CircularStdBook
     font-weight: normal;
     
   }

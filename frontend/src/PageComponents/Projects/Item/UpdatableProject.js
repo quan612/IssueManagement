@@ -17,13 +17,13 @@ const UpdatableProject = ({ data, ...props }) => {
   const ellipsisRef = useRef();
 
   if (!edit) {
-    const { id, name, description } = data;
+    const { id, name, key } = data;
     return (
       <ItemStyle>
         <Link to={`/projects/${id}`} className="w-full">
           <div className="w-full">
             <Name>{name}</Name>
-            <Description>{description}</Description>
+            <Description>{key}</Description>
           </div>
         </Link>
         <EllipsisVContainer onClick={() => setShowMenu(!showMenu)}>

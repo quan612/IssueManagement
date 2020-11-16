@@ -31,26 +31,19 @@ const Routes = ({ authentication }) => {
     <>
       <Header authentication={authentication} />
       <Body
-      // key={key} style={props}
+        name="BodyContainer"
+        // key={key} style={props}
       >
         <Switch location={location}>
           <Route path={SIGNUP} component={() => <PAGES.SIGNUP />} />
-          <Route
-            path={SIGNIN}
-            component={() => <PAGES.SIGNIN authentication={authentication} />}
-          />
+          <Route path={SIGNIN} component={() => <PAGES.SIGNIN authentication={authentication} />} />
           <Route path={RESETPASSWORD} component={PAGES.RESETPASSWORD} />
 
           <PrivateRoute
             authentication={authentication}
             exact
             path={USERS}
-            component={() => (
-              <PAGES.USERS
-                authentication={authentication}
-                location={location}
-              />
-            )}
+            component={() => <PAGES.USERS authentication={authentication} location={location} />}
           />
 
           <PrivateRoute

@@ -2,17 +2,21 @@ import styled, { css } from "styled-components";
 import tw from "tailwind.macro";
 
 export const IssueContainer = styled.div`
-  ${tw`rounded mt-3 p-2 border-b cursor-pointer hover:opacity-75`}
+  ${tw` mt-3  border-b cursor-pointer hover:opacity-75 overflow-hidden`}
   display:flex;
   flex-direction: column;
   justify-content: space-between;
 
-  height: 95px;
+  padding: 0.7rem;
+  min-height: 130px;
   width: auto;
 
   background: ${(props) => (props.theme ? props.theme.card.background : "white")};
 
+  border-radius: 1rem;
   border-color: transparent;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px,
+    rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
 
   ${(props) =>
     props.isDragging
@@ -29,9 +33,12 @@ export const IssueTitle = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+
+  margin-top: 0.5rem;
   text-overflow: ellipsis;
   color: ${(props) => (props.theme ? props.theme.card.title : "white")};
-  font-weight: 600;
+  font-weight: 300;
+  font-size: 1rem;
   word-wrap: break-word;
   text-align: left;
 `;

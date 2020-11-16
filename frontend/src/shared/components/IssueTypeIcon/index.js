@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { IconContainer } from "shared/components/styles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ThemeIcon } from "shared/components/Icon";
 import { IssueType } from "shared/constants/issues";
 
 const typeIcon = {
@@ -23,7 +23,7 @@ const IssueTypeIcon = ({ type }) => {
   const color = typeColor[key];
   return (
     <IconContainer>
-      <FontAwesomeIcon icon={icon} color={color} />
+      <ThemeIcon icon={icon} color={color} size="lg" />
     </IconContainer>
   );
 };

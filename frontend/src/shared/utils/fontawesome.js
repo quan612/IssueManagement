@@ -17,6 +17,10 @@ import {
   faWindowClose,
   faEllipsisV,
   faCheck,
+  faUser,
+  faLockOpen,
+  faCircle,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -35,5 +39,9 @@ library.add(
   faArrowLeft,
   faWindowClose,
   faEllipsisV,
-  faCheck
+  faCheck,
+  faUser,
+  faLockOpen,
+  faCircle,
+  faChevronRight
 );

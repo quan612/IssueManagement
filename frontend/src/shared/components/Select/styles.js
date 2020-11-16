@@ -2,7 +2,7 @@ import tw from "tailwind.macro";
 import styled from "styled-components";
 
 export const SelectContainer = styled.div`
-  ${tw` relative rounded shadow `}
+  ${tw` relative rounded `}
   width: ${(props) => (props.width ? props.width : "100%")};
   background-color: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
   color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};

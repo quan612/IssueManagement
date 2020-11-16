@@ -6,7 +6,7 @@ export const Container = styled.header`
   flex: 0 0 52px;
   position: fixed;
   width: 100%;
-  z-index: 999;
+  z-index: 900;
   background: inherit;
 `;
 

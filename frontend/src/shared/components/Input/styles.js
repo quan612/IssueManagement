@@ -6,12 +6,17 @@ export const InputContainer = styled.div`
 `;
 
 export const StyledInput = styled.input`
-  ${tw`w-full h-full appearance-none rounded px-2 outline-none focus:outline-none`}
+  ${tw` h-full appearance-none rounded px-2 outline-none focus:outline-none`}
   min-height:2.5rem;
   font-size: inherit;
   background-color: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
   color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
   border: 1px solid ${(props) => (props.theme.input ? props.theme.input.borderColor : "black")};
+  width: 100%;
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 
   &:hover,
   &:focus {
@@ -24,6 +29,8 @@ export const StyledInput = styled.input`
     color: ${(props) => (props.theme.input ? props.theme.input.placeHolder : "black")};
     opacity: 1;
   }
+
+  ${(props) => props.icon !== undefined && `padding-left: 50px !important;`}
 
   ${(props) =>
     props.invalid &&
@@ -41,4 +48,31 @@ export const StyledInput = styled.input`
     `}
 
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+`;
+
+export const IconContainer = styled.div`
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 10px;
+  left: 12px;
+  pointer-events: none;
+
+  &:after {
+    content: "";
+    position: absolute;
+    right: -11px;
+    top: -10px;
+    bottom: -10px;
+    width: 1px;
+    opacity: 0.5;
+    background-color: rgba(212, 212, 212, 0);
+    background-image: linear-gradient(
+      to top,
+      rgba(212, 212, 212, 0) 0,
+      #8b8484 30%,
+      #d4d4d4 70%,
+      rgba(212, 212, 212, 0) 100%
+    );
+  }
 `;

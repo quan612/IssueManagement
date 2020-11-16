@@ -9,11 +9,7 @@ import UserAvatar from "shared/components/Avatar";
 
 import { FlexContainer, TextAreaContainer, BoxContainer, Box } from "./styles";
 
-const IssueDetailsComments = ({
-  createComment,
-  creatingComment,
-  currentLogInUser,
-}) => {
+const IssueDetailsComments = ({ createComment, creatingComment, currentLogInUser }) => {
   const [isAddComment, setAddComment] = useState(false);
   const commentRef = useRef();
 
@@ -25,30 +21,18 @@ const IssueDetailsComments = ({
   };
 
   return (
-    <Section title="Comment">
+    // <Section title="Comment">
+    <div className="my-2">
       <FlexContainer>
-        <UserAvatar user={currentLogInUser} src={currentLogInUser.avatar} />
+        {/* <UserAvatar user={currentLogInUser} src={currentLogInUser.avatar} /> */}
         {isAddComment ? (
           <TextAreaContainer>
-            <TextArea
-              ref={commentRef}
-              disabled={creatingComment}
-              focus={true}
-              height={"70px"}
-            />
+            <TextArea ref={commentRef} disabled={creatingComment} focus={true} height={"70px"} />
             <ButtonWrapper>
-              <Button
-                isWorking={creatingComment}
-                variant="primary-outline"
-                onClick={handleSaveComment}
-              >
+              <Button isWorking={creatingComment} variant="primary" onClick={handleSaveComment}>
                 Save
               </Button>
-              <Button
-                disabled={creatingComment}
-                variant="info"
-                onClick={() => setAddComment(false)}
-              >
+              <Button disabled={creatingComment} variant="info" onClick={() => setAddComment(false)}>
                 Cancel
               </Button>
             </ButtonWrapper>
@@ -59,7 +43,8 @@ const IssueDetailsComments = ({
           </BoxContainer>
         )}
       </FlexContainer>
-    </Section>
+    </div>
+    // </Section>
   );
 };
 

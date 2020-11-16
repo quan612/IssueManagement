@@ -10,14 +10,15 @@ export const Content = styled.div`
 `;
 
 export const CommentContainer = styled.div`
+  position: relative;
   max-width: 98%;
-  display: inline-block;
+  display: flex;
   /* width: 98%; */
   min-width: 75px;
   background: ${(props) => props.theme.list.background};
 
   margin: 5px;
-  padding: 3px 10px 3px 10px;
+  padding: 4px 10px;
   border-radius: 10px;
 
   white-space: pre-wrap; /* CSS3 */
@@ -27,12 +28,33 @@ export const CommentContainer = styled.div`
   word-wrap: break-word; /* IE */
 `;
 
+export const Comment = styled.div`
+  display: flex;
+  flex-basis: auto;
+  padding-left: 5px;
+
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  align-items: center;
+`;
+
+export const CommentUtility = styled.div`
+  width: 44px;
+  height: 100%;
+  display: flex;
+  flex-basis: auto;
+`;
+
 export const EditContainer = styled.div`
   ${tw`ml-1 mr-2 mt-2`}
 `;
 
 export const EditButton = styled.span`
   ${tw`ml-2 hover:cursor-pointer text-gray-700 hover:text-yellow-700 `}
+  height: 3rem;
+  padding-top: 15px;
 `;
 
 export const DatesContainer = styled.div`

@@ -28,13 +28,7 @@ export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
   const [filter, setFilter] = useState("");
   const client = useApolloClient();
 
-  const {
-    loading,
-    error,
-    data: { getProjects } = {},
-    fetchMore,
-    networkStatus,
-  } = useQuery(PROJECTS_QUERY, {
+  const { loading, error, data: { getProjects } = {}, fetchMore, networkStatus } = useQuery(PROJECTS_QUERY, {
     variables: { filter },
     notifyOnNetworkStatusChange: true,
   });
@@ -71,10 +65,7 @@ export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
               if (!fetchMoreResult) {
                 return prev;
               }
-              let newList = [
-                ...prev.getProjects,
-                ...fetchMoreResult.getProjects,
-              ];
+              let newList = [...prev.getProjects, ...fetchMoreResult.getProjects];
               // in case adding a new item between fetching, need to have unique list
               newList = [...new Set(newList)];
               return Object.assign({}, prev, {
@@ -102,39 +93,36 @@ export const withSingleProjectQuery = (BaseComponent) => ({ ...props }) => {
 };
 
 export const withProjectCreate = (Component) => ({ ...props }) => {
-  const [createProject, { loading, error }] = useMutation(
-    ADD_PROJECT_MUTATION,
-    {
-      //cache update
-      update: (cache, { data: { createProject } }) => {
-        let data = cache.readQuery({
-          query: PROJECTS_QUERY,
-        });
+  const [createProject, { loading, error }] = useMutation(ADD_PROJECT_MUTATION, {
+    //cache update
+    update: (cache, { data: { createProject } }) => {
+      let data = cache.readQuery({
+        query: PROJECTS_QUERY,
+      });
 
-        cache.writeQuery({
-          query: PROJECTS_QUERY,
-          data: {
-            getProjects: [...data.getProjects, createProject],
-          },
-        });
+      cache.writeQuery({
+        query: PROJECTS_QUERY,
+        data: {
+          getProjects: [...data.getProjects, createProject],
+        },
+      });
 
-        data = cache.readQuery({
-          query: PROJECTS_COUNT,
-        });
+      data = cache.readQuery({
+        query: PROJECTS_COUNT,
+      });
 
-        cache.writeQuery({
-          query: PROJECTS_COUNT,
-          data: {
-            projectsCount: data.projectsCount + 1,
-          },
-        });
-      },
-    }
-  );
+      cache.writeQuery({
+        query: PROJECTS_COUNT,
+        data: {
+          projectsCount: data.projectsCount + 1,
+        },
+      });
+    },
+  });
 
-  const handleOnCreate = async ({ name, description }) => {
+  const handleOnCreate = async ({ name, key }) => {
     return await createProject({
-      variables: { name, description },
+      variables: { name, key },
     });
   };
 
@@ -149,16 +137,14 @@ export const withProjectCreate = (Component) => ({ ...props }) => {
 };
 
 export const withProjectUpdate = (Component) => ({ ...props }) => {
-  const [updateProject, { loading, error }] = useMutation(
-    UPDATE_PROJECT_MUTATION
-  );
+  const [updateProject, { loading, error }] = useMutation(UPDATE_PROJECT_MUTATION);
 
-  const handleOnUpdate = async (id, { name, description }) => {
+  const handleOnUpdate = async (id, { name, key }) => {
     return await updateProject({
       variables: {
         id,
         name,
-        description,
+        key,
       },
     });
   };
@@ -184,9 +170,7 @@ export const withProjectDelete = (Component) => ({ ...props }) => {
       cache.writeQuery({
         query: PROJECTS_QUERY,
         data: {
-          getProjects: data.getProjects.filter(
-            (o) => o.id !== deleteProject.id
-          ),
+          getProjects: data.getProjects.filter((o) => o.id !== deleteProject.id),
         },
       });
 
@@ -209,11 +193,5 @@ export const withProjectDelete = (Component) => ({ ...props }) => {
     });
   };
 
-  return (
-    <Component
-      {...props}
-      onDelete={(id) => handleOnDelete(id)}
-      loading={loading}
-    />
-  );
+  return <Component {...props} onDelete={(id) => handleOnDelete(id)} loading={loading} />;
 };

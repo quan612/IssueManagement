@@ -14,7 +14,7 @@ import { FormContainer } from "./styles";
 const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreating, createToast }) => {
   const [project, setProject] = useState({
     name: data.name || "",
-    description: data.description || "",
+    key: data.key || "",
   });
 
   const [inputError, setError] = useState({});
@@ -74,11 +74,11 @@ const ProjectForm = ({ data = [], onClose, onCreate, onUpdate, loading, onCreati
         />
       </Section>
 
-      <Section title="Project Description">
+      <Section title="Project Key">
         <Input
           type="text"
-          name="description"
-          value={project.description}
+          name="key"
+          value={project.key}
           onChange={handleOnChange}
           onKeyDown={(event) => {
             if (event.keyCode === KeyCodes.ENTER) handleOnSubmit();

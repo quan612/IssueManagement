@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useOutsideClick } from "shared/hooks/useOutsideClick";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ThemeIcon } from "shared/components/Icon";
 
 import { Wrapper, OverlayContainer, ModalContainer, ModalContent } from "./styles";
 
@@ -28,16 +28,17 @@ const Modal = ({ isOpen, onClose, render, isConfirm = false }) => {
     isOpen &&
     ReactDOM.createPortal(
       <Wrapper>
-        <OverlayContainer />
-        <ModalContainer ref={modalRef}>
-          <FontAwesomeIcon
-            icon="window-close"
-            className="cursor-pointer z-50 absolute right-0 "
-            onClick={onClose}
-            color="red"
-          />
-          <ModalContent>{render({ close: onClose })}</ModalContent>
-        </ModalContainer>
+        <OverlayContainer>
+          <ModalContainer ref={modalRef}>
+            <ThemeIcon
+              icon="window-close"
+              className="cursor-pointer z-50 absolute right-0 "
+              onClick={onClose}
+              color="red"
+            />
+            <ModalContent>{render({ close: onClose })}</ModalContent>
+          </ModalContainer>
+        </OverlayContainer>
       </Wrapper>,
       $root
     )

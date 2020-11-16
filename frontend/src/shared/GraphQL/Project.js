@@ -4,16 +4,12 @@ const PROJECT_FRAGMENT = gql`
   fragment projectFragment on Project {
     id
     name
-    description
+    key
   }
 `;
 
 export const PROJECTS_QUERY = gql`
-  query ProjectsPagination(
-    $filter: String = ""
-    $skip: Int = 0
-    $first: Int = 10
-  ) {
+  query ProjectsPagination($filter: String = "", $skip: Int = 0, $first: Int = 10) {
     getProjects(filter: $filter, skip: $skip, first: $first) {
       ...projectFragment
     }
@@ -46,8 +42,8 @@ export const SINGLE_PROJECT_QUERY = gql`
 `;
 
 export const ADD_PROJECT_MUTATION = gql`
-  mutation ADD_PROJECT_MUTATION($name: String!, $description: String!) {
-    createProject(name: $name, description: $description) {
+  mutation ADD_PROJECT_MUTATION($name: String!, $key: String!) {
+    createProject(name: $name, key: $key) {
       ...projectFragment
     }
   }
@@ -55,12 +51,8 @@ export const ADD_PROJECT_MUTATION = gql`
 `;
 
 export const UPDATE_PROJECT_MUTATION = gql`
-  mutation UPDATE_PROJECT_MUTATION(
-    $id: ID!
-    $name: String!
-    $description: String
-  ) {
-    updateProject(id: $id, name: $name, description: $description) {
+  mutation UPDATE_PROJECT_MUTATION($id: Int!, $name: String!, $key: String) {
+    updateProject(id: $id, name: $name, key: $key) {
       ...projectFragment
     }
   }
@@ -68,7 +60,7 @@ export const UPDATE_PROJECT_MUTATION = gql`
 `;
 
 export const DELETE_PROJECT_MUTATION = gql`
-  mutation DELETE_PROJECT_MUTATION($id: ID!) {
+  mutation DELETE_PROJECT_MUTATION($id: Int!) {
     deleteProject(id: $id) {
       id
     }

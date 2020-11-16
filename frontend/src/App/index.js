@@ -6,7 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes";
 
 import ApolloClient from "apollo-client";
+import { ApolloLink } from "apollo-link";
 import { createHttpLink } from "apollo-link-http";
+import { createUploadLink } from "apollo-upload-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import resolvers from "./clientResolvers";
 
@@ -27,11 +29,17 @@ const cache = new InMemoryCache({
   },
 });
 
-//console.log(process.env.NODE_ENV);
-const link = createHttpLink({
+const httpLink = createHttpLink({
   credentials: "include",
   uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
 });
+
+const uploadLink = createUploadLink({
+  credentials: "include",
+  uri: process.env.NODE_ENV === `development` ? devEndpoint : prodEndpoint,
+});
+
+const link = ApolloLink.split((operation) => operation.getContext().hasUpload, uploadLink, httpLink);
 
 const client = new ApolloClient({
   cache,

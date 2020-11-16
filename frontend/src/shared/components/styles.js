@@ -31,12 +31,23 @@ export const IconContainer = styled.div`
   margin-right: 5px;
 `;
 
-export const DatesContainer = styled.div`
-  ${tw`w-full mt-1 py-1 text-gray-500 leading-tight italic`}
+export const DatesContainer = styled.span`
+  ${tw` mt-1 text-gray-500 leading-tight`}
 `;
 
 export const FlexItemsWrapper = styled.div`
   ${tw`flex flex-wrap items-center`}
+`;
+
+export const StyledTag = styled.div`
+  background-color: ${(props) => props.color ?? "black"};
+  color: white;
+  padding: 4px 0.8rem;
+  height: 2rem;
+  border-radius: 8px;
+
+  display: inline-flex;
+  align-items: center;
 `;
 
 export const SelectItemLabel = styled.div`

@@ -3,20 +3,40 @@ import tw from "tailwind.macro";
 import { CardBackgroundStyled } from "shared/components/styles";
 
 export const Wrapper = styled.div`
-  ${tw`flex justify-center items-center  overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none`}
-  top:52px;
+  ${tw`overflow-x-hidden overflow-y-auto inset-0 z-50 outline-none focus:outline-none`}
+
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  transform: scale3d(1, 1, 1);
+  z-index: 990;
+
+  margin: auto;
+  display: flex;
 `;
 
 export const OverlayContainer = styled.div`
-  ${tw`absolute w-full h-full bg-gray-900`}
-  opacity:0.6;
+  min-height: 100%;
+  background: rgba(9, 30, 66, 0.54);
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 50px;
 `;
 
 export const ModalContainer = styled(CardBackgroundStyled)`
-  ${tw`sm:w-full md:w-full lg:w-4/5 mx-auto relative rounded shadow-lg z-40`}
+  ${tw` mx-auto relative rounded shadow-lg z-40`}
 
-  @media only screen and (min-device-width: 360px) 
-  and (max-device-width: 667px) {
+  height: calc(100% - 72px);
+  width: 100%;
+  max-width: 1024px;
+  overflow-y: auto;
+
+  background-color: ${(props) => props.theme.colors.backgroundLight}; // #eeeef2
+  @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
     top: 17rem;
     font-size: 0.9rem;
     margin: 0;
@@ -24,5 +44,5 @@ export const ModalContainer = styled(CardBackgroundStyled)`
 `;
 
 export const ModalContent = styled.div`
-  ${tw`text-left py-2 px-5`}
+  ${tw`text-left`}
 `;

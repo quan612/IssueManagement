@@ -2,7 +2,7 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { IssueStatusDescription } from "shared/constants/issues";
-import Issue from "./Issue";
+import Issue from "../Issue";
 import { ListContainer, ListTitle, ListSubTitle } from "./styles";
 
 const BoardList = ({ status, issues }) => {

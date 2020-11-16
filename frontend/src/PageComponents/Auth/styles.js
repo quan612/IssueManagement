@@ -1,28 +1,76 @@
 import styled from "styled-components";
 import tw from "tailwind.macro";
 
-export const PageContainer = styled.div`
-  ${tw` flex content-center items-center justify-center h-full`}
+const AuthPageContainer = styled.div`
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  display: flex;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
 `;
 
-export const Panel = styled.div`
-  ${tw`w-full md:w-1/2 lg:w-4/12 px-3 shadow-lg rounded-lg`}
+const Content = styled.div`
+  position: relative;
+  @media (min-width: 768px) {
+    width: 750px;
+  }
 
-  background:${(props) => props.theme.card.background};
-  @media only screen and (min-width: 1280px) {
-    transform: scale(1.4);
+  @media (min-width: 992px) {
+    width: 970px;
   }
 `;
 
-export const FormWrapper = styled.form`
-  ${tw`flex-auto px-4 lg:px-10 py-10 pt-4`}
+const Panel = styled.div`
+  ${tw`shadow-lg rounded-lg`}
+  background:${(props) => props.theme.card.background};
+
+  margin: 0 auto 20px;
+  max-width: 430px;
+
+  /* fixed collapse margin */
+  overflow: auto;
 `;
 
-export const Title = styled.div`
-  ${tw` text-2xl font-bold text-center`}
-  color: ${(props) => props.theme.colors.textPrimary};
+const Title = styled.h2`
+  ${tw`text-center`}
+  color: ${(props) => props.theme.colors.primary};
+  margin: 20px;
+
+  margin: 40px 20px 0;
+  font-weight: 200;
+  font-size: 2rem;
 `;
 
-export const ResetPassword = styled.a`
-  ${tw` cursor-pointer text-blue-600 hover:text-blue-400 font-bold`}
+const FormWrapper = styled.form`
+  ${tw`flex-auto `}
+  padding:3rem;
 `;
+
+const PanelFooter = styled.div`
+  padding: 20px;
+  display: block;
+  font-size: 17px;
+  color: #4a5568;
+
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+
+  a {
+    color: ${(props) => props.theme.colors.primary};
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+AuthPageContainer.displayName = "PageContainer";
+Panel.displayName = "Panel";
+FormWrapper.displayName = "FormWrapper";
+Title.displayName = "Title";
+
+export { AuthPageContainer as PageContainer, Content, Panel, Title, FormWrapper, PanelFooter };
