@@ -4,3 +4,4 @@ git subtree push --prefix backend heroku-backend master
 heroku logs --tail --app jira-yoga-clone
 
 https://jira-yoga-clone.herokuapp.com/
+prima deploy --env-file variables.env

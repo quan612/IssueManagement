@@ -1,0 +1,56 @@
+# Write your query or mutation here
+mutation deleleManyFiles{
+  deleteManyFiles(where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+}
+  
+  
+mutation deleleManyLogs{
+  deleteManyLogs (where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+  }
+
+mutation deleleManyComments{
+  deleteManyComments (where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+  }
+  
+  mutation deleleManyIssues{
+  deleteManyIssues (where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+  }
+  
+  mutation deleleManyUsers{
+  deleteManyUsers (where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+  }
+  
+   mutation deleleManyProjects{
+  deleteManyProjects (where:{
+   id_not: 0
+  }){
+    count
+  }
+    
+  }
+  

@@ -1,8 +1,10 @@
 #import * from './generated/prisma.graphql'
+scalar Upload
+
 input UserInput {
-  id: ID  
+  id: ID
   name: String
-  avatar: String  
+  avatar: String
 }
 
 type SuccessMessage {
@@ -10,33 +12,30 @@ type SuccessMessage {
 }
 
 type Query {
-  project(id: ID!): Project
+  project(id: Int!): Project
   projects: [Project]!
   me: User
   users: [User]!
-  issues(projectId: ID!, filter: IssueWhereInput): [Issue!]!
-  issue(id: ID!): Issue!
-  logsOnIssue(issueId: ID!): [Log!]!
+  issues(projectId: String!, filter: IssueWhereInput): [Issue!]!
+  issue(id: Int!): Issue!
+  logsOnIssue(issueId: Int!): [IssueTrackingLog!]!
   singleComment(id: ID!): Comment!
   singleUser(id: ID!): User!
-  getProjects(filter:String, skip:Int!, first:Int!): [Project!]!
-  projectsCount(filter:String): Int!
+  getProjects(filter: String, skip: Int!, first: Int!): [Project!]!
+  projectsCount(filter: String): Int!
+  file(id: ID!): File
 }
 
 type Mutation {
-  createProject(name: String!, description: String): Project!
-  deleteProject(id: ID!): Project
-  updateProject(id: ID!, name: String!, description: String): Project!
+  createProject(name: String!, key: String!): Project!
+  deleteProject(id: Int!): Project
+  updateProject(id: Int!, name: String!, key: String!): Project!
 
   signup(email: String!, name: String!, password: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
-  resetPassword(
-    email: String!
-    password: String!
-    confirmPassword: String!
-  ): User!
-  updateUserInfo(email: String!, name: String!, avatar:String):User!
+  resetPassword(email: String!, password: String!, confirmPassword: String!): User!
+  updateUserInfo(email: String!, name: String!, avatar: String): User!
 
   createIssue(
     title: String!
@@ -44,12 +43,12 @@ type Mutation {
     type: IssueType!
     status: IssueStatus!
     priority: IssuePriority!
-    project: ID!
+    project: String!
     assignee: ID
   ): Issue!
 
   updateIssue(
-    id: ID!
+    id: Int!
     title: String!
     description: String
     type: IssueType!
@@ -61,8 +60,9 @@ type Mutation {
     listPosition: Float
     actionType: String
   ): Issue!
-  
 
   createComment(text: String!, issue: ID!, actionType: String): Comment!
   updateComment(id: ID!, text: String): Comment!
+
+  uploadFile(file: Upload!): File!
 }

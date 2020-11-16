@@ -1,0 +1,5 @@
+module.exports = {
+  S3_ACCESS_KEY_ID: "AKIA2ZORNSPTJU2CKZ4Z",
+  S3_SECRET_ACCESS_KEY: "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",
+  S3_BUCKET: "quan-upload-s3",
+};

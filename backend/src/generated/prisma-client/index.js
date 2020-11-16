@@ -37,11 +37,15 @@ var models = [
     embedded: false
   },
   {
+    name: "File",
+    embedded: false
+  },
+  {
     name: "LogType",
     embedded: false
   },
   {
-    name: "Log",
+    name: "IssueTrackingLog",
     embedded: false
   }
 ];

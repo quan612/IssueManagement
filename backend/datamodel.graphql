@@ -11,26 +11,21 @@ enum IssueType {
 }
 
 enum IssueStatus {
-  Backlog
-  Selected
-  Inprogress
+  Open
+  InProgress
   Done
 }
 
 enum IssuePriority {
-  Highest
   High
   Medium
   Low
-  Lowest
 }
 
-
-
 type Project {
-  id: ID! @id
-  name: String! 
-  description: String
+  id: Int! @id
+  name: String!
+  key: String! @unique
   issues: [Issue!]! @relation(name: "ProjectIssue", onDelete: CASCADE)
 }
 
@@ -48,10 +43,8 @@ type User {
   avatar: String
 }
 
-
-
 type Issue {
-  id: ID! @id
+  id: Int! @id
   title: String!
   description: String
   type: IssueType!
@@ -67,6 +60,7 @@ type Issue {
   updatedAt: DateTime! @updatedAt
   project: Project! @relation(name: "ProjectIssue", onDelete: SET_NULL)
   comments: [Comment!]! @relation(name: "IssueComment", onDelete: CASCADE)
+  attachments: [File!]! @relation(name: "IssueFile", onDelete: CASCADE)
 }
 
 type Comment {
@@ -78,8 +72,20 @@ type Comment {
   updatedAt: DateTime! @updatedAt
 }
 
+type File {
+  id: ID! @id
+
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  url: String! @unique
+  issue: Issue! @relation(name: "IssueFile")
+}
+
 enum LogType {
-  IssueCreate
+  IssueOpen
   IssueAssigneeChange
   IssueStatusChange
   IssueTypeChange
@@ -87,15 +93,14 @@ enum LogType {
   IssueComment
 }
 
-type Log {
+type IssueTrackingLog {
   id: ID! @id
-  logType: LogType!
-  logDate: DateTime! @createdAt
+  type: LogType!
+  created: DateTime! @createdAt
   user: User @relation(link: INLINE, name: "LogIssueOwner") # FK relationship to User
   issue: Issue @relation(link: INLINE) # FK relationship to Issue
-  prevAssignee: User @relation(link: INLINE, name: "LogIssuePrevAssignee")# FK relationship to User
-  newAssignee: User @relation(link: INLINE, name: "LogIssueNewAssignee")# FK relationship to User
+  prevAssignee: User @relation(link: INLINE, name: "LogIssuePrevAssignee") # FK relationship to User
+  newAssignee: User @relation(link: INLINE, name: "LogIssueNewAssignee") # FK relationship to User
   previousValue: String
   newValue: String
-  
 }
