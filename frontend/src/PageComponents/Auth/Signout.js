@@ -33,13 +33,13 @@ const Signout = () => {
 export default Signout;
 
 const NavItem = styled.a`
-${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold py-4`}
+  ${tw`no-underline border-b-2 border-transparent uppercase tracking-wide font-bold py-4`}
   color: ${(props) => props.theme.colors.textPrimary};
   &.${(props) => props.activeClassName} {
     border-bottom-color: ${(props) => props.theme.colors.textPrimary};
   }
 
-  &:hover{
+  &:hover {
     border-bottom-color: ${(props) => props.theme.colors.textPrimary};
     cursor: pointer;
   }

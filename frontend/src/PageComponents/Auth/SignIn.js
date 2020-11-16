@@ -5,7 +5,7 @@ import { withSignIn } from "shared/HOC";
 import { Formik } from "formik";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
-import * as ROUTES from "App/routes";
+import * as ROUTES from "App/Routes";
 
 import { FormikInput } from "shared/components/FormikPrimitiveComponent";
 import { ErrorMessage } from "shared/components/ErrorMessage";
@@ -88,7 +88,9 @@ const SignIn = ({ authentication, loading, error, onSignIn }) => {
                     </Button>
                   </div>
 
-                  {error && <ErrorMessage error={error.message.split("GraphQL error:")} />}
+                  {error && (
+                    <ErrorMessage error={error.message.split("GraphQL error:")} />
+                  )}
                 </FormWrapper>
                 <PanelFooter>
                   <div className="flex justify-between">

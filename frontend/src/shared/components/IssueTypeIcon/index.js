@@ -8,13 +8,13 @@ import { IssueType } from "shared/constants/issues";
 const typeIcon = {
   TASK: "check-square",
   BUG: "bug",
-  STORY: "bookmark",
+  REQUEST: "bookmark",
 };
 
 const typeColor = {
   TASK: "#4FADE6",
   BUG: "#E44D42",
-  STORY: "#0B875B",
+  REQUEST: "#0B875B",
 };
 
 const IssueTypeIcon = ({ type }) => {

@@ -5,7 +5,7 @@ import { withPasswordReset } from "shared/HOC";
 import { Formik } from "formik";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
-import * as ROUTES from "App/routes";
+import * as ROUTES from "App/Routes";
 
 import { KeyCodes } from "shared/constants/keyCodes";
 import { Button } from "shared/components/Button";
@@ -26,7 +26,9 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required(" Email is required!").email("Please use a valid email"),
 
-    password: Yup.string().required(" Password is required!").min(5, "Password min length is 5"),
+    password: Yup.string()
+      .required(" Password is required!")
+      .min(5, "Password min length is 5"),
 
     confirmPassword: Yup.string().required(" Confirm Password is required!"),
   });
@@ -85,7 +87,13 @@ const ResetPassword = ({ loading, error, onResetPassword, ...props }) => {
                 />
 
                 <div className="mt-3">
-                  <Button type="submit" isWorking={loading} variant="primary" onClick={() => {}} width="100%">
+                  <Button
+                    type="submit"
+                    isWorking={loading}
+                    variant="primary"
+                    onClick={() => {}}
+                    width="100%"
+                  >
                     Reset Password
                   </Button>
                 </div>

@@ -27,8 +27,8 @@ const CreateIssue = ({ closeModal, users, createIssueAPI, creatingIssue, createT
         title: "",
         description: "",
         assignee: userOptions[0],
-        status: IssueStatus.BACKLOG, // default for newly created issue
-        priority: IssuePriority.LOWEST,
+        status: IssueStatus.OPEN, // default for newly created issue
+        priority: IssuePriority.LOW,
         project: match.params.projectId,
       }}
       validationSchema={Yup.object().shape({

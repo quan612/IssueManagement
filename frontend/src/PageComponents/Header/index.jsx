@@ -1,6 +1,5 @@
 import React from "react";
-import * as ROUTES from "../../App/routes";
-
+import * as ROUTES from "App/Routes/index";
 import Signout from "../Auth/Signout";
 import { Container, HeaderItem } from "./styles";
 
