@@ -82,6 +82,7 @@ export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
 
 export const withSingleProjectQuery = (BaseComponent) => ({ ...props }) => {
   const { params } = props.match;
+
   const { loading, error, data } = useQuery(SINGLE_PROJECT_QUERY, {
     variables: { id: params.projectId },
   });

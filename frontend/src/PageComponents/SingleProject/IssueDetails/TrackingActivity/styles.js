@@ -19,7 +19,7 @@ export const LogItemWrapper = styled.div`
     position: relative;
   }
 
-  &:last-child > div {
+  &:last-child:not(:first-child) > div {
     border-top: solid 1px #bdbdbd;
     position: relative;
     padding-bottom: 1rem;

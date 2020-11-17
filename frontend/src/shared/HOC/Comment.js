@@ -2,11 +2,7 @@ import React from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { useRouteMatch } from "react-router-dom";
 
-import {
-  CREATE_COMMENT_MUTATION,
-  UPDATE_COMMENT_MUTATION,
-  SINGLE_COMMENT_QUERY,
-} from "../GraphQL/Comment";
+import { CREATE_COMMENT_MUTATION, UPDATE_COMMENT_MUTATION, SINGLE_COMMENT_QUERY } from "../GraphQL/Comment";
 
 import { LOG_ISSUE_QUERY } from "shared/GraphQL/Issue";
 import { SINGLE_ISSUE_QUERY } from "shared/GraphQL/Issue";
@@ -41,17 +37,13 @@ export const withCommentCreate = (BaseComponent) => ({ ...props }) => {
         text,
         issue: issueId,
         createdAt: new Date(),
-        actionType: "IssueComment",
+        actionType: "Comment",
       },
     });
   };
 
   return (
-    <BaseComponent
-      {...props}
-      creatingComment={loading}
-      createComment={(text) => handleCreateComment(text)}
-    />
+    <BaseComponent {...props} creatingComment={loading} createComment={(text) => handleCreateComment(text)} />
   );
 };
 

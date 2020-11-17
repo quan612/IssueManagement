@@ -8,6 +8,8 @@ import ListsManager from "./ListsManager";
 
 import { Button } from "shared/components/Button";
 
+import { BoardContainer } from "./styles";
+
 const Board = ({
   issues,
   fetchingIssues,
@@ -25,7 +27,7 @@ const Board = ({
   useEffect(() => {}, [issues]);
 
   return (
-    <div className="mt-2" style={{ flex: 1 }}>
+    <BoardContainer>
       <div>
         <ButtonWrapper>
           <Button variant="primary-outline" onClick={openModal}>
@@ -40,7 +42,7 @@ const Board = ({
         updatingIssue={updatingIssue}
         updateIssueAPI={updateIssueAPI}
       />
-    </div>
+    </BoardContainer>
   );
 };
 

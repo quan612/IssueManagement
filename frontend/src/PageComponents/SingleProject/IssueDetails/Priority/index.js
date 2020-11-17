@@ -5,6 +5,8 @@ import { Select } from "shared/components/Select";
 import { IssuePriority } from "shared/constants/issues";
 import IssuePriorityIcon from "shared/components/IssuePriorityIcon";
 
+const IssuePriorityChange = "Priority";
+
 export const IssueDetailsPriority = ({ issue, updateIssue }) => {
   return (
     <Section title="Priority">
@@ -12,7 +14,7 @@ export const IssueDetailsPriority = ({ issue, updateIssue }) => {
         selected={issue.priority}
         items={Object.values(IssuePriority)}
         renderIcon={renderIssuePriority}
-        onChange={(priority) => updateIssue({ priority, actionType: "IssuePriorityChange" })}
+        onChange={(priority) => updateIssue({ priority, actionType: IssuePriorityChange })}
       />
     </Section>
   );

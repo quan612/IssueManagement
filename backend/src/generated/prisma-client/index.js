@@ -21,6 +21,10 @@ var models = [
     embedded: false
   },
   {
+    name: "LogType",
+    embedded: false
+  },
+  {
     name: "Project",
     embedded: false
   },
@@ -41,18 +45,14 @@ var models = [
     embedded: false
   },
   {
-    name: "LogType",
-    embedded: false
-  },
-  {
-    name: "IssueTrackingLog",
+    name: "Log",
     embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `${process.env["PRISMA_ENDPOINT"]}`,
+  endpoint: `https://us1.prisma.sh/quan612-a4534e/issue-management/dev`,
   secret: `${process.env["PRISMA_SECRET"]}`
 });
 exports.prisma = new exports.Prisma();

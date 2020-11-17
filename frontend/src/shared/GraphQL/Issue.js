@@ -128,8 +128,8 @@ export const LOG_ISSUE_QUERY = gql`
   query LOG_ISSUE_QUERY($issueId: ID!) {
     logsOnIssue(issueId: $issueId) {
       id
-      logType
-      logDate
+      type
+      created
       user {
         id
         name

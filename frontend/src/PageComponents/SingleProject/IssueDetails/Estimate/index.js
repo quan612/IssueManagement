@@ -11,9 +11,10 @@ export const IssueDetailsEstimate = ({ issue, updateIssue }) => {
   const [isEdit, setEdit] = useState(false);
   const [error, setError] = useState(null);
 
+  const IssueSetEstimate = "Estimate";
   const handleUpdateEstimate = () => {
     if (parseInt(estimateRef.current.value) >= 0) {
-      updateIssue({ estimate: parseInt(estimateRef.current.value) });
+      updateIssue({ estimate: parseInt(estimateRef.current.value), actionType: IssueSetEstimate });
       setEdit(false);
     } else setError("Estimate number cannot be < 0.");
   };

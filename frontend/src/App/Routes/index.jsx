@@ -17,7 +17,7 @@ export const HOME = "/";
 export const PROJECTS = "/projects";
 export const USERS = "/users";
 export const FEEDS = "/feeds";
-export const SINGLE_PROJECT = "/projects/:projectId";
+export const SINGLE_PROJECT = "/project/:projectId";
 
 const Routes = ({ authentication }) => {
   const location = useLocation();
@@ -27,19 +27,14 @@ const Routes = ({ authentication }) => {
       <Body name="BodyContainer">
         <Switch location={location}>
           <Route path={SIGNUP} component={() => <PAGES.SIGNUP />} />
-          <Route
-            path={SIGNIN}
-            component={() => <PAGES.SIGNIN authentication={authentication} />}
-          />
+          <Route path={SIGNIN} component={() => <PAGES.SIGNIN authentication={authentication} />} />
           <Route path={RESETPASSWORD} component={PAGES.RESETPASSWORD} />
 
           <PrivateRoute
             authentication={authentication}
             exact
             path={USERS}
-            component={() => (
-              <PAGES.USERS authentication={authentication} location={location} />
-            )}
+            component={() => <PAGES.USERS authentication={authentication} location={location} />}
           />
 
           <PrivateRoute

@@ -11,7 +11,7 @@ const variant = {
       color: white;
     }
   `,
-  "secondary-outline": tw`bg-transparent text-gray-700 hover:bg-gray-500 hover:text-white border-transparent `,
+  "secondary-outline": tw`bg-transparent text-gray-900 hover:bg-gray-500 hover:text-white border-transparent `,
 
   primary: css`
     background: ${(props) => props.theme.colors.primary};
@@ -19,7 +19,7 @@ const variant = {
     border: 1px solid ${(props) => props.theme.colors.primary};
   `,
 
-  secondary: tw`bg-gray-200 text-gray-700 hover:bg-gray-400 `,
+  secondary: tw`bg-gray-500 text-gray-900 hover:bg-gray-400 `,
   info: tw`bg-black text-white hover:bg-gray-900`,
 };
 
@@ -32,12 +32,12 @@ export const StyledButton = styled.button`
   opacity: 1;
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   &:disabled {
-    opacity: 0.5;
-    cursor: none;
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {

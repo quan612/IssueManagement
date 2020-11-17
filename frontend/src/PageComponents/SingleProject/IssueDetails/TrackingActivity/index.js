@@ -6,8 +6,10 @@ import { LogWrapper, LogItemWrapper, LogItemInner } from "./styles";
 import { TrackingHeader } from "./TrackingHeader";
 import { TrackingContent } from "./TrackingContent";
 
+const filterLogOpen = "Open";
+
 const TrackingActivity = ({ issue, logsOnIssue = [], loading }) => {
-  const logs = logsOnIssue.filter((log) => log.type !== "Create");
+  const logs = logsOnIssue.filter((log) => log.type !== filterLogOpen);
   return (
     <LogWrapper>
       {logs.map((log) => {

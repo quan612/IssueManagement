@@ -13,7 +13,7 @@ const BoardIssue = ({ issue, index }) => {
   return (
     <Draggable draggableId={issue.id} index={index}>
       {(provided, snapshot) => (
-        <Link to={`${match.url}/issues/${issue.id}`}>
+        <Link to={`${match.url}/issue/${issue.id}`}>
           <IssueContainer
             ref={provided.innerRef}
             {...provided.draggableProps}

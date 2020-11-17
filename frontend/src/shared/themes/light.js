@@ -7,6 +7,14 @@ export default {
     backgroundPrimary: "#fff",
     backgroundSecondary: "#f5f7fb",
     backgroundLight: "#e5e5f1",
+    backgroundInvalid: "#ffe4dc",
+
+    backgroundDarkPrimary: "#0747A6",
+    backgroundLight: "#eeeef2",
+    backgroundLightest: "#F4F5F7",
+    backgroundLightPrimary: "#D2E5FE",
+    backgroundLightSuccess: "#E4FCEF",
+
     borderNotFocused: "#264a54",
     borderSecondary: "#162B31",
 
@@ -17,12 +25,7 @@ export default {
     textSecondary: "#6e6e6e",
     textWhite: "#FFF",
 
-    backgroundDarkPrimary: "#0747A6",
-    backgroundLight: "#eeeef2",
-    backgroundLightest: "#F4F5F7",
-    backgroundLightPrimary: "#D2E5FE",
-    backgroundLightSuccess: "#E4FCEF",
-
+    borderColor: "#d2d6dc",
     borderLightest: "#dfe1e6",
     borderLight: "#C1C7D0",
     borderInputFocus: "#4c9aff",

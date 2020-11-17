@@ -1,3 +1,6 @@
+import React from "react";
+
+import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { createHttpLink } from "apollo-link-http";
@@ -27,7 +30,7 @@ const uploadLink = createUploadLink({
 
 const link = ApolloLink.split((operation) => operation.getContext().hasUpload, uploadLink, httpLink);
 
-export const apolloClient = new ApolloClient({
+const apolloClient = new ApolloClient({
   cache,
   resolvers,
   link,
@@ -39,3 +42,9 @@ cache.writeData({
     toasts: [],
   },
 });
+
+const Apollo = ({ children }) => {
+  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+};
+
+export default Apollo;

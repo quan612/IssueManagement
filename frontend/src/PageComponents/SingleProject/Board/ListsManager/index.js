@@ -70,8 +70,7 @@ const ListsManager = ({ issues, fetchingIssues, updatingIssue, updateIssueAPI, .
         assignee: currentAssignee,
         listPosition: listPosition,
         status: destination.droppableId,
-        actionType:
-          destination.droppableId !== currentIssue.status ? "IssueStatusChange" : "MovingWithinList",
+        actionType: destination.droppableId !== currentIssue.status ? "Status" : "MovingWithinList",
       },
 
       optimisticResponse: {

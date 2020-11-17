@@ -5,12 +5,14 @@ const Query = {
   },
 
   async project(parent, args, ctx, info) {
+    console.log(args);
     const project = await ctx.prisma.project(
       {
         ...args,
       },
       info
     );
+
     return project;
   },
 
@@ -85,16 +87,10 @@ const Query = {
     let extraConditions = [];
 
     if (args.filter && args.filter.title)
-      extraConditions = [
-        ...extraConditions,
-        { title_contains: args.filter.title },
-      ];
+      extraConditions = [...extraConditions, { title_contains: args.filter.title }];
 
     if (args.filter && args.filter.assignee)
-      extraConditions = [
-        ...extraConditions,
-        { assignee: args.filter.assignee },
-      ];
+      extraConditions = [...extraConditions, { assignee: args.filter.assignee }];
 
     const issues = await ctx.prisma.issues(
       {
@@ -137,7 +133,7 @@ const Query = {
         where: {
           issue: { id: args.issueId },
         },
-        orderBy: "logDate_DESC",
+        orderBy: "created_DESC",
       },
       info
     );

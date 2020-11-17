@@ -13,7 +13,7 @@ export const IssueTypeDescription = {
 export const IssueStatus = {
   BACKLOG: "Backlog",
   OPEN: "Open",
-  INPROGRESS: "Inprogress",
+  INPROGRESS: "InProgress",
   DONE: "Done",
 };
 

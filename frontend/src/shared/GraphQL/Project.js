@@ -51,7 +51,7 @@ export const ADD_PROJECT_MUTATION = gql`
 `;
 
 export const UPDATE_PROJECT_MUTATION = gql`
-  mutation UPDATE_PROJECT_MUTATION($id: Int!, $name: String!, $key: String) {
+  mutation UPDATE_PROJECT_MUTATION($id: ID!, $name: String!, $key: String) {
     updateProject(id: $id, name: $name, key: $key) {
       ...projectFragment
     }
@@ -60,7 +60,7 @@ export const UPDATE_PROJECT_MUTATION = gql`
 `;
 
 export const DELETE_PROJECT_MUTATION = gql`
-  mutation DELETE_PROJECT_MUTATION($id: Int!) {
+  mutation DELETE_PROJECT_MUTATION($id: ID!) {
     deleteProject(id: $id) {
       id
     }

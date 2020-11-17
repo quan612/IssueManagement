@@ -16,7 +16,8 @@ export const Body = styled.section`
   padding-bottom: 1rem; */
 
   /* display: flex; */
-  max-height: calc(100vh - 60px);
-  min-height: calc(100vh - 60px);
+  height: calc(100% - 60px);
+  /* max-height: calc(100vh - 60px); */
+  min-height: calc(100% - 60px);
   margin-top: 60px;
 `;

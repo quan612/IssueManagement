@@ -21,6 +21,15 @@ export const TrackingContent = ({ log, issue }) => {
         </>
       );
 
+    if (type === "Estimate")
+      return (
+        <>
+          <span>{previousValue} hours</span>
+          <ThemeIcon className="ml-8 mr-8" icon="chevron-right" size="sm" />
+          <span>{newValue} hours</span>
+        </>
+      );
+
     if (type === "Status")
       return (
         <>

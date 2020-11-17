@@ -23,8 +23,18 @@ enum IssuePriority {
   Low
 }
 
+enum LogType {
+  Open
+  Assignee
+  Status
+  Type
+  Priority
+  Comment
+  Estimate
+}
+
 type Project {
-  id: Int! @id
+  id: ID! @id
   name: String!
   key: String! @unique
   issues: [Issue!]! @relation(name: "ProjectIssue", onDelete: CASCADE)
@@ -35,8 +45,6 @@ type User {
   email: String! @unique
   name: String!
   password: String!
-  # resetToken: String
-  # resetTokenExpiry: Float
   permissions: [Permission!]! @scalarList(strategy: RELATION)
   assigned: [Issue!]! @relation(name: "AssigneeIssue", onDelete: CASCADE)
   reporter: [Issue!]! @relation(name: "ReporterIssue", onDelete: CASCADE)
@@ -45,7 +53,7 @@ type User {
 }
 
 type Issue {
-  id: Int! @id
+  id: ID! @id
   title: String!
   description: String
   type: IssueType!
@@ -75,7 +83,6 @@ type Comment {
 
 type File {
   id: ID! @id
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   filename: String!
@@ -85,16 +92,7 @@ type File {
   issue: Issue! @relation(name: "IssueFile")
 }
 
-enum LogType {
-  IssueOpen
-  IssueAssigneeChange
-  IssueStatusChange
-  IssueTypeChange
-  IssuePriorityChange
-  IssueComment
-}
-
-type IssueTrackingLog {
+type Log {
   id: ID! @id
   type: LogType!
   created: DateTime! @createdAt

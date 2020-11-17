@@ -69,7 +69,7 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
     return (
       <>
         <BrowserView>
-          <div className="p-5">
+          <div className="p-5 h-full">
             <FlexColContainer>
               <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
               <PanelContainer>
@@ -98,7 +98,7 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
               <UploadAttachments />
             </FlexColContainer>
           </div>
-          <div className="detail-footer w-full sticky rounded bottom-0  p-1 z-100 px-6 bg-white shadow border-t-2">
+          <div className="detail-footer w-full sticky rounded bottom-0 right-0 p-1 z-100 px-6 bg-white shadow border-t-2">
             <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
           </div>
         </BrowserView>
