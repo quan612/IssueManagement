@@ -653,6 +653,7 @@ type Issue {
   project: Project!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   attachments(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File!]
+  dueDate: DateTime
 }
 
 type IssueConnection {
@@ -677,6 +678,7 @@ input IssueCreateInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateManyWithoutAssigneeInput {
@@ -724,6 +726,7 @@ input IssueCreateWithoutAssigneeInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutAttachmentsInput {
@@ -741,6 +744,7 @@ input IssueCreateWithoutAttachmentsInput {
   listPosition: Float
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutCommentsInput {
@@ -758,6 +762,7 @@ input IssueCreateWithoutCommentsInput {
   listPosition: Float
   project: ProjectCreateOneWithoutIssuesInput!
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutProjectInput {
@@ -775,6 +780,7 @@ input IssueCreateWithoutProjectInput {
   listPosition: Float
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutReporterInput {
@@ -792,6 +798,7 @@ input IssueCreateWithoutReporterInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 type IssueEdge {
@@ -824,6 +831,8 @@ enum IssueOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  dueDate_ASC
+  dueDate_DESC
 }
 
 type IssuePreviousValues {
@@ -839,6 +848,7 @@ type IssuePreviousValues {
   listPosition: Float
   createdAt: DateTime!
   updatedAt: DateTime!
+  dueDate: DateTime
 }
 
 enum IssuePriority {
@@ -950,6 +960,14 @@ input IssueScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  dueDate: DateTime
+  dueDate_not: DateTime
+  dueDate_in: [DateTime!]
+  dueDate_not_in: [DateTime!]
+  dueDate_lt: DateTime
+  dueDate_lte: DateTime
+  dueDate_gt: DateTime
+  dueDate_gte: DateTime
   AND: [IssueScalarWhereInput!]
   OR: [IssueScalarWhereInput!]
   NOT: [IssueScalarWhereInput!]
@@ -1001,6 +1019,7 @@ input IssueUpdateDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateInput {
@@ -1018,6 +1037,7 @@ input IssueUpdateInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateManyDataInput {
@@ -1030,6 +1050,7 @@ input IssueUpdateManyDataInput {
   timeSpent: Int
   timeRemaining: Int
   listPosition: Float
+  dueDate: DateTime
 }
 
 input IssueUpdateManyMutationInput {
@@ -1042,6 +1063,7 @@ input IssueUpdateManyMutationInput {
   timeSpent: Int
   timeRemaining: Int
   listPosition: Float
+  dueDate: DateTime
 }
 
 input IssueUpdateManyWithoutAssigneeInput {
@@ -1122,6 +1144,7 @@ input IssueUpdateWithoutAssigneeDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutAttachmentsDataInput {
@@ -1138,6 +1161,7 @@ input IssueUpdateWithoutAttachmentsDataInput {
   listPosition: Float
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutCommentsDataInput {
@@ -1154,6 +1178,7 @@ input IssueUpdateWithoutCommentsDataInput {
   listPosition: Float
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutProjectDataInput {
@@ -1170,6 +1195,7 @@ input IssueUpdateWithoutProjectDataInput {
   listPosition: Float
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutReporterDataInput {
@@ -1186,6 +1212,7 @@ input IssueUpdateWithoutReporterDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithWhereUniqueWithoutAssigneeInput {
@@ -1348,6 +1375,14 @@ input IssueWhereInput {
   attachments_every: FileWhereInput
   attachments_some: FileWhereInput
   attachments_none: FileWhereInput
+  dueDate: DateTime
+  dueDate_not: DateTime
+  dueDate_in: [DateTime!]
+  dueDate_not_in: [DateTime!]
+  dueDate_lt: DateTime
+  dueDate_lte: DateTime
+  dueDate_gt: DateTime
+  dueDate_gte: DateTime
   AND: [IssueWhereInput!]
   OR: [IssueWhereInput!]
   NOT: [IssueWhereInput!]

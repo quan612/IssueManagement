@@ -7,6 +7,7 @@ const Project = require("./resolvers/Project");
 const User = require("./resolvers/User");
 const Comment = require("./resolvers/Comment");
 const Log = require("./resolvers/Log");
+const File = require("./resolvers/File");
 
 // create the GraphQL yoga server
 function createServer() {
@@ -20,6 +21,7 @@ function createServer() {
       User: User,
       Comment: Comment,
       Log: Log,
+      File,
     },
     resolverValidationOptions: {
       requireResolversForResolveType: false,

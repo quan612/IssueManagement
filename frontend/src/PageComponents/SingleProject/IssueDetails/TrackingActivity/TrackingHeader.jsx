@@ -10,7 +10,6 @@ const TrackingUser = ({ user }) => {
 };
 
 export const TrackingHeader = ({ user, date, isCreated = false }) => {
-  console.log(isCreated);
   return (
     <div className="relative">
       <span className="inline-block absolute h-8">

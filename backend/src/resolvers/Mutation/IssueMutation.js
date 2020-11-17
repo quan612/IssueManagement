@@ -44,6 +44,8 @@ const IssueMutation = {
           timeSpent: 0,
           timeRemaining: 0,
           listPosition,
+          attachments: [],
+          dueDate: null,
         },
         info
       );

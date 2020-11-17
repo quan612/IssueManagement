@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
 import { COMMENT_FRAGMENT } from "./Comment";
+import { FILE_FRAGMENT } from "./File";
 
 const ISSUE_FRAGMENT = gql`
   fragment issueFragment on Issue {
@@ -29,7 +30,12 @@ const ISSUE_FRAGMENT = gql`
     listPosition
     createdAt
     updatedAt
+    attachments {
+      ...fileFragment
+    }
+    dueDate
   }
+  ${FILE_FRAGMENT}
 `;
 
 export const SINGLE_ISSUE_QUERY = gql`
@@ -41,6 +47,7 @@ export const SINGLE_ISSUE_QUERY = gql`
       }
     }
   }
+
   ${ISSUE_FRAGMENT}
   ${COMMENT_FRAGMENT}
 `;
