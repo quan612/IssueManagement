@@ -4,7 +4,7 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
   content: [
     "./src/**/*.html",
     "./src/**/*.vue",
-    "./src/**/*.jsx",
+    //"./src/**/*.jsx",
     // etc.
   ],
 
@@ -21,7 +21,7 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
 });
 
 module.exports = {
-  purge: ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "public/**/*.html"],
+  purge: ["src/**/*.tsx", "public/**/*.html"],
   theme: {
     extend: {},
   },
