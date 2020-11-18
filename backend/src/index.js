@@ -1,5 +1,7 @@
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const express = require("express");
 require("dotenv").config({ path: "variables.env" });
 const createServer = require("./createServer");
 
@@ -16,6 +18,13 @@ server.express.use((req, res, next) => {
     req.userId = userId;
   }
   next();
+});
+
+const buildPath = path.join(__dirname, "..", "build");
+server.express.use(express.static(buildPath));
+
+server.express.get("*", (req, res) => {
+  res.sendFile(path.resolve(buildPath, "index.html"));
 });
 
 server.start(
@@ -38,17 +47,3 @@ server.start(
     console.log(`Server is now running on http://localhost:${deets.port}`);
   }
 );
-
-// decode jwt to get the user id
-/**
- * The idea is: there is a token being set as cookie in the browser once the user logged in or sign up successfully
- * then this token is passed along in the req (request) from the client side.
- *
- * Express acts as a middle to check for this request if is has a token or the token is null. If there is, then
- * the userId ~ real id of the user is assigned to this request and be forward in next(),
- *
- * In mutation or query resolver, the userId is in ctx.request
- *
- * In client side, we could make the CURRENT_USER_QUERY as a wrapper component to check for "me" obj being returned
- * If yes then we render authenticated root, if not then redirect to sign in page
- */

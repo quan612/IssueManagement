@@ -52,7 +52,7 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://us1.prisma.sh/quan612-a4534e/tasks-management/dev`,
+  endpoint: `https://jira-clone-prod-0c3ab460a2.herokuapp.com/task-management-prod/prod`,
   secret: `${process.env["PRISMA_SECRET"]}`
 });
 exports.prisma = new exports.Prisma();

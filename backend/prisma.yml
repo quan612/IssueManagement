@@ -11,6 +11,5 @@ generate:
   - generator: graphql-schema
     output: ./src/generated/prisma.graphql
 
-#endpoint: https://us1.prisma.sh/quan612-a4534e/issue-management/dev
-#endpoint: https://us1.prisma.sh/quan612-a4534e/task-manage/devendpoint: https://us1.prisma.sh/quan612-a4534e/tasks-management/dev
-
+endpoint: https://us1.prisma.sh/quan612-a4534e/tasks-management/dev
+#endpoint: https://jira-clone-prod-0c3ab460a2.herokuapp.com/task-management-prod/prod
