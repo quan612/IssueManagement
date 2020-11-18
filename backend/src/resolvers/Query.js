@@ -5,7 +5,6 @@ const Query = {
   },
 
   async project(parent, args, ctx, info) {
-    console.log(args);
     const project = await ctx.prisma.project(
       {
         ...args,

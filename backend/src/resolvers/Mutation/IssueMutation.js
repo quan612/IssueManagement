@@ -1,4 +1,5 @@
-let log = require("./log.js");
+let util = require("./log.js");
+
 const IssueOpen = "Open";
 
 const IssueMutation = {
@@ -135,9 +136,9 @@ const IssueMutation = {
 
     //due to relation, assignee is not available in updateIssue, we must assign it for log
     updateIssue.assignee = await ctx.prisma.issue({ id }, info).assignee();
-    console.log(currentIssue);
+    // console.log(currentIssue);
     // update Log table
-    await log.handleCreateLog(ctx, actionType, currentIssue, updateIssue);
+    await util.handleCreateLog(ctx, actionType, currentIssue, updateIssue);
 
     return updateIssue;
   },

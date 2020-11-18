@@ -1,86 +1,19 @@
-import React, { useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import gql from "graphql-tag";
-// import { gql } from "@apollo/client";
-import { useMutation } from "@apollo/react-hooks";
+import React, { useState, useEffect } from "react";
+
+import { withIssueAttachment } from "shared/HOC/withIssueAttachment";
 
 import { ThemeIcon } from "shared/components/Icon";
-
 import { Button } from "shared/components/Button";
 
-const thumbsContainer = {
-  display: "flex",
-  marginTop: 16,
-};
-
-const thumbStyle = {
-  display: "inline-flex",
-  borderRadius: 2,
-  border: "1px solid #eaeaea",
-  marginBottom: 8,
-  marginRight: 8,
-  width: 130,
-  height: 130,
-  padding: 4,
-};
-
-const thumbInner = {
-  display: "flex",
-  minWidth: 0,
-  overflow: "hidden",
-};
-
-const img = {
-  display: "block",
-  width: "auto",
-  height: "100%",
-};
-
-const errorStyle = {
-  color: "#c45e5e",
-  fontSize: "0.75rem",
-};
-
-export const FILE_UPLOAD_MUTATION = gql`
-  mutation FILE_UPLOAD_MUTATION($file: Upload!, $issue: ID!) {
-    uploadFile(file: $file, issue: $issue) {
-      id
-      filename
-      mimetype
-      encoding
-      url
-    }
-  }
-`;
-
-export const withFileUpload = (BaseComponent) => ({ ...props }) => {
-  const [uploadFile, { data, loading, error }] = useMutation(FILE_UPLOAD_MUTATION, {
-    context: { hasUpload: true },
-  });
-
-  const handleUploadFile = async (file, issue) => {
-    let res = await uploadFile({ variables: { file, issue } }).catch((err) =>
-      console.log(err)
-    );
-    return res;
-  };
-
-  return (
-    <BaseComponent
-      loading={loading}
-      error={error}
-      {...props}
-      uploadFile={(file, issue) => handleUploadFile(file, issue)}
-    />
-  );
-};
+import { ThumbsContainer, ThumbStyle, ThumbInner, Img } from "./styles";
 
 const Attachments = ({ attachments, uploadFile, loading, error }) => {
-  const match = useRouteMatch();
-  const { issueId } = match.params;
-  const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
+  const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
   const [currentFile, setFile] = useState();
   const [imagePreview, setPreview] = useState();
+  // console.log(attachments);
+
+  useEffect(() => {}, [attachments]);
 
   const onChange = async (e) => {
     const { validity, files } = e.target;
@@ -97,70 +30,70 @@ const Attachments = ({ attachments, uploadFile, loading, error }) => {
 
   const onCancel = () => {
     if (imagePreview) {
-      let obj_Url = URL.revokeObjectURL(currentFile);
-      setPreview(obj_Url);
+      URL.revokeObjectURL(currentFile);
+      setPreview();
     }
     setFile();
   };
 
   const onUpload = async () => {
-    let res = await uploadFile(currentFile, issueId);
+    let res = await uploadFile(currentFile);
     if (res) {
       if (imagePreview) {
-        let obj_Url = URL.revokeObjectURL(currentFile);
-        setPreview(obj_Url);
+        URL.revokeObjectURL(currentFile);
+        setPreview();
       }
       setFile();
     }
   };
 
-  // nice button view bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-  // nice button view bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2
-
   return (
     <div>
-      <div className="attachment-heading table w-full mt-8 mb-5">
+      <div className="attachment-heading table w-full mt-4 mb-5">
         <label className="text-base font-bold">Attachments:</label>
-        <label className="image-upload-container my-3 border-solid text-teal-400 font-bold">
+        <label className="image-upload-container  border-solid text-teal-400 font-bold">
           <ThemeIcon icon="plus-circle" size="lg" color="blue" className="ml-2" />
-          <input
-            className="hidden"
-            type="file"
-            //    accept="image/*"
-            onChange={onChange}
-          />
+          <input className="hidden" type="file" onChange={onChange} />
         </label>
-        <div className="issue attachment">
-          {attachments &&
-            attachments.map((attachment) => {
-              return (
-                <aside className="my-2" style={thumbsContainer} key={attachment.id}>
-                  <div style={thumbStyle}>
-                    <a style={thumbInner} href={attachment.url} target="_blank">
-                      <img src={attachment.url} style={img} />
-                    </a>
-                  </div>
-                </aside>
-              );
-            })}
+        <div className="issue-attachment mt-4">
+          {attachments && (
+            <ThumbsContainer>
+              {attachments.map((attachment) => {
+                return attachment.mimetype.startsWith("image/") ? (
+                  <ThumbStyle key={attachment.id}>
+                    <ThumbInner href={attachment.url} target="_blank">
+                      <Img src={attachment.url} />
+                    </ThumbInner>
+                  </ThumbStyle>
+                ) : (
+                  <ThumbStyle key={attachment.id}>
+                    <ThumbInner href={attachment.url} target="_blank">
+                      <ThemeIcon icon="file" size="4x" color="#B3BECE" />
+                      <span className="ml-2">{attachment.filename}</span>
+                    </ThumbInner>
+                  </ThumbStyle>
+                );
+              })}
+            </ThumbsContainer>
+          )}
         </div>
       </div>
 
       {imagePreview && (
-        <aside className="my-2" style={thumbsContainer}>
-          <div style={thumbStyle}>
-            <div style={thumbInner}>
-              <img src={imagePreview} style={img} />
-            </div>
-          </div>
-        </aside>
+        <ThumbsContainer className="my-2">
+          <ThumbStyle>
+            <ThumbInner>
+              <Img src={imagePreview} />
+            </ThumbInner>
+          </ThumbStyle>
+        </ThumbsContainer>
       )}
 
       {currentFile && !imagePreview && (
-        <aside className="my-2" style={thumbsContainer}>
+        <ThumbsContainer className="my-2">
           <ThemeIcon icon="file" size="4x" color="grey" />
           <span className="ml-2">{currentFile.name}</span>
-        </aside>
+        </ThumbsContainer>
       )}
       {currentFile && (
         <div className="mt-1">
@@ -168,7 +101,7 @@ const Attachments = ({ attachments, uploadFile, loading, error }) => {
             Upload
           </Button>
 
-          <Button disabled={loading} variant="secondary" onClick={onCancel}>
+          <Button className="ml-2" disabled={loading} variant="secondary" onClick={onCancel}>
             Cancel
           </Button>
         </div>
@@ -177,6 +110,8 @@ const Attachments = ({ attachments, uploadFile, loading, error }) => {
   );
 };
 
-const UploadAttachments = withFileUpload(Attachments);
-
+const UploadAttachments = withIssueAttachment(Attachments);
 export { UploadAttachments };
+
+// nice button view bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+// nice button view bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow ml-2

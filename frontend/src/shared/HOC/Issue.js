@@ -78,7 +78,7 @@ export const withSingleIssueQuery = (BaseComponent) => ({ ...props }) => {
   return (
     <BaseComponent
       issue={data ? data.issue : []}
-      fetchingIssue={loading}
+      fetchingIssue={loading || networkStatus === 3}
       fetchingIssueError={error}
       {...props}
     />

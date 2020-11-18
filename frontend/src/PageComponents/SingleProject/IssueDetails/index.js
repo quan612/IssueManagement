@@ -1,5 +1,4 @@
 import React from "react";
-
 import { withSingleIssueQuery, withCurrentUser, withIssueUpdate } from "shared/HOC";
 
 import { flowRight } from "lodash";
@@ -20,26 +19,12 @@ import { UploadAttachments } from "./Attachments";
 import TrackingActivity from "./TrackingActivity";
 import { TrackingHeader } from "./TrackingActivity/TrackingHeader";
 
-import {
-  PanelContainer,
-  FlexWrap,
-  FlexColContainer,
-  FlexRowContainer,
-  Left,
-  Right,
-} from "./styles";
+import { PanelContainer, FlexWrap, FlexColContainer, FlexRowContainer, Left, Right } from "./styles";
 
 import ModelLoader from "shared/components/Loaders/ModalLoader";
 import { BrowserView, MobileView } from "react-device-detect";
 
-const IssueDetails = ({
-  currentLogInUser,
-  users,
-  issue,
-  fetchingIssue,
-  updatingIssue,
-  updateIssueAPI,
-}) => {
+const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingIssue, updateIssueAPI }) => {
   const handleUpdate = async (updateFields) => {
     let assigneeId =
       updateFields.actionType === "IssueAssigneeChange"
@@ -77,7 +62,7 @@ const IssueDetails = ({
   };
 
   if (fetchingIssue) return <ModelLoader />;
-  console.log(issue);
+
   if (issue) {
     const { createdAt, reporter } = issue;
     return (
@@ -88,19 +73,11 @@ const IssueDetails = ({
               <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
               <PanelContainer>
                 <TrackingHeader user={reporter} date={createdAt} isCreated={true} />
-                <IssueDetailsDescription
-                  issue={issue}
-                  updateIssue={handleUpdate}
-                  isWorking={updatingIssue}
-                />
+                <IssueDetailsDescription issue={issue} updateIssue={handleUpdate} isWorking={updatingIssue} />
                 <FlexWrap>
                   <IssueDetailsType issue={issue} updateIssue={handleUpdate} />
                   <IssueDetailsStatus issue={issue} updateIssue={handleUpdate} />
-                  <IssueDetailsAssignee
-                    issue={issue}
-                    updateIssue={handleUpdate}
-                    users={users}
-                  />
+                  <IssueDetailsAssignee issue={issue} updateIssue={handleUpdate} users={users} />
 
                   <IssueDetailsPriority issue={issue} updateIssue={handleUpdate} />
                   <IssueDetailsEstimate issue={issue} updateIssue={handleUpdate} />
@@ -109,15 +86,7 @@ const IssueDetails = ({
               </PanelContainer>
 
               <UploadAttachments attachments={issue.attachments} />
-
-              <div className="comment-area mb-2 relative">
-                <div className="comment-heading table w-full mt-8 mb-5">
-                  <h3>Comments (19)</h3>
-                </div>
-                <PanelContainer>
-                  <TrackingActivity users={users} issue={issue} />
-                </PanelContainer>
-              </div>
+              <TrackingActivity users={users} issue={issue} />
             </FlexColContainer>
           </div>
           <div className="detail-footer w-full sticky rounded bottom-0 right-0 p-1 z-100 px-6 bg-white shadow border-t-2">
@@ -144,8 +113,4 @@ const IssueDetails = ({
   }
 };
 
-export default flowRight(
-  withCurrentUser,
-  withSingleIssueQuery,
-  withIssueUpdate
-)(IssueDetails);
+export default flowRight(withCurrentUser, withSingleIssueQuery, withIssueUpdate)(IssueDetails);

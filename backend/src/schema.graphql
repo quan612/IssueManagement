@@ -64,5 +64,5 @@ type Mutation {
   createComment(text: String!, issue: ID!, actionType: String): Comment!
   updateComment(id: ID!, text: String): Comment!
 
-  uploadFile(file: Upload!, issue: ID!): File
+  uploadFile(file: Upload!, issue: ID!, actionType: String): File
 }

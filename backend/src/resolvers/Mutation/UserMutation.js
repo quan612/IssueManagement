@@ -56,8 +56,6 @@ const UserMutation = {
       maxAge: 1000 * 60 * 60 * 24 * 7, // cookie for 7 days
     });
 
-    console.log("user sign in succeed");
-    //return the user
     return user;
   },
 
