@@ -10,7 +10,8 @@ import BaseStyles from "./BaseStyles";
 import dark from "shared/themes/dark";
 import light from "shared/themes/light";
 
-import "../styles/tailwind.out.css";
+// import "../styles/tailwind.out.css";
+import "styles/tailwind.out.css";
 
 function App() {
   return (
