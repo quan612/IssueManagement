@@ -9,15 +9,11 @@ export const PageContainer = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  top: 300px;
+  top: 100px;
   height: 400px;
 
   width: 100%;
   position: relative;
-
-  @media only screen and (min-width: 1280px) {
-    transform: scale(1.3);
-  }
 
   @media only screen and (min-device-width: 360px) and (max-device-width: 667px) {
     /* width:2rem; */
@@ -26,8 +22,11 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Panel = styled.div`
-  ${tw`flex flex-col min-w-0 break-words bg-white w-full h-full mb-6 shadow-xl rounded-lg bg-gray-800`}
+export const PanelContainer = styled.div`
+  background-color: white;
+  border: solid 1px #c2c2c2;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
 `;
 
 export const UserDetailsWrapper = styled.div`

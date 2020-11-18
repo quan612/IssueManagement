@@ -1,42 +1,37 @@
 export const IssueType = {
   TASK: "Task",
   BUG: "Bug",
-  STORY: "Story",
-};
-
-export const IssueStatus = {
-  BACKLOG: "Backlog",
-  SELECTED: "Selected",
-  INPROGRESS: "Inprogress",
-  DONE: "Done",
-};
-
-//ok
-export const IssuePriority = {
-  HIGHEST: "Highest",
-  HIGH: "High",
-  MEDIUM: "Medium",
-  LOW: "Low",
-  LOWEST: "Lowest",
+  REQUEST: "REQUEST",
 };
 
 export const IssueTypeDescription = {
   [IssueType.TASK]: "Task",
   [IssueType.BUG]: "Bug",
-  [IssueType.STORY]: "Story",
+  [IssueType.REQUEST]: "Request",
+};
+
+export const IssueStatus = {
+  BACKLOG: "Backlog",
+  OPEN: "Open",
+  INPROGRESS: "InProgress",
+  DONE: "Done",
 };
 
 export const IssueStatusDescription = {
   [IssueStatus.BACKLOG]: "Backlog",
-  [IssueStatus.SELECTED]: "Selected for development",
+  [IssueStatus.OPEN]: "Open",
   [IssueStatus.INPROGRESS]: "In progress",
   [IssueStatus.DONE]: "Done",
 };
 
+export const IssuePriority = {
+  HIGH: "High",
+  MEDIUM: "Medium",
+  LOW: "Low",
+};
+
 export const IssuePriorityDescription = {
-  [IssuePriority.HIGHEST]: "Highest",
   [IssuePriority.HIGH]: "High",
   [IssuePriority.MEDIUM]: "Medium",
   [IssuePriority.LOW]: "Low",
-  [IssuePriority.LOWEST]: "Lowest",
 };

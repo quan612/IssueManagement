@@ -5,6 +5,8 @@ import { Select } from "shared/components/Select";
 import { IssueType } from "shared/constants/issues";
 import IssueTypeIcon from "shared/components/IssueTypeIcon";
 
+const IssueTypeChange = "Type";
+
 export const IssueDetailsType = ({ issue, updateIssue }) => {
   return (
     <Section title="Type">
@@ -13,7 +15,7 @@ export const IssueDetailsType = ({ issue, updateIssue }) => {
         items={Object.values(IssueType)}
         renderIcon={renderIssueType}
         onChange={(type) => {
-          updateIssue({ type, actionType: "IssueTypeChange" });
+          updateIssue({ type, actionType: IssueTypeChange });
         }}
         variant="empty"
         withArrow={false}

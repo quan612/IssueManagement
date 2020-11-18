@@ -3,6 +3,8 @@ import UserAvatar from "shared/components/Avatar";
 import { Section } from "shared/components/Section";
 import { Select } from "shared/components/Select";
 
+const IssueAssigneeChange = "Assignee";
+
 export const IssueDetailsAssignee = ({ issue, updateIssue, users }) => {
   const userOptions = [{ id: null, name: "Unassigned" }, ...users];
 
@@ -17,7 +19,7 @@ export const IssueDetailsAssignee = ({ issue, updateIssue, users }) => {
 
           updateIssue({
             assignee: user.name !== "Unassigned" ? user.id : null,
-            actionType: "IssueAssigneeChange",
+            actionType: IssueAssigneeChange,
           });
         }}
       />

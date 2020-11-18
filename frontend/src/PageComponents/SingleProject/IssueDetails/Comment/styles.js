@@ -13,9 +13,9 @@ export const Box = styled.div`
   ${tw`p-3 `}
 
   background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
-
   border: 1px solid #dce2e6;
   border-radius: 4px;
+
   &:hover {
     cursor: pointer;
     border: 1px solid ${(props) => props.theme.colors.primary};

@@ -1,4 +1,4 @@
-const handleCreateLog = require("./index");
+let util = require("./log.js");
 
 const CommentMutation = {
   async createComment(parent, args, ctx, info) {
@@ -28,9 +28,7 @@ const CommentMutation = {
     const updateIssue = await ctx.prisma.issue({ id: issue }, info);
     updateIssue.comment = comment;
 
-    let log = await handleCreateLog(ctx, actionType, updateIssue, updateIssue);
-
-    console.log("log test in comment", log);
+    await util.handleCreateLog(ctx, actionType, updateIssue, updateIssue);
 
     return comment;
   },

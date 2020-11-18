@@ -33,7 +33,7 @@ const Project = ({ project, users }) => {
       )}
 
       <Route
-        path={`${match.path}/issues/:issueId`}
+        path={`${match.path}/issue/:issueId`}
         render={(routeProps) => (
           <Modal
             isOpen={true}

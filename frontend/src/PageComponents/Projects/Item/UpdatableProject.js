@@ -20,7 +20,7 @@ const UpdatableProject = ({ data, ...props }) => {
     const { id, name, key } = data;
     return (
       <ItemStyle>
-        <Link to={`/projects/${id}`} className="w-full">
+        <Link to={`/project/${id}`} className="w-full">
           <div className="w-full">
             <Name>{name}</Name>
             <Description>{key}</Description>

@@ -30,7 +30,7 @@ export const OverlayContainer = styled.div`
 export const ModalContainer = styled(CardBackgroundStyled)`
   ${tw` mx-auto relative rounded shadow-lg z-40`}
 
-  height: calc(100% - 72px);
+  max-height: calc(100% - 72px);
   width: 100%;
   max-width: 1024px;
   overflow-y: auto;

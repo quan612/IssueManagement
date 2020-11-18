@@ -19,7 +19,7 @@ export interface Exists {
   comment: (where?: CommentWhereInput) => Promise<boolean>;
   file: (where?: FileWhereInput) => Promise<boolean>;
   issue: (where?: IssueWhereInput) => Promise<boolean>;
-  issueTrackingLog: (where?: IssueTrackingLogWhereInput) => Promise<boolean>;
+  log: (where?: LogWhereInput) => Promise<boolean>;
   project: (where?: ProjectWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -100,27 +100,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => IssueConnectionPromise;
-  issueTrackingLog: (
-    where: IssueTrackingLogWhereUniqueInput
-  ) => IssueTrackingLogNullablePromise;
-  issueTrackingLogs: (args?: {
-    where?: IssueTrackingLogWhereInput;
-    orderBy?: IssueTrackingLogOrderByInput;
+  log: (where: LogWhereUniqueInput) => LogNullablePromise;
+  logs: (args?: {
+    where?: LogWhereInput;
+    orderBy?: LogOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<IssueTrackingLog>;
-  issueTrackingLogsConnection: (args?: {
-    where?: IssueTrackingLogWhereInput;
-    orderBy?: IssueTrackingLogOrderByInput;
+  }) => FragmentableArray<Log>;
+  logsConnection: (args?: {
+    where?: LogWhereInput;
+    orderBy?: LogOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => IssueTrackingLogConnectionPromise;
+  }) => LogConnectionPromise;
   project: (where: ProjectWhereUniqueInput) => ProjectNullablePromise;
   projects: (args?: {
     where?: ProjectWhereInput;
@@ -213,28 +211,22 @@ export interface Prisma {
   }) => IssuePromise;
   deleteIssue: (where: IssueWhereUniqueInput) => IssuePromise;
   deleteManyIssues: (where?: IssueWhereInput) => BatchPayloadPromise;
-  createIssueTrackingLog: (
-    data: IssueTrackingLogCreateInput
-  ) => IssueTrackingLogPromise;
-  updateIssueTrackingLog: (args: {
-    data: IssueTrackingLogUpdateInput;
-    where: IssueTrackingLogWhereUniqueInput;
-  }) => IssueTrackingLogPromise;
-  updateManyIssueTrackingLogs: (args: {
-    data: IssueTrackingLogUpdateManyMutationInput;
-    where?: IssueTrackingLogWhereInput;
+  createLog: (data: LogCreateInput) => LogPromise;
+  updateLog: (args: {
+    data: LogUpdateInput;
+    where: LogWhereUniqueInput;
+  }) => LogPromise;
+  updateManyLogs: (args: {
+    data: LogUpdateManyMutationInput;
+    where?: LogWhereInput;
   }) => BatchPayloadPromise;
-  upsertIssueTrackingLog: (args: {
-    where: IssueTrackingLogWhereUniqueInput;
-    create: IssueTrackingLogCreateInput;
-    update: IssueTrackingLogUpdateInput;
-  }) => IssueTrackingLogPromise;
-  deleteIssueTrackingLog: (
-    where: IssueTrackingLogWhereUniqueInput
-  ) => IssueTrackingLogPromise;
-  deleteManyIssueTrackingLogs: (
-    where?: IssueTrackingLogWhereInput
-  ) => BatchPayloadPromise;
+  upsertLog: (args: {
+    where: LogWhereUniqueInput;
+    create: LogCreateInput;
+    update: LogUpdateInput;
+  }) => LogPromise;
+  deleteLog: (where: LogWhereUniqueInput) => LogPromise;
+  deleteManyLogs: (where?: LogWhereInput) => BatchPayloadPromise;
   createProject: (data: ProjectCreateInput) => ProjectPromise;
   updateProject: (args: {
     data: ProjectUpdateInput;
@@ -285,9 +277,9 @@ export interface Subscription {
   issue: (
     where?: IssueSubscriptionWhereInput
   ) => IssueSubscriptionPayloadSubscription;
-  issueTrackingLog: (
-    where?: IssueTrackingLogSubscriptionWhereInput
-  ) => IssueTrackingLogSubscriptionPayloadSubscription;
+  log: (
+    where?: LogSubscriptionWhereInput
+  ) => LogSubscriptionPayloadSubscription;
   project: (
     where?: ProjectSubscriptionWhereInput
   ) => ProjectSubscriptionPayloadSubscription;
@@ -304,7 +296,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type IssueStatus = "Open" | "InProgress" | "Done";
+export type IssuePriority = "High" | "Medium" | "Low";
 
 export type IssueOrderByInput =
   | "id_ASC"
@@ -330,9 +322,21 @@ export type IssueOrderByInput =
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "dueDate_ASC"
+  | "dueDate_DESC";
 
-export type IssuePriority = "High" | "Medium" | "Low";
+export type LogOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "created_ASC"
+  | "created_DESC"
+  | "previousValue_ASC"
+  | "previousValue_DESC"
+  | "newValue_ASC"
+  | "newValue_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -359,10 +363,6 @@ export type CommentOrderByInput =
 export type FileOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
   | "filename_ASC"
   | "filename_DESC"
   | "mimetype_ASC"
@@ -370,17 +370,23 @@ export type FileOrderByInput =
   | "encoding_ASC"
   | "encoding_DESC"
   | "url_ASC"
-  | "url_DESC";
-
-export type Permission = "ADMIN" | "PRODUCTOWNER" | "USER";
+  | "url_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type LogType =
-  | "IssueOpen"
-  | "IssueAssigneeChange"
-  | "IssueStatusChange"
-  | "IssueTypeChange"
-  | "IssuePriorityChange"
-  | "IssueComment";
+  | "Open"
+  | "Assignee"
+  | "Status"
+  | "Type"
+  | "Priority"
+  | "Comment"
+  | "Estimate"
+  | "Attachment";
+
+export type Permission = "ADMIN" | "PRODUCTOWNER" | "USER";
 
 export type ProjectOrderByInput =
   | "id_ASC"
@@ -392,19 +398,9 @@ export type ProjectOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type IssueType = "Task" | "Bug" | "Story";
+export type IssueStatus = "Backlog" | "Open" | "InProgress" | "Done";
 
-export type IssueTrackingLogOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "type_ASC"
-  | "type_DESC"
-  | "created_ASC"
-  | "created_DESC"
-  | "previousValue_ASC"
-  | "previousValue_DESC"
-  | "newValue_ASC"
-  | "newValue_DESC";
+export type IssueType = "Task" | "Bug" | "Request";
 
 export interface CommentUpdateManyWithoutIssueInput {
   create?: Maybe<
@@ -439,7 +435,7 @@ export interface FileCreateManyWithoutIssueInput {
 }
 
 export interface IssueCreateInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   title: String;
   description?: Maybe<String>;
   type: IssueType;
@@ -454,6 +450,7 @@ export interface IssueCreateInput {
   project: ProjectCreateOneWithoutIssuesInput;
   comments?: Maybe<CommentCreateManyWithoutIssueInput>;
   attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface FileCreateWithoutIssueInput {
@@ -478,6 +475,7 @@ export interface IssueUpdateWithoutAssigneeDataInput {
   project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
   comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
   attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface CommentUpdateInput {
@@ -501,22 +499,6 @@ export interface FileWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
   filename?: Maybe<String>;
   filename_not?: Maybe<String>;
   filename_in?: Maybe<String[] | String>;
@@ -574,6 +556,22 @@ export interface FileWhereInput {
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
   issue?: Maybe<IssueWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<FileWhereInput[] | FileWhereInput>;
   OR?: Maybe<FileWhereInput[] | FileWhereInput>;
   NOT?: Maybe<FileWhereInput[] | FileWhereInput>;
@@ -584,6 +582,75 @@ export interface IssueUpdateOneRequiredWithoutCommentsInput {
   update?: Maybe<IssueUpdateWithoutCommentsDataInput>;
   upsert?: Maybe<IssueUpsertWithoutCommentsInput>;
   connect?: Maybe<IssueWhereUniqueInput>;
+}
+
+export interface CommentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  issue?: Maybe<IssueWhereInput>;
+  owner?: Maybe<UserWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+}
+
+export interface IssueUpdateWithoutCommentsDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserWhereInput {
@@ -671,133 +738,6 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface IssueUpdateWithoutCommentsDataInput {
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  type?: Maybe<IssueType>;
-  status?: Maybe<IssueStatus>;
-  priority?: Maybe<IssuePriority>;
-  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
-  reporter?: Maybe<UserUpdateOneRequiredWithoutReporterInput>;
-  estimate?: Maybe<Int>;
-  timeSpent?: Maybe<Int>;
-  timeRemaining?: Maybe<Int>;
-  listPosition?: Maybe<Float>;
-  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
-  attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
-}
-
-export interface IssueWhereInput {
-  id?: Maybe<Int>;
-  id_not?: Maybe<Int>;
-  id_in?: Maybe<Int[] | Int>;
-  id_not_in?: Maybe<Int[] | Int>;
-  id_lt?: Maybe<Int>;
-  id_lte?: Maybe<Int>;
-  id_gt?: Maybe<Int>;
-  id_gte?: Maybe<Int>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  type?: Maybe<IssueType>;
-  type_not?: Maybe<IssueType>;
-  type_in?: Maybe<IssueType[] | IssueType>;
-  type_not_in?: Maybe<IssueType[] | IssueType>;
-  status?: Maybe<IssueStatus>;
-  status_not?: Maybe<IssueStatus>;
-  status_in?: Maybe<IssueStatus[] | IssueStatus>;
-  status_not_in?: Maybe<IssueStatus[] | IssueStatus>;
-  priority?: Maybe<IssuePriority>;
-  priority_not?: Maybe<IssuePriority>;
-  priority_in?: Maybe<IssuePriority[] | IssuePriority>;
-  priority_not_in?: Maybe<IssuePriority[] | IssuePriority>;
-  assignee?: Maybe<UserWhereInput>;
-  reporter?: Maybe<UserWhereInput>;
-  estimate?: Maybe<Int>;
-  estimate_not?: Maybe<Int>;
-  estimate_in?: Maybe<Int[] | Int>;
-  estimate_not_in?: Maybe<Int[] | Int>;
-  estimate_lt?: Maybe<Int>;
-  estimate_lte?: Maybe<Int>;
-  estimate_gt?: Maybe<Int>;
-  estimate_gte?: Maybe<Int>;
-  timeSpent?: Maybe<Int>;
-  timeSpent_not?: Maybe<Int>;
-  timeSpent_in?: Maybe<Int[] | Int>;
-  timeSpent_not_in?: Maybe<Int[] | Int>;
-  timeSpent_lt?: Maybe<Int>;
-  timeSpent_lte?: Maybe<Int>;
-  timeSpent_gt?: Maybe<Int>;
-  timeSpent_gte?: Maybe<Int>;
-  timeRemaining?: Maybe<Int>;
-  timeRemaining_not?: Maybe<Int>;
-  timeRemaining_in?: Maybe<Int[] | Int>;
-  timeRemaining_not_in?: Maybe<Int[] | Int>;
-  timeRemaining_lt?: Maybe<Int>;
-  timeRemaining_lte?: Maybe<Int>;
-  timeRemaining_gt?: Maybe<Int>;
-  timeRemaining_gte?: Maybe<Int>;
-  listPosition?: Maybe<Float>;
-  listPosition_not?: Maybe<Float>;
-  listPosition_in?: Maybe<Float[] | Float>;
-  listPosition_not_in?: Maybe<Float[] | Float>;
-  listPosition_lt?: Maybe<Float>;
-  listPosition_lte?: Maybe<Float>;
-  listPosition_gt?: Maybe<Float>;
-  listPosition_gte?: Maybe<Float>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  project?: Maybe<ProjectWhereInput>;
-  comments_every?: Maybe<CommentWhereInput>;
-  comments_some?: Maybe<CommentWhereInput>;
-  comments_none?: Maybe<CommentWhereInput>;
-  attachments_every?: Maybe<FileWhereInput>;
-  attachments_some?: Maybe<FileWhereInput>;
-  attachments_none?: Maybe<FileWhereInput>;
-  AND?: Maybe<IssueWhereInput[] | IssueWhereInput>;
-  OR?: Maybe<IssueWhereInput[] | IssueWhereInput>;
-  NOT?: Maybe<IssueWhereInput[] | IssueWhereInput>;
-}
-
 export interface UserUpdateOneWithoutAssignedInput {
   create?: Maybe<UserCreateWithoutAssignedInput>;
   update?: Maybe<UserUpdateWithoutAssignedDataInput>;
@@ -807,24 +747,15 @@ export interface UserUpdateOneWithoutAssignedInput {
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface IssueTrackingLogSubscriptionWhereInput {
+export interface IssueSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<IssueTrackingLogWhereInput>;
-  AND?: Maybe<
-    | IssueTrackingLogSubscriptionWhereInput[]
-    | IssueTrackingLogSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | IssueTrackingLogSubscriptionWhereInput[]
-    | IssueTrackingLogSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | IssueTrackingLogSubscriptionWhereInput[]
-    | IssueTrackingLogSubscriptionWhereInput
-  >;
+  node?: Maybe<IssueWhereInput>;
+  AND?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+  OR?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+  NOT?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
 }
 
 export interface UserUpdateWithoutAssignedDataInput {
@@ -837,26 +768,29 @@ export interface UserUpdateWithoutAssignedDataInput {
   avatar?: Maybe<String>;
 }
 
-export interface FileSubscriptionWhereInput {
+export interface CommentSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<FileWhereInput>;
-  AND?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
-  OR?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
-  NOT?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+  node?: Maybe<CommentWhereInput>;
+  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
 }
 
 export interface UserUpdatepermissionsInput {
   set?: Maybe<Permission[] | Permission>;
 }
 
-export interface UserUpdateManyMutationInput {
+export interface UserUpdateInput {
   email?: Maybe<String>;
   name?: Maybe<String>;
   password?: Maybe<String>;
   permissions?: Maybe<UserUpdatepermissionsInput>;
+  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
+  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
+  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
   avatar?: Maybe<String>;
 }
 
@@ -882,42 +816,14 @@ export interface IssueUpdateManyWithoutReporterInput {
   >;
 }
 
-export interface UserUpdateInput {
-  email?: Maybe<String>;
+export interface ProjectUpdateManyMutationInput {
   name?: Maybe<String>;
-  password?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  assigned?: Maybe<IssueUpdateManyWithoutAssigneeInput>;
-  reporter?: Maybe<IssueUpdateManyWithoutReporterInput>;
-  comment?: Maybe<CommentUpdateManyWithoutOwnerInput>;
-  avatar?: Maybe<String>;
+  key?: Maybe<String>;
 }
 
 export interface IssueUpdateWithWhereUniqueWithoutReporterInput {
   where: IssueWhereUniqueInput;
   data: IssueUpdateWithoutReporterDataInput;
-}
-
-export interface IssueUpsertWithWhereUniqueWithoutProjectInput {
-  where: IssueWhereUniqueInput;
-  update: IssueUpdateWithoutProjectDataInput;
-  create: IssueCreateWithoutProjectInput;
-}
-
-export interface IssueUpdateWithoutReporterDataInput {
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  type?: Maybe<IssueType>;
-  status?: Maybe<IssueStatus>;
-  priority?: Maybe<IssuePriority>;
-  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
-  estimate?: Maybe<Int>;
-  timeSpent?: Maybe<Int>;
-  timeRemaining?: Maybe<Int>;
-  listPosition?: Maybe<Float>;
-  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
-  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
-  attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
 }
 
 export interface IssueUpdateWithoutProjectDataInput {
@@ -934,6 +840,29 @@ export interface IssueUpdateWithoutProjectDataInput {
   listPosition?: Maybe<Float>;
   comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
   attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
+}
+
+export interface IssueUpdateWithoutReporterDataInput {
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  status?: Maybe<IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  assignee?: Maybe<UserUpdateOneWithoutAssignedInput>;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
+  comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
+  attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
+}
+
+export interface IssueUpdateWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput;
+  data: IssueUpdateWithoutProjectDataInput;
 }
 
 export interface ProjectUpdateOneRequiredWithoutIssuesInput {
@@ -943,26 +872,10 @@ export interface ProjectUpdateOneRequiredWithoutIssuesInput {
   connect?: Maybe<ProjectWhereUniqueInput>;
 }
 
-export interface IssueUpdateManyWithoutProjectInput {
-  create?: Maybe<
-    IssueCreateWithoutProjectInput[] | IssueCreateWithoutProjectInput
-  >;
-  delete?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
-  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
-  set?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
-  disconnect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
-  update?: Maybe<
-    | IssueUpdateWithWhereUniqueWithoutProjectInput[]
-    | IssueUpdateWithWhereUniqueWithoutProjectInput
-  >;
-  upsert?: Maybe<
-    | IssueUpsertWithWhereUniqueWithoutProjectInput[]
-    | IssueUpsertWithWhereUniqueWithoutProjectInput
-  >;
-  deleteMany?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
-  updateMany?: Maybe<
-    IssueUpdateManyWithWhereNestedInput[] | IssueUpdateManyWithWhereNestedInput
-  >;
+export interface ProjectUpdateInput {
+  name?: Maybe<String>;
+  key?: Maybe<String>;
+  issues?: Maybe<IssueUpdateManyWithoutProjectInput>;
 }
 
 export interface ProjectUpdateWithoutIssuesDataInput {
@@ -970,10 +883,22 @@ export interface ProjectUpdateWithoutIssuesDataInput {
   key?: Maybe<String>;
 }
 
-export interface ProjectUpdateInput {
-  name?: Maybe<String>;
-  key?: Maybe<String>;
-  issues?: Maybe<IssueUpdateManyWithoutProjectInput>;
+export interface IssueCreateWithoutProjectInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  description?: Maybe<String>;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
+  reporter: UserCreateOneWithoutReporterInput;
+  estimate?: Maybe<Int>;
+  timeSpent?: Maybe<Int>;
+  timeRemaining?: Maybe<Int>;
+  listPosition?: Maybe<Float>;
+  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+  attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface ProjectUpsertWithoutIssuesInput {
@@ -981,7 +906,7 @@ export interface ProjectUpsertWithoutIssuesInput {
   create: ProjectCreateWithoutIssuesInput;
 }
 
-export interface IssueTrackingLogWhereInput {
+export interface LogWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1040,9 +965,9 @@ export interface IssueTrackingLogWhereInput {
   newValue_not_starts_with?: Maybe<String>;
   newValue_ends_with?: Maybe<String>;
   newValue_not_ends_with?: Maybe<String>;
-  AND?: Maybe<IssueTrackingLogWhereInput[] | IssueTrackingLogWhereInput>;
-  OR?: Maybe<IssueTrackingLogWhereInput[] | IssueTrackingLogWhereInput>;
-  NOT?: Maybe<IssueTrackingLogWhereInput[] | IssueTrackingLogWhereInput>;
+  AND?: Maybe<LogWhereInput[] | LogWhereInput>;
+  OR?: Maybe<LogWhereInput[] | LogWhereInput>;
+  NOT?: Maybe<LogWhereInput[] | LogWhereInput>;
 }
 
 export interface UserCreateOneInput {
@@ -1051,7 +976,7 @@ export interface UserCreateOneInput {
 }
 
 export interface ProjectCreateInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   name: String;
   key: String;
   issues?: Maybe<IssueCreateManyWithoutProjectInput>;
@@ -1087,6 +1012,7 @@ export interface IssueUpdateDataInput {
   project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
   comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
   attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateOneRequiredWithoutCommentInput {
@@ -1138,7 +1064,7 @@ export interface IssueUpdateManyWithoutAssigneeInput {
   >;
 }
 
-export interface IssueTrackingLogUpdateInput {
+export interface LogUpdateInput {
   type?: Maybe<LogType>;
   user?: Maybe<UserUpdateOneInput>;
   issue?: Maybe<IssueUpdateOneInput>;
@@ -1165,7 +1091,7 @@ export interface UserCreateInput {
   avatar?: Maybe<String>;
 }
 
-export interface IssueTrackingLogCreateInput {
+export interface LogCreateInput {
   id?: Maybe<ID_Input>;
   type: LogType;
   user?: Maybe<UserCreateOneInput>;
@@ -1191,7 +1117,7 @@ export interface UserUpdateOneRequiredWithoutReporterInput {
 }
 
 export interface IssueCreateWithoutCommentsInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   title: String;
   description?: Maybe<String>;
   type: IssueType;
@@ -1205,6 +1131,7 @@ export interface IssueCreateWithoutCommentsInput {
   listPosition?: Maybe<Float>;
   project: ProjectCreateOneWithoutIssuesInput;
   attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateWithoutReporterDataInput {
@@ -1375,14 +1302,20 @@ export interface UserUpsertWithoutReporterInput {
 }
 
 export interface ProjectWhereInput {
-  id?: Maybe<Int>;
-  id_not?: Maybe<Int>;
-  id_in?: Maybe<Int[] | Int>;
-  id_not_in?: Maybe<Int[] | Int>;
-  id_lt?: Maybe<Int>;
-  id_lte?: Maybe<Int>;
-  id_gt?: Maybe<Int>;
-  id_gte?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -1439,15 +1372,15 @@ export interface FileUpdateManyWithoutIssueInput {
   >;
 }
 
-export interface UserSubscriptionWhereInput {
+export interface ProjectSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  node?: Maybe<ProjectWhereInput>;
+  AND?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+  OR?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+  NOT?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
 }
 
 export interface FileUpdateWithWhereUniqueWithoutIssueInput {
@@ -1455,15 +1388,15 @@ export interface FileUpdateWithWhereUniqueWithoutIssueInput {
   data: FileUpdateWithoutIssueDataInput;
 }
 
-export interface IssueSubscriptionWhereInput {
+export interface FileSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<IssueWhereInput>;
-  AND?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
-  OR?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
-  NOT?: Maybe<IssueSubscriptionWhereInput[] | IssueSubscriptionWhereInput>;
+  node?: Maybe<FileWhereInput>;
+  AND?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+  OR?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+  NOT?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
 }
 
 export interface FileUpdateWithoutIssueDataInput {
@@ -1485,7 +1418,7 @@ export interface FileUpsertWithWhereUniqueWithoutIssueInput {
 }
 
 export type IssueWhereUniqueInput = AtLeastOne<{
-  id: Maybe<Int>;
+  id: Maybe<ID_Input>;
 }>;
 
 export interface FileScalarWhereInput {
@@ -1503,22 +1436,6 @@ export interface FileScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
   filename?: Maybe<String>;
   filename_not?: Maybe<String>;
   filename_in?: Maybe<String[] | String>;
@@ -1575,12 +1492,28 @@ export interface FileScalarWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
   OR?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
   NOT?: Maybe<FileScalarWhereInput[] | FileScalarWhereInput>;
 }
 
-export type IssueTrackingLogWhereUniqueInput = AtLeastOne<{
+export type LogWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -1604,7 +1537,7 @@ export interface FileUpdateManyDataInput {
 }
 
 export type ProjectWhereUniqueInput = AtLeastOne<{
-  id: Maybe<Int>;
+  id: Maybe<ID_Input>;
   key?: Maybe<String>;
 }>;
 
@@ -1626,14 +1559,20 @@ export interface UserUpdateDataInput {
 }
 
 export interface IssueScalarWhereInput {
-  id?: Maybe<Int>;
-  id_not?: Maybe<Int>;
-  id_in?: Maybe<Int[] | Int>;
-  id_not_in?: Maybe<Int[] | Int>;
-  id_lt?: Maybe<Int>;
-  id_lte?: Maybe<Int>;
-  id_gt?: Maybe<Int>;
-  id_gte?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -1722,6 +1661,14 @@ export interface IssueScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
+  dueDate?: Maybe<DateTimeInput>;
+  dueDate_not?: Maybe<DateTimeInput>;
+  dueDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  dueDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  dueDate_lt?: Maybe<DateTimeInput>;
+  dueDate_lte?: Maybe<DateTimeInput>;
+  dueDate_gt?: Maybe<DateTimeInput>;
+  dueDate_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
   OR?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
   NOT?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
@@ -1752,6 +1699,7 @@ export interface IssueUpdateManyDataInput {
   timeSpent?: Maybe<Int>;
   timeRemaining?: Maybe<Int>;
   listPosition?: Maybe<Float>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreatepermissionsInput {
@@ -1764,7 +1712,7 @@ export interface UserUpsertWithoutCommentInput {
 }
 
 export interface ProjectCreateWithoutIssuesInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   name: String;
   key: String;
 }
@@ -1808,56 +1756,15 @@ export interface UserUpsertWithoutAssignedInput {
   create: UserCreateWithoutAssignedInput;
 }
 
-export interface CommentWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  issue?: Maybe<IssueWhereInput>;
-  owner?: Maybe<UserWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
-  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
-  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
 export interface IssueUpsertWithoutCommentsInput {
@@ -1865,24 +1772,38 @@ export interface IssueUpsertWithoutCommentsInput {
   create: IssueCreateWithoutCommentsInput;
 }
 
-export interface CommentSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<CommentWhereInput>;
-  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
-  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
-  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+export interface UserUpdateManyMutationInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  avatar?: Maybe<String>;
 }
 
 export interface CommentUpdateManyMutationInput {
   text?: Maybe<String>;
 }
 
-export interface IssueUpdateWithWhereUniqueWithoutProjectInput {
-  where: IssueWhereUniqueInput;
-  data: IssueUpdateWithoutProjectDataInput;
+export interface IssueUpdateManyWithoutProjectInput {
+  create?: Maybe<
+    IssueCreateWithoutProjectInput[] | IssueCreateWithoutProjectInput
+  >;
+  delete?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  connect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  set?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  disconnect?: Maybe<IssueWhereUniqueInput[] | IssueWhereUniqueInput>;
+  update?: Maybe<
+    | IssueUpdateWithWhereUniqueWithoutProjectInput[]
+    | IssueUpdateWithWhereUniqueWithoutProjectInput
+  >;
+  upsert?: Maybe<
+    | IssueUpsertWithWhereUniqueWithoutProjectInput[]
+    | IssueUpsertWithWhereUniqueWithoutProjectInput
+  >;
+  deleteMany?: Maybe<IssueScalarWhereInput[] | IssueScalarWhereInput>;
+  updateMany?: Maybe<
+    IssueUpdateManyWithWhereNestedInput[] | IssueUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface IssueUpdateManyMutationInput {
@@ -1895,9 +1816,10 @@ export interface IssueUpdateManyMutationInput {
   timeSpent?: Maybe<Int>;
   timeRemaining?: Maybe<Int>;
   listPosition?: Maybe<Float>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
-export interface IssueTrackingLogUpdateManyMutationInput {
+export interface LogUpdateManyMutationInput {
   type?: Maybe<LogType>;
   previousValue?: Maybe<String>;
   newValue?: Maybe<String>;
@@ -1918,6 +1840,7 @@ export interface IssueUpdateInput {
   project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
   comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
   attachments?: Maybe<FileUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateOneInput {
@@ -1955,7 +1878,7 @@ export interface CommentCreateWithoutIssueInput {
 }
 
 export interface IssueCreateWithoutAttachmentsInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   title: String;
   description?: Maybe<String>;
   type: IssueType;
@@ -1969,6 +1892,7 @@ export interface IssueCreateWithoutAttachmentsInput {
   listPosition?: Maybe<Float>;
   project: ProjectCreateOneWithoutIssuesInput;
   comments?: Maybe<CommentCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface CommentCreateWithoutOwnerInput {
@@ -1985,9 +1909,10 @@ export interface FileUpdateInput {
   issue?: Maybe<IssueUpdateOneRequiredWithoutAttachmentsInput>;
 }
 
-export interface ProjectUpdateManyMutationInput {
-  name?: Maybe<String>;
-  key?: Maybe<String>;
+export interface IssueUpsertWithWhereUniqueWithoutProjectInput {
+  where: IssueWhereUniqueInput;
+  update: IssueUpdateWithoutProjectDataInput;
+  create: IssueCreateWithoutProjectInput;
 }
 
 export interface IssueUpdateOneInput {
@@ -2025,6 +1950,7 @@ export interface IssueUpdateWithoutAttachmentsDataInput {
   listPosition?: Maybe<Float>;
   project?: Maybe<ProjectUpdateOneRequiredWithoutIssuesInput>;
   comments?: Maybe<CommentUpdateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface IssueUpdateOneRequiredWithoutAttachmentsInput {
@@ -2034,36 +1960,144 @@ export interface IssueUpdateOneRequiredWithoutAttachmentsInput {
   connect?: Maybe<IssueWhereUniqueInput>;
 }
 
-export interface IssueCreateWithoutProjectInput {
-  id?: Maybe<Int>;
-  title: String;
+export interface IssueWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   description?: Maybe<String>;
-  type: IssueType;
-  status: IssueStatus;
-  priority: IssuePriority;
-  assignee?: Maybe<UserCreateOneWithoutAssignedInput>;
-  reporter: UserCreateOneWithoutReporterInput;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  type?: Maybe<IssueType>;
+  type_not?: Maybe<IssueType>;
+  type_in?: Maybe<IssueType[] | IssueType>;
+  type_not_in?: Maybe<IssueType[] | IssueType>;
+  status?: Maybe<IssueStatus>;
+  status_not?: Maybe<IssueStatus>;
+  status_in?: Maybe<IssueStatus[] | IssueStatus>;
+  status_not_in?: Maybe<IssueStatus[] | IssueStatus>;
+  priority?: Maybe<IssuePriority>;
+  priority_not?: Maybe<IssuePriority>;
+  priority_in?: Maybe<IssuePriority[] | IssuePriority>;
+  priority_not_in?: Maybe<IssuePriority[] | IssuePriority>;
+  assignee?: Maybe<UserWhereInput>;
+  reporter?: Maybe<UserWhereInput>;
   estimate?: Maybe<Int>;
+  estimate_not?: Maybe<Int>;
+  estimate_in?: Maybe<Int[] | Int>;
+  estimate_not_in?: Maybe<Int[] | Int>;
+  estimate_lt?: Maybe<Int>;
+  estimate_lte?: Maybe<Int>;
+  estimate_gt?: Maybe<Int>;
+  estimate_gte?: Maybe<Int>;
   timeSpent?: Maybe<Int>;
+  timeSpent_not?: Maybe<Int>;
+  timeSpent_in?: Maybe<Int[] | Int>;
+  timeSpent_not_in?: Maybe<Int[] | Int>;
+  timeSpent_lt?: Maybe<Int>;
+  timeSpent_lte?: Maybe<Int>;
+  timeSpent_gt?: Maybe<Int>;
+  timeSpent_gte?: Maybe<Int>;
   timeRemaining?: Maybe<Int>;
+  timeRemaining_not?: Maybe<Int>;
+  timeRemaining_in?: Maybe<Int[] | Int>;
+  timeRemaining_not_in?: Maybe<Int[] | Int>;
+  timeRemaining_lt?: Maybe<Int>;
+  timeRemaining_lte?: Maybe<Int>;
+  timeRemaining_gt?: Maybe<Int>;
+  timeRemaining_gte?: Maybe<Int>;
   listPosition?: Maybe<Float>;
-  comments?: Maybe<CommentCreateManyWithoutIssueInput>;
-  attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  listPosition_not?: Maybe<Float>;
+  listPosition_in?: Maybe<Float[] | Float>;
+  listPosition_not_in?: Maybe<Float[] | Float>;
+  listPosition_lt?: Maybe<Float>;
+  listPosition_lte?: Maybe<Float>;
+  listPosition_gt?: Maybe<Float>;
+  listPosition_gte?: Maybe<Float>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  project?: Maybe<ProjectWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  attachments_every?: Maybe<FileWhereInput>;
+  attachments_some?: Maybe<FileWhereInput>;
+  attachments_none?: Maybe<FileWhereInput>;
+  dueDate?: Maybe<DateTimeInput>;
+  dueDate_not?: Maybe<DateTimeInput>;
+  dueDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  dueDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  dueDate_lt?: Maybe<DateTimeInput>;
+  dueDate_lte?: Maybe<DateTimeInput>;
+  dueDate_gt?: Maybe<DateTimeInput>;
+  dueDate_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<IssueWhereInput[] | IssueWhereInput>;
+  OR?: Maybe<IssueWhereInput[] | IssueWhereInput>;
+  NOT?: Maybe<IssueWhereInput[] | IssueWhereInput>;
 }
 
-export interface ProjectSubscriptionWhereInput {
+export interface LogSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProjectWhereInput>;
-  AND?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  OR?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  NOT?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+  node?: Maybe<LogWhereInput>;
+  AND?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
+  OR?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
+  NOT?: Maybe<LogSubscriptionWhereInput[] | LogSubscriptionWhereInput>;
 }
 
 export interface IssueCreateWithoutAssigneeInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   title: String;
   description?: Maybe<String>;
   type: IssueType;
@@ -2077,10 +2111,11 @@ export interface IssueCreateWithoutAssigneeInput {
   project: ProjectCreateOneWithoutIssuesInput;
   comments?: Maybe<CommentCreateManyWithoutIssueInput>;
   attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface IssueCreateWithoutReporterInput {
-  id?: Maybe<Int>;
+  id?: Maybe<ID_Input>;
   title: String;
   description?: Maybe<String>;
   type: IssueType;
@@ -2094,6 +2129,7 @@ export interface IssueCreateWithoutReporterInput {
   project: ProjectCreateOneWithoutIssuesInput;
   comments?: Maybe<CommentCreateManyWithoutIssueInput>;
   attachments?: Maybe<FileCreateManyWithoutIssueInput>;
+  dueDate?: Maybe<DateTimeInput>;
 }
 
 export interface NodeNode {
@@ -2131,51 +2167,6 @@ export interface UserPreviousValuesSubscription
   avatar: () => Promise<AsyncIterator<String>>;
 }
 
-export interface IssueEdge {
-  node: Issue;
-  cursor: String;
-}
-
-export interface IssueEdgePromise extends Promise<IssueEdge>, Fragmentable {
-  node: <T = IssuePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface IssueEdgeSubscription
-  extends Promise<AsyncIterator<IssueEdge>>,
-    Fragmentable {
-  node: <T = IssueSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface IssueTrackingLogPreviousValues {
-  id: ID_Output;
-  type: LogType;
-  created: DateTimeOutput;
-  previousValue?: String;
-  newValue?: String;
-}
-
-export interface IssueTrackingLogPreviousValuesPromise
-  extends Promise<IssueTrackingLogPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<LogType>;
-  created: () => Promise<DateTimeOutput>;
-  previousValue: () => Promise<String>;
-  newValue: () => Promise<String>;
-}
-
-export interface IssueTrackingLogPreviousValuesSubscription
-  extends Promise<AsyncIterator<IssueTrackingLogPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<LogType>>;
-  created: () => Promise<AsyncIterator<DateTimeOutput>>;
-  previousValue: () => Promise<AsyncIterator<String>>;
-  newValue: () => Promise<AsyncIterator<String>>;
-}
-
 export interface IssueConnection {
   pageInfo: PageInfo;
   edges: IssueEdge[];
@@ -2197,21 +2188,32 @@ export interface IssueConnectionSubscription
   aggregate: <T = AggregateIssueSubscription>() => T;
 }
 
-export interface FileEdge {
-  node: File;
-  cursor: String;
+export interface LogPreviousValues {
+  id: ID_Output;
+  type: LogType;
+  created: DateTimeOutput;
+  previousValue?: String;
+  newValue?: String;
 }
 
-export interface FileEdgePromise extends Promise<FileEdge>, Fragmentable {
-  node: <T = FilePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface FileEdgeSubscription
-  extends Promise<AsyncIterator<FileEdge>>,
+export interface LogPreviousValuesPromise
+  extends Promise<LogPreviousValues>,
     Fragmentable {
-  node: <T = FileSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  type: () => Promise<LogType>;
+  created: () => Promise<DateTimeOutput>;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface LogPreviousValuesSubscription
+  extends Promise<AsyncIterator<LogPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<LogType>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
+  previousValue: () => Promise<AsyncIterator<String>>;
+  newValue: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateFile {
@@ -2230,59 +2232,64 @@ export interface AggregateFileSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Project {
-  id: Int;
+export interface FileConnection {
+  pageInfo: PageInfo;
+  edges: FileEdge[];
+}
+
+export interface FileConnectionPromise
+  extends Promise<FileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FileEdge>>() => T;
+  aggregate: <T = AggregateFilePromise>() => T;
+}
+
+export interface FileConnectionSubscription
+  extends Promise<AsyncIterator<FileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFileSubscription>() => T;
+}
+
+export interface FileEdge {
+  node: File;
+  cursor: String;
+}
+
+export interface FileEdgePromise extends Promise<FileEdge>, Fragmentable {
+  node: <T = FilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FileEdgeSubscription
+  extends Promise<AsyncIterator<FileEdge>>,
+    Fragmentable {
+  node: <T = FileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ProjectPreviousValues {
+  id: ID_Output;
   name: String;
   key: String;
 }
 
-export interface ProjectPromise extends Promise<Project>, Fragmentable {
-  id: () => Promise<Int>;
+export interface ProjectPreviousValuesPromise
+  extends Promise<ProjectPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   key: () => Promise<String>;
-  issues: <T = FragmentableArray<Issue>>(args?: {
-    where?: IssueWhereInput;
-    orderBy?: IssueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
-export interface ProjectSubscription
-  extends Promise<AsyncIterator<Project>>,
+export interface ProjectPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProjectPreviousValues>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   key: () => Promise<AsyncIterator<String>>;
-  issues: <T = Promise<AsyncIterator<IssueSubscription>>>(args?: {
-    where?: IssueWhereInput;
-    orderBy?: IssueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ProjectNullablePromise
-  extends Promise<Project | null>,
-    Fragmentable {
-  id: () => Promise<Int>;
-  name: () => Promise<String>;
-  key: () => Promise<String>;
-  issues: <T = FragmentableArray<Issue>>(args?: {
-    where?: IssueWhereInput;
-    orderBy?: IssueOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
 export interface BatchPayload {
@@ -2318,49 +2325,6 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface FileConnection {
-  pageInfo: PageInfo;
-  edges: FileEdge[];
-}
-
-export interface FileConnectionPromise
-  extends Promise<FileConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<FileEdge>>() => T;
-  aggregate: <T = AggregateFilePromise>() => T;
-}
-
-export interface FileConnectionSubscription
-  extends Promise<AsyncIterator<FileConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<FileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateFileSubscription>() => T;
-}
-
-export interface ProjectPreviousValues {
-  id: Int;
-  name: String;
-  key: String;
-}
-
-export interface ProjectPreviousValuesPromise
-  extends Promise<ProjectPreviousValues>,
-    Fragmentable {
-  id: () => Promise<Int>;
-  name: () => Promise<String>;
-  key: () => Promise<String>;
-}
-
-export interface ProjectPreviousValuesSubscription
-  extends Promise<AsyncIterator<ProjectPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<Int>>;
-  name: () => Promise<AsyncIterator<String>>;
-  key: () => Promise<AsyncIterator<String>>;
-}
-
 export interface AggregateComment {
   count: Int;
 }
@@ -2377,21 +2341,29 @@ export interface AggregateCommentSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ProjectEdge {
+export interface ProjectSubscriptionPayload {
+  mutation: MutationType;
   node: Project;
-  cursor: String;
+  updatedFields: String[];
+  previousValues: ProjectPreviousValues;
 }
 
-export interface ProjectEdgePromise extends Promise<ProjectEdge>, Fragmentable {
-  node: <T = ProjectPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ProjectEdgeSubscription
-  extends Promise<AsyncIterator<ProjectEdge>>,
+export interface ProjectSubscriptionPayloadPromise
+  extends Promise<ProjectSubscriptionPayload>,
     Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProjectPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProjectPreviousValuesPromise>() => T;
+}
+
+export interface ProjectSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProjectSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = ProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProjectPreviousValuesSubscription>() => T;
 }
 
 export interface CommentEdge {
@@ -2411,8 +2383,80 @@ export interface CommentEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface ProjectEdge {
+  node: Project;
+  cursor: String;
+}
+
+export interface ProjectEdgePromise extends Promise<ProjectEdge>, Fragmentable {
+  node: <T = ProjectPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProjectEdgeSubscription
+  extends Promise<AsyncIterator<ProjectEdge>>,
+    Fragmentable {
+  node: <T = ProjectSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Project {
+  id: ID_Output;
+  name: String;
+  key: String;
+}
+
+export interface ProjectPromise extends Promise<Project>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  key: () => Promise<String>;
+  issues: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ProjectSubscription
+  extends Promise<AsyncIterator<Project>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  key: () => Promise<AsyncIterator<String>>;
+  issues: <T = Promise<AsyncIterator<IssueSubscription>>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ProjectNullablePromise
+  extends Promise<Project | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  key: () => Promise<String>;
+  issues: <T = FragmentableArray<Issue>>(args?: {
+    where?: IssueWhereInput;
+    orderBy?: IssueOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
 export interface Issue {
-  id: Int;
+  id: ID_Output;
   title: String;
   description?: String;
   type: IssueType;
@@ -2424,10 +2468,11 @@ export interface Issue {
   listPosition?: Float;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  dueDate?: DateTimeOutput;
 }
 
 export interface IssuePromise extends Promise<Issue>, Fragmentable {
-  id: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   description: () => Promise<String>;
   type: () => Promise<IssueType>;
@@ -2460,12 +2505,13 @@ export interface IssuePromise extends Promise<Issue>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  dueDate: () => Promise<DateTimeOutput>;
 }
 
 export interface IssueSubscription
   extends Promise<AsyncIterator<Issue>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   type: () => Promise<AsyncIterator<IssueType>>;
@@ -2498,12 +2544,13 @@ export interface IssueSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  dueDate: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface IssueNullablePromise
   extends Promise<Issue | null>,
     Fragmentable {
-  id: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   description: () => Promise<String>;
   type: () => Promise<IssueType>;
@@ -2536,6 +2583,7 @@ export interface IssueNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  dueDate: () => Promise<DateTimeOutput>;
 }
 
 export interface Comment {
@@ -2576,22 +2624,20 @@ export interface CommentNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface IssueTrackingLogEdge {
-  node: IssueTrackingLog;
+export interface LogEdge {
+  node: Log;
   cursor: String;
 }
 
-export interface IssueTrackingLogEdgePromise
-  extends Promise<IssueTrackingLogEdge>,
-    Fragmentable {
-  node: <T = IssueTrackingLogPromise>() => T;
+export interface LogEdgePromise extends Promise<LogEdge>, Fragmentable {
+  node: <T = LogPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface IssueTrackingLogEdgeSubscription
-  extends Promise<AsyncIterator<IssueTrackingLogEdge>>,
+export interface LogEdgeSubscription
+  extends Promise<AsyncIterator<LogEdge>>,
     Fragmentable {
-  node: <T = IssueTrackingLogSubscription>() => T;
+  node: <T = LogSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -2618,475 +2664,6 @@ export interface CommentSubscriptionPayloadSubscription
   node: <T = CommentSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = CommentPreviousValuesSubscription>() => T;
-}
-
-export interface ProjectSubscriptionPayload {
-  mutation: MutationType;
-  node: Project;
-  updatedFields: String[];
-  previousValues: ProjectPreviousValues;
-}
-
-export interface ProjectSubscriptionPayloadPromise
-  extends Promise<ProjectSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ProjectPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ProjectPreviousValuesPromise>() => T;
-}
-
-export interface ProjectSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ProjectSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ProjectSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ProjectPreviousValuesSubscription>() => T;
-}
-
-export interface CommentPreviousValues {
-  id: ID_Output;
-  text: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface CommentPreviousValuesPromise
-  extends Promise<CommentPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  text: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface CommentPreviousValuesSubscription
-  extends Promise<AsyncIterator<CommentPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  text: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface IssueTrackingLog {
-  id: ID_Output;
-  type: LogType;
-  created: DateTimeOutput;
-  previousValue?: String;
-  newValue?: String;
-}
-
-export interface IssueTrackingLogPromise
-  extends Promise<IssueTrackingLog>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<LogType>;
-  created: () => Promise<DateTimeOutput>;
-  user: <T = UserPromise>() => T;
-  issue: <T = IssuePromise>() => T;
-  prevAssignee: <T = UserPromise>() => T;
-  newAssignee: <T = UserPromise>() => T;
-  previousValue: () => Promise<String>;
-  newValue: () => Promise<String>;
-}
-
-export interface IssueTrackingLogSubscription
-  extends Promise<AsyncIterator<IssueTrackingLog>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<LogType>>;
-  created: () => Promise<AsyncIterator<DateTimeOutput>>;
-  user: <T = UserSubscription>() => T;
-  issue: <T = IssueSubscription>() => T;
-  prevAssignee: <T = UserSubscription>() => T;
-  newAssignee: <T = UserSubscription>() => T;
-  previousValue: () => Promise<AsyncIterator<String>>;
-  newValue: () => Promise<AsyncIterator<String>>;
-}
-
-export interface IssueTrackingLogNullablePromise
-  extends Promise<IssueTrackingLog | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<LogType>;
-  created: () => Promise<DateTimeOutput>;
-  user: <T = UserPromise>() => T;
-  issue: <T = IssuePromise>() => T;
-  prevAssignee: <T = UserPromise>() => T;
-  newAssignee: <T = UserPromise>() => T;
-  previousValue: () => Promise<String>;
-  newValue: () => Promise<String>;
-}
-
-export interface File {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  filename: String;
-  mimetype: String;
-  encoding: String;
-  url: String;
-}
-
-export interface FilePromise extends Promise<File>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  filename: () => Promise<String>;
-  mimetype: () => Promise<String>;
-  encoding: () => Promise<String>;
-  url: () => Promise<String>;
-  issue: <T = IssuePromise>() => T;
-}
-
-export interface FileSubscription
-  extends Promise<AsyncIterator<File>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  mimetype: () => Promise<AsyncIterator<String>>;
-  encoding: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  issue: <T = IssueSubscription>() => T;
-}
-
-export interface FileNullablePromise
-  extends Promise<File | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  filename: () => Promise<String>;
-  mimetype: () => Promise<String>;
-  encoding: () => Promise<String>;
-  url: () => Promise<String>;
-  issue: <T = IssuePromise>() => T;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface FileSubscriptionPayload {
-  mutation: MutationType;
-  node: File;
-  updatedFields: String[];
-  previousValues: FilePreviousValues;
-}
-
-export interface FileSubscriptionPayloadPromise
-  extends Promise<FileSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = FilePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = FilePreviousValuesPromise>() => T;
-}
-
-export interface FileSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<FileSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = FileSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = FilePreviousValuesSubscription>() => T;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface FilePreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  filename: String;
-  mimetype: String;
-  encoding: String;
-  url: String;
-}
-
-export interface FilePreviousValuesPromise
-  extends Promise<FilePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  filename: () => Promise<String>;
-  mimetype: () => Promise<String>;
-  encoding: () => Promise<String>;
-  url: () => Promise<String>;
-}
-
-export interface FilePreviousValuesSubscription
-  extends Promise<AsyncIterator<FilePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  mimetype: () => Promise<AsyncIterator<String>>;
-  encoding: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ProjectConnection {
-  pageInfo: PageInfo;
-  edges: ProjectEdge[];
-}
-
-export interface ProjectConnectionPromise
-  extends Promise<ProjectConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProjectEdge>>() => T;
-  aggregate: <T = AggregateProjectPromise>() => T;
-}
-
-export interface ProjectConnectionSubscription
-  extends Promise<AsyncIterator<ProjectConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProjectEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProjectSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface IssueTrackingLogConnection {
-  pageInfo: PageInfo;
-  edges: IssueTrackingLogEdge[];
-}
-
-export interface IssueTrackingLogConnectionPromise
-  extends Promise<IssueTrackingLogConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<IssueTrackingLogEdge>>() => T;
-  aggregate: <T = AggregateIssueTrackingLogPromise>() => T;
-}
-
-export interface IssueTrackingLogConnectionSubscription
-  extends Promise<AsyncIterator<IssueTrackingLogConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<IssueTrackingLogEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateIssueTrackingLogSubscription>() => T;
-}
-
-export interface AggregateIssue {
-  count: Int;
-}
-
-export interface AggregateIssuePromise
-  extends Promise<AggregateIssue>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateIssueSubscription
-  extends Promise<AsyncIterator<AggregateIssue>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface IssueTrackingLogSubscriptionPayload {
-  mutation: MutationType;
-  node: IssueTrackingLog;
-  updatedFields: String[];
-  previousValues: IssueTrackingLogPreviousValues;
-}
-
-export interface IssueTrackingLogSubscriptionPayloadPromise
-  extends Promise<IssueTrackingLogSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = IssueTrackingLogPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = IssueTrackingLogPreviousValuesPromise>() => T;
-}
-
-export interface IssueTrackingLogSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<IssueTrackingLogSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = IssueTrackingLogSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = IssueTrackingLogPreviousValuesSubscription>() => T;
-}
-
-export interface CommentConnection {
-  pageInfo: PageInfo;
-  edges: CommentEdge[];
-}
-
-export interface CommentConnectionPromise
-  extends Promise<CommentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CommentEdge>>() => T;
-  aggregate: <T = AggregateCommentPromise>() => T;
-}
-
-export interface CommentConnectionSubscription
-  extends Promise<AsyncIterator<CommentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCommentSubscription>() => T;
-}
-
-export interface IssuePreviousValues {
-  id: Int;
-  title: String;
-  description?: String;
-  type: IssueType;
-  status: IssueStatus;
-  priority: IssuePriority;
-  estimate?: Int;
-  timeSpent?: Int;
-  timeRemaining?: Int;
-  listPosition?: Float;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface IssuePreviousValuesPromise
-  extends Promise<IssuePreviousValues>,
-    Fragmentable {
-  id: () => Promise<Int>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
-  type: () => Promise<IssueType>;
-  status: () => Promise<IssueStatus>;
-  priority: () => Promise<IssuePriority>;
-  estimate: () => Promise<Int>;
-  timeSpent: () => Promise<Int>;
-  timeRemaining: () => Promise<Int>;
-  listPosition: () => Promise<Float>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface IssuePreviousValuesSubscription
-  extends Promise<AsyncIterator<IssuePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<Int>>;
-  title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  type: () => Promise<AsyncIterator<IssueType>>;
-  status: () => Promise<AsyncIterator<IssueStatus>>;
-  priority: () => Promise<AsyncIterator<IssuePriority>>;
-  estimate: () => Promise<AsyncIterator<Int>>;
-  timeSpent: () => Promise<AsyncIterator<Int>>;
-  timeRemaining: () => Promise<AsyncIterator<Int>>;
-  listPosition: () => Promise<AsyncIterator<Float>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface IssueSubscriptionPayload {
-  mutation: MutationType;
-  node: Issue;
-  updatedFields: String[];
-  previousValues: IssuePreviousValues;
-}
-
-export interface IssueSubscriptionPayloadPromise
-  extends Promise<IssueSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = IssuePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = IssuePreviousValuesPromise>() => T;
-}
-
-export interface IssueSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<IssueSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = IssueSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = IssuePreviousValuesSubscription>() => T;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface User {
@@ -3210,18 +2787,478 @@ export interface UserNullablePromise
   avatar: () => Promise<String>;
 }
 
-export interface AggregateIssueTrackingLog {
+export interface CommentPreviousValues {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CommentPreviousValuesPromise
+  extends Promise<CommentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CommentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AggregateIssue {
   count: Int;
 }
 
-export interface AggregateIssueTrackingLogPromise
-  extends Promise<AggregateIssueTrackingLog>,
+export interface AggregateIssuePromise
+  extends Promise<AggregateIssue>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateIssueTrackingLogSubscription
-  extends Promise<AsyncIterator<AggregateIssueTrackingLog>>,
+export interface AggregateIssueSubscription
+  extends Promise<AsyncIterator<AggregateIssue>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface FileSubscriptionPayload {
+  mutation: MutationType;
+  node: File;
+  updatedFields: String[];
+  previousValues: FilePreviousValues;
+}
+
+export interface FileSubscriptionPayloadPromise
+  extends Promise<FileSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FilePreviousValuesPromise>() => T;
+}
+
+export interface FileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FileSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FilePreviousValuesSubscription>() => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface FilePreviousValues {
+  id: ID_Output;
+  filename: String;
+  mimetype: String;
+  encoding: String;
+  url: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface FilePreviousValuesPromise
+  extends Promise<FilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  filename: () => Promise<String>;
+  mimetype: () => Promise<String>;
+  encoding: () => Promise<String>;
+  url: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface FilePreviousValuesSubscription
+  extends Promise<AsyncIterator<FilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  mimetype: () => Promise<AsyncIterator<String>>;
+  encoding: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ProjectConnection {
+  pageInfo: PageInfo;
+  edges: ProjectEdge[];
+}
+
+export interface ProjectConnectionPromise
+  extends Promise<ProjectConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProjectEdge>>() => T;
+  aggregate: <T = AggregateProjectPromise>() => T;
+}
+
+export interface ProjectConnectionSubscription
+  extends Promise<AsyncIterator<ProjectConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProjectEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProjectSubscription>() => T;
+}
+
+export interface CommentConnection {
+  pageInfo: PageInfo;
+  edges: CommentEdge[];
+}
+
+export interface CommentConnectionPromise
+  extends Promise<CommentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommentEdge>>() => T;
+  aggregate: <T = AggregateCommentPromise>() => T;
+}
+
+export interface CommentConnectionSubscription
+  extends Promise<AsyncIterator<CommentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentSubscription>() => T;
+}
+
+export interface LogConnection {
+  pageInfo: PageInfo;
+  edges: LogEdge[];
+}
+
+export interface LogConnectionPromise
+  extends Promise<LogConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LogEdge>>() => T;
+  aggregate: <T = AggregateLogPromise>() => T;
+}
+
+export interface LogConnectionSubscription
+  extends Promise<AsyncIterator<LogConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LogEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLogSubscription>() => T;
+}
+
+export interface IssueEdge {
+  node: Issue;
+  cursor: String;
+}
+
+export interface IssueEdgePromise extends Promise<IssueEdge>, Fragmentable {
+  node: <T = IssuePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface IssueEdgeSubscription
+  extends Promise<AsyncIterator<IssueEdge>>,
+    Fragmentable {
+  node: <T = IssueSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LogSubscriptionPayload {
+  mutation: MutationType;
+  node: Log;
+  updatedFields: String[];
+  previousValues: LogPreviousValues;
+}
+
+export interface LogSubscriptionPayloadPromise
+  extends Promise<LogSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = LogPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LogPreviousValuesPromise>() => T;
+}
+
+export interface LogSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LogSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LogSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LogPreviousValuesSubscription>() => T;
+}
+
+export interface File {
+  id: ID_Output;
+  filename: String;
+  mimetype: String;
+  encoding: String;
+  url: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface FilePromise extends Promise<File>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  filename: () => Promise<String>;
+  mimetype: () => Promise<String>;
+  encoding: () => Promise<String>;
+  url: () => Promise<String>;
+  issue: <T = IssuePromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface FileSubscription
+  extends Promise<AsyncIterator<File>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  mimetype: () => Promise<AsyncIterator<String>>;
+  encoding: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  issue: <T = IssueSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface FileNullablePromise
+  extends Promise<File | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  filename: () => Promise<String>;
+  mimetype: () => Promise<String>;
+  encoding: () => Promise<String>;
+  url: () => Promise<String>;
+  issue: <T = IssuePromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface IssuePreviousValues {
+  id: ID_Output;
+  title: String;
+  description?: String;
+  type: IssueType;
+  status: IssueStatus;
+  priority: IssuePriority;
+  estimate?: Int;
+  timeSpent?: Int;
+  timeRemaining?: Int;
+  listPosition?: Float;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  dueDate?: DateTimeOutput;
+}
+
+export interface IssuePreviousValuesPromise
+  extends Promise<IssuePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  type: () => Promise<IssueType>;
+  status: () => Promise<IssueStatus>;
+  priority: () => Promise<IssuePriority>;
+  estimate: () => Promise<Int>;
+  timeSpent: () => Promise<Int>;
+  timeRemaining: () => Promise<Int>;
+  listPosition: () => Promise<Float>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  dueDate: () => Promise<DateTimeOutput>;
+}
+
+export interface IssuePreviousValuesSubscription
+  extends Promise<AsyncIterator<IssuePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<IssueType>>;
+  status: () => Promise<AsyncIterator<IssueStatus>>;
+  priority: () => Promise<AsyncIterator<IssuePriority>>;
+  estimate: () => Promise<AsyncIterator<Int>>;
+  timeSpent: () => Promise<AsyncIterator<Int>>;
+  timeRemaining: () => Promise<AsyncIterator<Int>>;
+  listPosition: () => Promise<AsyncIterator<Float>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  dueDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface IssueSubscriptionPayload {
+  mutation: MutationType;
+  node: Issue;
+  updatedFields: String[];
+  previousValues: IssuePreviousValues;
+}
+
+export interface IssueSubscriptionPayloadPromise
+  extends Promise<IssueSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = IssuePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = IssuePreviousValuesPromise>() => T;
+}
+
+export interface IssueSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<IssueSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = IssueSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = IssuePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Log {
+  id: ID_Output;
+  type: LogType;
+  created: DateTimeOutput;
+  previousValue?: String;
+  newValue?: String;
+}
+
+export interface LogPromise extends Promise<Log>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<LogType>;
+  created: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  issue: <T = IssuePromise>() => T;
+  prevAssignee: <T = UserPromise>() => T;
+  newAssignee: <T = UserPromise>() => T;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface LogSubscription
+  extends Promise<AsyncIterator<Log>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<LogType>>;
+  created: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T = UserSubscription>() => T;
+  issue: <T = IssueSubscription>() => T;
+  prevAssignee: <T = UserSubscription>() => T;
+  newAssignee: <T = UserSubscription>() => T;
+  previousValue: () => Promise<AsyncIterator<String>>;
+  newValue: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LogNullablePromise extends Promise<Log | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<LogType>;
+  created: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  issue: <T = IssuePromise>() => T;
+  prevAssignee: <T = UserPromise>() => T;
+  newAssignee: <T = UserPromise>() => T;
+  previousValue: () => Promise<String>;
+  newValue: () => Promise<String>;
+}
+
+export interface AggregateLog {
+  count: Int;
+}
+
+export interface AggregateLogPromise
+  extends Promise<AggregateLog>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLogSubscription
+  extends Promise<AsyncIterator<AggregateLog>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -3243,6 +3280,18 @@ export interface AggregateProjectSubscription
 }
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+export type Long = string;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+*/
+export type Float = number;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -3251,13 +3300,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-export type Long = string;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
-*/
-export type Float = number;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -3269,11 +3311,6 @@ export type ID_Output = string;
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -3302,6 +3339,10 @@ export const models: Model[] = [
     embedded: false
   },
   {
+    name: "LogType",
+    embedded: false
+  },
+  {
     name: "Project",
     embedded: false
   },
@@ -3322,11 +3363,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "LogType",
-    embedded: false
-  },
-  {
-    name: "IssueTrackingLog",
+    name: "Log",
     embedded: false
   }
 ];

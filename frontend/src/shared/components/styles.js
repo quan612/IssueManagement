@@ -56,14 +56,14 @@ export const SelectItemLabel = styled.div`
 
 export const statusColor = {
   [IssueStatus.BACKLOG]: tw`text-gray-600 `,
-  [IssueStatus.SELECTED]: tw` text-gray-600 `,
+  [IssueStatus.OPEN]: tw` text-gray-600 `,
   [IssueStatus.INPROGRESS]: tw`text-blue-700`,
   [IssueStatus.DONE]: tw` text-green-600`,
 };
 
 export const statusColorWithBorder = {
   [IssueStatus.BACKLOG]: tw`bg-gray-500 `,
-  [IssueStatus.SELECTED]: tw` bg-gray-700 `,
+  [IssueStatus.OPEN]: tw` bg-gray-700 `,
   [IssueStatus.INPROGRESS]: tw`bg-blue-700`,
   [IssueStatus.DONE]: tw` bg-green-600`,
 };

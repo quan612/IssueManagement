@@ -5,6 +5,8 @@ export const Container = styled.div`
   ${tw`w-full px-4`}
   display: flex;
   flex-direction: column;
+  height: 100%;
+  position: relative;
 `;
 
 export const Heading = styled.div`

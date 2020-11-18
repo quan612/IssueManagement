@@ -21,6 +21,8 @@ import {
   faLockOpen,
   faCircle,
   faChevronRight,
+  faFile,
+  faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -43,5 +45,7 @@ library.add(
   faUser,
   faLockOpen,
   faCircle,
-  faChevronRight
+  faChevronRight,
+  faFile,
+  faPlusCircle
 );

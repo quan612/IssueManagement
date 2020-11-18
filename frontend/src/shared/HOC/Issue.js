@@ -13,25 +13,23 @@ import {
 export const withIssuesQuery = (BaseComponent) => ({ ...props }) => {
   const match = useRouteMatch();
   const { projectId } = match.params;
+
   const [issues, setIssues] = useState([]);
-  const fetchVariables = { projectId: projectId };
+  const fetchVariables = { projectId };
 
   const { loading: fetching, data } = useQuery(PROJECT_ISSUES_QUERY, {
-    variables: { projectId: projectId, filter: {} },
+    variables: { projectId, filter: {} },
     onCompleted: (data) => {
       setIssues(data.issues);
     },
   });
 
   // handle query manually when user searches, or changing any filter
-  const [fetchIssuesAPI, { loading: fetchingLazy }] = useLazyQuery(
-    PROJECT_ISSUES_QUERY,
-    {
-      onCompleted: (data) => {
-        setIssues(data.issues);
-      },
-    }
-  );
+  const [fetchIssuesAPI, { loading: fetchingLazy }] = useLazyQuery(PROJECT_ISSUES_QUERY, {
+    onCompleted: (data) => {
+      setIssues(data.issues);
+    },
+  });
 
   useLayoutEffect(() => {
     if (data && data.issues) setIssues(data.issues);
@@ -80,7 +78,7 @@ export const withSingleIssueQuery = (BaseComponent) => ({ ...props }) => {
   return (
     <BaseComponent
       issue={data ? data.issue : []}
-      fetchingIssue={loading}
+      fetchingIssue={loading || networkStatus === 3}
       fetchingIssueError={error}
       {...props}
     />
@@ -90,12 +88,13 @@ export const withSingleIssueQuery = (BaseComponent) => ({ ...props }) => {
 export const withIssueCreate = (BaseComponent) => ({ ...props }) => {
   const match = useRouteMatch();
   const { projectId } = match.params;
+
   const [createIssue, { loading, error }] = useMutation(CREATE_ISSUE_MUTATION, {
     // need to update cache manually for this type of action
     update: (cache, { data: { createIssue } }) => {
       let data = cache.readQuery({
         query: PROJECT_ISSUES_QUERY,
-        variables: { projectId: projectId, filter: {} },
+        variables: { projectId, filter: {} },
       });
 
       cache.writeQuery({
@@ -103,7 +102,7 @@ export const withIssueCreate = (BaseComponent) => ({ ...props }) => {
         data: {
           issues: [...data.issues, createIssue],
         },
-        variables: { projectId: projectId, filter: {} },
+        variables: { projectId, filter: {} },
       });
     },
   });
@@ -122,11 +121,6 @@ export const withIssueUpdate = (BaseComponent) => ({ ...props }) => {
   const [updateIssue, { loading, error }] = useMutation(UPDATE_ISSUE_MUTATION);
 
   return (
-    <BaseComponent
-      {...props}
-      updatingIssue={loading}
-      errorUpdateIssue={error}
-      updateIssueAPI={updateIssue}
-    />
+    <BaseComponent {...props} updatingIssue={loading} errorUpdateIssue={error} updateIssueAPI={updateIssue} />
   );
 };

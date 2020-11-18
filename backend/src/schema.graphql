@@ -12,13 +12,13 @@ type SuccessMessage {
 }
 
 type Query {
-  project(id: Int!): Project
+  project(id: ID!): Project
   projects: [Project]!
   me: User
   users: [User]!
-  issues(projectId: String!, filter: IssueWhereInput): [Issue!]!
-  issue(id: Int!): Issue!
-  logsOnIssue(issueId: Int!): [IssueTrackingLog!]!
+  issues(projectId: ID!, filter: IssueWhereInput): [Issue!]!
+  issue(id: ID!): Issue!
+  logsOnIssue(issueId: ID!): [Log!]!
   singleComment(id: ID!): Comment!
   singleUser(id: ID!): User!
   getProjects(filter: String, skip: Int!, first: Int!): [Project!]!
@@ -28,8 +28,8 @@ type Query {
 
 type Mutation {
   createProject(name: String!, key: String!): Project!
-  deleteProject(id: Int!): Project
-  updateProject(id: Int!, name: String!, key: String!): Project!
+  deleteProject(id: ID!): Project
+  updateProject(id: ID!, name: String!, key: String!): Project!
 
   signup(email: String!, name: String!, password: String!): User!
   signin(email: String!, password: String!): User!
@@ -43,12 +43,12 @@ type Mutation {
     type: IssueType!
     status: IssueStatus!
     priority: IssuePriority!
-    project: String!
+    project: ID!
     assignee: ID
   ): Issue!
 
   updateIssue(
-    id: Int!
+    id: ID!
     title: String!
     description: String
     type: IssueType!
@@ -64,5 +64,5 @@ type Mutation {
   createComment(text: String!, issue: ID!, actionType: String): Comment!
   updateComment(id: ID!, text: String): Comment!
 
-  uploadFile(file: Upload!): File!
+  uploadFile(file: Upload!, issue: ID!, actionType: String): File
 }

@@ -7,7 +7,7 @@
 > CRUD (Create, Read, Update And Delete)
 
 - Authentication with JWT
-  - Login 
+  - Login
   - Register
   - Reset Password
 - Project (CRUD)
@@ -35,7 +35,6 @@ export const prodEndpoint = `https://jira-yoga-clone.herokuapp.com/`;
 npm install
 ```
 
-
 ## Start
 
 ```console
@@ -43,6 +42,7 @@ npm run dev
 ```
 
 ## Test
+
 Testing with Jest and enzyme (still need more tests, only covering a few tests)
 
 ## Screenshots
@@ -63,11 +63,11 @@ Testing with Jest and enzyme (still need more tests, only covering a few tests)
 
 ![Screenshot](screenshots/projects-page.JPG)
 
-### Listing Issues (/projects/:projectId)
+### Listing Issues (/project/:projectId)
 
 ![Screenshot](screenshots/list-issue.JPG)
 
-### Create Issue 
+### Create Issue
 
 ![Screenshot](screenshots/create-issue.JPG)
 

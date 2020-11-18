@@ -1,12 +1,14 @@
 import React from "react";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
+
+import withAuth from "shared/HOC/Auth/withAuth";
 import PrivateRoute from "shared/HOC/Auth/PrivateRoute";
 
-import * as PAGES from "./pages";
-import Header from "../PageComponents/Header/index";
-import withAuth from "shared/HOC/Auth/withAuth";
-import { Body } from "./styles";
+import Header from "PageComponents/Header";
 import Toast from "shared/components/Toast";
+
+import * as PAGES from "./pages";
+import { Body } from "./styles";
 
 export const SIGNUP = "/signup";
 export const SIGNIN = "/signin";
@@ -15,25 +17,14 @@ export const HOME = "/";
 export const PROJECTS = "/projects";
 export const USERS = "/users";
 export const FEEDS = "/feeds";
-export const SINGLE_PROJECT = "/projects/:projectId";
+export const SINGLE_PROJECT = "/project/:projectId";
 
 const Routes = ({ authentication }) => {
   const location = useLocation();
-
-  // const transitions = useTransition(location, (location) => location.pathname, {
-  //   from: { opacity: 0 },
-  //   enter: { opacity: 1 },
-  //   leave: { opacity: 0 },
-  //   config: { duration: 1000, trail: 2000 },
-  // });
-
   return (
     <>
       <Header authentication={authentication} />
-      <Body
-        name="BodyContainer"
-        // key={key} style={props}
-      >
+      <Body name="BodyContainer">
         <Switch location={location}>
           <Route path={SIGNUP} component={() => <PAGES.SIGNUP />} />
           <Route path={SIGNIN} component={() => <PAGES.SIGNIN authentication={authentication} />} />
@@ -77,7 +68,6 @@ const Routes = ({ authentication }) => {
         </Switch>
         <Toast position={"bottom-right"} />
       </Body>
-      {/* })} */}
     </>
   );
 };

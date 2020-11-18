@@ -1,5 +1,4 @@
 import React from "react";
-
 import { withSingleIssueQuery, withCurrentUser, withIssueUpdate } from "shared/HOC";
 
 import { flowRight } from "lodash";
@@ -69,7 +68,7 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
     return (
       <>
         <BrowserView>
-          <div className="p-5">
+          <div className="p-5 h-full">
             <FlexColContainer>
               <IssueDetailsTitle issue={issue} updateIssue={handleUpdate} />
               <PanelContainer>
@@ -86,19 +85,11 @@ const IssueDetails = ({ currentLogInUser, users, issue, fetchingIssue, updatingI
                 </FlexWrap>
               </PanelContainer>
 
-              <div className="comment-area mb-10 relative">
-                <div className="comment-heading table w-full mt-16 mb-5">
-                  <h3>Comments (19)</h3>
-                </div>
-                <PanelContainer>
-                  <TrackingActivity users={users} issue={issue} />
-                </PanelContainer>
-              </div>
-
-              <UploadAttachments />
+              <UploadAttachments attachments={issue.attachments} />
+              <TrackingActivity users={users} issue={issue} />
             </FlexColContainer>
           </div>
-          <div className="detail-footer w-full sticky rounded bottom-0  p-1 z-100 px-6 bg-white shadow border-t-2">
+          <div className="detail-footer w-full sticky rounded bottom-0 right-0 p-1 z-100 px-6 bg-white shadow border-t-2">
             <IssueDetailsComment currentLogInUser={currentLogInUser} issue={issue} />
           </div>
         </BrowserView>

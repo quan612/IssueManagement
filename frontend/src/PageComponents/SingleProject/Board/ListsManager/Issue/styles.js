@@ -7,6 +7,7 @@ export const IssueContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  margin: 0.7rem 0;
   padding: 0.7rem;
   min-height: 130px;
   width: auto;

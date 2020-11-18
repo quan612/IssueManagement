@@ -10,6 +10,7 @@ export const Select = ({
   variant = "normal",
   width,
   renderItem = true,
+  isDropUp = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef();
@@ -40,7 +41,7 @@ export const Select = ({
         <FontAwesomeIcon className="ml-auto" icon={isOpen ? "angle-up" : "angle-down"} size="1x" />
       </SelectedItemWrapper>
       {isOpen && (
-        <MenuContainer>
+        <MenuContainer isDropUp={isDropUp}>
           {items.map((item) => {
             return (
               <MenuItem key={item.id ? item.id : item} onClick={() => handleSelect(item)}>

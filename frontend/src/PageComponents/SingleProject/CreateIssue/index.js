@@ -21,101 +21,104 @@ const CreateIssue = ({ closeModal, users, createIssueAPI, creatingIssue, createT
   const userOptions = [{ id: null, name: "Unassigned" }, ...users];
 
   return (
-    <Formik
-      initialValues={{
-        type: IssueType.TASK,
-        title: "",
-        description: "",
-        assignee: userOptions[0],
-        status: IssueStatus.BACKLOG, // default for newly created issue
-        priority: IssuePriority.LOWEST,
-        project: match.params.projectId,
-      }}
-      validationSchema={Yup.object().shape({
-        title: Yup.string().required(" Title is required!"),
-      })}
-      onSubmit={async (values, { setErrors }) => {
-        let res = await createIssueAPI({
-          variables: {
-            title: values.title,
-            description: values.description,
-            type: values.type,
-            status: values.status,
-            priority: values.priority,
-            project: values.project,
-            assignee: values.assignee.id,
-          },
-        }).catch((error) => setErrors(error));
-
-        if (res)
-          createToast({
+    <div className="p-5">
+      <Formik
+        initialValues={{
+          type: IssueType.TASK,
+          title: "",
+          description: "",
+          assignee: userOptions[0],
+          status: IssueStatus.OPEN,
+          priority: IssuePriority.MEDIUM,
+          project: match.params.projectId,
+        }}
+        validationSchema={Yup.object().shape({
+          title: Yup.string().required(" Title is required!"),
+        })}
+        onSubmit={async (values, { setErrors }) => {
+          let res = await createIssueAPI({
             variables: {
-              type: "success",
-              message: `Create issue success!`,
+              title: values.title,
+              description: values.description,
+              type: values.type,
+              status: values.status,
+              priority: values.priority,
+              project: values.project,
+              assignee: values.assignee.id,
             },
-          });
+          }).catch((error) => setErrors(error));
 
-        closeModal();
-      }}
-      validateOnBlur={false}
-      validateOnChange={false}
-    >
-      {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <Heading>Create Issue</Heading>
-          <FormikSelect
-            label="Issue Type"
-            selected={formik.values.type}
-            items={Object.values(IssueType)}
-            renderIcon={renderType}
-            onChange={(item) => formik.setFieldValue("type", item)}
-          />
+          if (res)
+            createToast({
+              variables: {
+                type: "success",
+                message: `Create issue success!`,
+              },
+            });
 
-          <FormikInput
-            label="Title"
-            placeholder="Summarise the issue"
-            type="text"
-            name="title"
-            onChange={formik.handleChange}
-            focus={true}
-          />
+          closeModal();
+        }}
+        validateOnBlur={false}
+        validateOnChange={false}
+      >
+        {(formik) => (
+          <form onSubmit={formik.handleSubmit}>
+            <Heading>Create Issue</Heading>
+            <FormikSelect
+              label="Issue Type"
+              selected={formik.values.type}
+              items={Object.values(IssueType)}
+              renderIcon={renderType}
+              onChange={(item) => formik.setFieldValue("type", item)}
+            />
 
-          <FormikCKEditor
-            label="Description"
-            name="description"
-            data={formik.values.description}
-            onChange={(e, editor) => formik.setFieldValue("description", editor.getData())}
-          />
+            <FormikInput
+              label="Title"
+              placeholder="Summarise the issue"
+              type="text"
+              name="title"
+              onChange={formik.handleChange}
+              focus={true}
+            />
 
-          <FormikSelect
-            label="Assignee"
-            selected={formik.values.assignee.name}
-            items={userOptions}
-            renderIcon={renderAssignee}
-            onChange={(user) => {
-              formik.setFieldValue("assignee", user);
-            }}
-          />
+            <FormikCKEditor
+              label="Description"
+              name="description"
+              data={formik.values.description}
+              onChange={(e, editor) => formik.setFieldValue("description", editor.getData())}
+            />
 
-          <FormikSelect
-            label="Priority"
-            selected={formik.values.priority}
-            items={Object.values(IssuePriority)}
-            renderIcon={renderPriority}
-            onChange={(item) => formik.setFieldValue("priority", item)}
-          />
+            <FormikSelect
+              label="Assignee"
+              selected={formik.values.assignee.name}
+              items={userOptions}
+              renderIcon={renderAssignee}
+              onChange={(user) => {
+                formik.setFieldValue("assignee", user);
+              }}
+            />
 
-          <ButtonWrapper>
-            <Button type="submit" variant="primary" onClick={() => {}} isWorking={creatingIssue}>
-              Submit
-            </Button>
-            <Button variant="secondary" onClick={closeModal} className="ml-2">
-              Cancel
-            </Button>
-          </ButtonWrapper>
-        </form>
-      )}
-    </Formik>
+            <FormikSelect
+              label="Priority"
+              selected={formik.values.priority}
+              items={Object.values(IssuePriority)}
+              renderIcon={renderPriority}
+              onChange={(item) => formik.setFieldValue("priority", item)}
+              isDropUp={true}
+            />
+
+            <ButtonWrapper>
+              <Button type="submit" variant="primary" onClick={() => {}} isWorking={creatingIssue}>
+                Submit
+              </Button>
+              <Button variant="secondary" onClick={closeModal} disabled={creatingIssue} className="ml-2">
+                Cancel
+              </Button>
+            </ButtonWrapper>
+          </form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

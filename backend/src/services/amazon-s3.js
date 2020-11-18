@@ -7,6 +7,8 @@ const s3 = new aws.S3({
   params: {
     ACL: "public-read",
     Bucket: config.S3_BUCKET,
+    CacheControl: "max-age=31536000",
+    // Expires: "Sun Jan 02 2022 16:00:00 GMT-0800 (PST)",
   },
 });
 

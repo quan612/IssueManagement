@@ -15,7 +15,7 @@ type AggregateIssue {
   count: Int!
 }
 
-type AggregateIssueTrackingLog {
+type AggregateLog {
   count: Int!
 }
 
@@ -301,13 +301,13 @@ scalar DateTime
 
 type File {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   filename: String!
   mimetype: String!
   encoding: String!
   url: String!
   issue: Issue!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type FileConnection {
@@ -346,10 +346,6 @@ type FileEdge {
 enum FileOrderByInput {
   id_ASC
   id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   filename_ASC
   filename_DESC
   mimetype_ASC
@@ -358,16 +354,20 @@ enum FileOrderByInput {
   encoding_DESC
   url_ASC
   url_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type FilePreviousValues {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   filename: String!
   mimetype: String!
   encoding: String!
   url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input FileScalarWhereInput {
@@ -385,22 +385,6 @@ input FileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -457,6 +441,22 @@ input FileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [FileScalarWhereInput!]
   OR: [FileScalarWhereInput!]
   NOT: [FileScalarWhereInput!]
@@ -552,22 +552,6 @@ input FileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -625,6 +609,22 @@ input FileWhereInput {
   url_ends_with: String
   url_not_ends_with: String
   issue: IssueWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [FileWhereInput!]
   OR: [FileWhereInput!]
   NOT: [FileWhereInput!]
@@ -636,7 +636,7 @@ input FileWhereUniqueInput {
 }
 
 type Issue {
-  id: Int!
+  id: ID!
   title: String!
   description: String
   type: IssueType!
@@ -653,6 +653,7 @@ type Issue {
   project: Project!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   attachments(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File!]
+  dueDate: DateTime
 }
 
 type IssueConnection {
@@ -662,7 +663,7 @@ type IssueConnection {
 }
 
 input IssueCreateInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -677,6 +678,7 @@ input IssueCreateInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateManyWithoutAssigneeInput {
@@ -710,7 +712,7 @@ input IssueCreateOneWithoutCommentsInput {
 }
 
 input IssueCreateWithoutAssigneeInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -724,10 +726,11 @@ input IssueCreateWithoutAssigneeInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutAttachmentsInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -741,10 +744,11 @@ input IssueCreateWithoutAttachmentsInput {
   listPosition: Float
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutCommentsInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -758,10 +762,11 @@ input IssueCreateWithoutCommentsInput {
   listPosition: Float
   project: ProjectCreateOneWithoutIssuesInput!
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutProjectInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -775,10 +780,11 @@ input IssueCreateWithoutProjectInput {
   listPosition: Float
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueCreateWithoutReporterInput {
-  id: Int
+  id: ID
   title: String!
   description: String
   type: IssueType!
@@ -792,6 +798,7 @@ input IssueCreateWithoutReporterInput {
   project: ProjectCreateOneWithoutIssuesInput!
   comments: CommentCreateManyWithoutIssueInput
   attachments: FileCreateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 type IssueEdge {
@@ -824,10 +831,12 @@ enum IssueOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  dueDate_ASC
+  dueDate_DESC
 }
 
 type IssuePreviousValues {
-  id: Int!
+  id: ID!
   title: String!
   description: String
   type: IssueType!
@@ -839,6 +848,7 @@ type IssuePreviousValues {
   listPosition: Float
   createdAt: DateTime!
   updatedAt: DateTime!
+  dueDate: DateTime
 }
 
 enum IssuePriority {
@@ -848,14 +858,20 @@ enum IssuePriority {
 }
 
 input IssueScalarWhereInput {
-  id: Int
-  id_not: Int
-  id_in: [Int!]
-  id_not_in: [Int!]
-  id_lt: Int
-  id_lte: Int
-  id_gt: Int
-  id_gte: Int
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   title: String
   title_not: String
   title_in: [String!]
@@ -944,12 +960,21 @@ input IssueScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  dueDate: DateTime
+  dueDate_not: DateTime
+  dueDate_in: [DateTime!]
+  dueDate_not_in: [DateTime!]
+  dueDate_lt: DateTime
+  dueDate_lte: DateTime
+  dueDate_gt: DateTime
+  dueDate_gte: DateTime
   AND: [IssueScalarWhereInput!]
   OR: [IssueScalarWhereInput!]
   NOT: [IssueScalarWhereInput!]
 }
 
 enum IssueStatus {
+  Backlog
   Open
   InProgress
   Done
@@ -973,167 +998,10 @@ input IssueSubscriptionWhereInput {
   NOT: [IssueSubscriptionWhereInput!]
 }
 
-type IssueTrackingLog {
-  id: ID!
-  type: LogType!
-  created: DateTime!
-  user: User
-  issue: Issue
-  prevAssignee: User
-  newAssignee: User
-  previousValue: String
-  newValue: String
-}
-
-type IssueTrackingLogConnection {
-  pageInfo: PageInfo!
-  edges: [IssueTrackingLogEdge]!
-  aggregate: AggregateIssueTrackingLog!
-}
-
-input IssueTrackingLogCreateInput {
-  id: ID
-  type: LogType!
-  user: UserCreateOneInput
-  issue: IssueCreateOneInput
-  prevAssignee: UserCreateOneInput
-  newAssignee: UserCreateOneInput
-  previousValue: String
-  newValue: String
-}
-
-type IssueTrackingLogEdge {
-  node: IssueTrackingLog!
-  cursor: String!
-}
-
-enum IssueTrackingLogOrderByInput {
-  id_ASC
-  id_DESC
-  type_ASC
-  type_DESC
-  created_ASC
-  created_DESC
-  previousValue_ASC
-  previousValue_DESC
-  newValue_ASC
-  newValue_DESC
-}
-
-type IssueTrackingLogPreviousValues {
-  id: ID!
-  type: LogType!
-  created: DateTime!
-  previousValue: String
-  newValue: String
-}
-
-type IssueTrackingLogSubscriptionPayload {
-  mutation: MutationType!
-  node: IssueTrackingLog
-  updatedFields: [String!]
-  previousValues: IssueTrackingLogPreviousValues
-}
-
-input IssueTrackingLogSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: IssueTrackingLogWhereInput
-  AND: [IssueTrackingLogSubscriptionWhereInput!]
-  OR: [IssueTrackingLogSubscriptionWhereInput!]
-  NOT: [IssueTrackingLogSubscriptionWhereInput!]
-}
-
-input IssueTrackingLogUpdateInput {
-  type: LogType
-  user: UserUpdateOneInput
-  issue: IssueUpdateOneInput
-  prevAssignee: UserUpdateOneInput
-  newAssignee: UserUpdateOneInput
-  previousValue: String
-  newValue: String
-}
-
-input IssueTrackingLogUpdateManyMutationInput {
-  type: LogType
-  previousValue: String
-  newValue: String
-}
-
-input IssueTrackingLogWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  type: LogType
-  type_not: LogType
-  type_in: [LogType!]
-  type_not_in: [LogType!]
-  created: DateTime
-  created_not: DateTime
-  created_in: [DateTime!]
-  created_not_in: [DateTime!]
-  created_lt: DateTime
-  created_lte: DateTime
-  created_gt: DateTime
-  created_gte: DateTime
-  user: UserWhereInput
-  issue: IssueWhereInput
-  prevAssignee: UserWhereInput
-  newAssignee: UserWhereInput
-  previousValue: String
-  previousValue_not: String
-  previousValue_in: [String!]
-  previousValue_not_in: [String!]
-  previousValue_lt: String
-  previousValue_lte: String
-  previousValue_gt: String
-  previousValue_gte: String
-  previousValue_contains: String
-  previousValue_not_contains: String
-  previousValue_starts_with: String
-  previousValue_not_starts_with: String
-  previousValue_ends_with: String
-  previousValue_not_ends_with: String
-  newValue: String
-  newValue_not: String
-  newValue_in: [String!]
-  newValue_not_in: [String!]
-  newValue_lt: String
-  newValue_lte: String
-  newValue_gt: String
-  newValue_gte: String
-  newValue_contains: String
-  newValue_not_contains: String
-  newValue_starts_with: String
-  newValue_not_starts_with: String
-  newValue_ends_with: String
-  newValue_not_ends_with: String
-  AND: [IssueTrackingLogWhereInput!]
-  OR: [IssueTrackingLogWhereInput!]
-  NOT: [IssueTrackingLogWhereInput!]
-}
-
-input IssueTrackingLogWhereUniqueInput {
-  id: ID
-}
-
 enum IssueType {
   Task
   Bug
-  Story
+  Request
 }
 
 input IssueUpdateDataInput {
@@ -1151,6 +1019,7 @@ input IssueUpdateDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateInput {
@@ -1168,6 +1037,7 @@ input IssueUpdateInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateManyDataInput {
@@ -1180,6 +1050,7 @@ input IssueUpdateManyDataInput {
   timeSpent: Int
   timeRemaining: Int
   listPosition: Float
+  dueDate: DateTime
 }
 
 input IssueUpdateManyMutationInput {
@@ -1192,6 +1063,7 @@ input IssueUpdateManyMutationInput {
   timeSpent: Int
   timeRemaining: Int
   listPosition: Float
+  dueDate: DateTime
 }
 
 input IssueUpdateManyWithoutAssigneeInput {
@@ -1272,6 +1144,7 @@ input IssueUpdateWithoutAssigneeDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutAttachmentsDataInput {
@@ -1288,6 +1161,7 @@ input IssueUpdateWithoutAttachmentsDataInput {
   listPosition: Float
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutCommentsDataInput {
@@ -1304,6 +1178,7 @@ input IssueUpdateWithoutCommentsDataInput {
   listPosition: Float
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutProjectDataInput {
@@ -1320,6 +1195,7 @@ input IssueUpdateWithoutProjectDataInput {
   listPosition: Float
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithoutReporterDataInput {
@@ -1336,6 +1212,7 @@ input IssueUpdateWithoutReporterDataInput {
   project: ProjectUpdateOneRequiredWithoutIssuesInput
   comments: CommentUpdateManyWithoutIssueInput
   attachments: FileUpdateManyWithoutIssueInput
+  dueDate: DateTime
 }
 
 input IssueUpdateWithWhereUniqueWithoutAssigneeInput {
@@ -1387,14 +1264,20 @@ input IssueUpsertWithWhereUniqueWithoutReporterInput {
 }
 
 input IssueWhereInput {
-  id: Int
-  id_not: Int
-  id_in: [Int!]
-  id_not_in: [Int!]
-  id_lt: Int
-  id_lte: Int
-  id_gt: Int
-  id_gte: Int
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   title: String
   title_not: String
   title_in: [String!]
@@ -1492,22 +1375,189 @@ input IssueWhereInput {
   attachments_every: FileWhereInput
   attachments_some: FileWhereInput
   attachments_none: FileWhereInput
+  dueDate: DateTime
+  dueDate_not: DateTime
+  dueDate_in: [DateTime!]
+  dueDate_not_in: [DateTime!]
+  dueDate_lt: DateTime
+  dueDate_lte: DateTime
+  dueDate_gt: DateTime
+  dueDate_gte: DateTime
   AND: [IssueWhereInput!]
   OR: [IssueWhereInput!]
   NOT: [IssueWhereInput!]
 }
 
 input IssueWhereUniqueInput {
-  id: Int
+  id: ID
+}
+
+type Log {
+  id: ID!
+  type: LogType!
+  created: DateTime!
+  user: User
+  issue: Issue
+  prevAssignee: User
+  newAssignee: User
+  previousValue: String
+  newValue: String
+}
+
+type LogConnection {
+  pageInfo: PageInfo!
+  edges: [LogEdge]!
+  aggregate: AggregateLog!
+}
+
+input LogCreateInput {
+  id: ID
+  type: LogType!
+  user: UserCreateOneInput
+  issue: IssueCreateOneInput
+  prevAssignee: UserCreateOneInput
+  newAssignee: UserCreateOneInput
+  previousValue: String
+  newValue: String
+}
+
+type LogEdge {
+  node: Log!
+  cursor: String!
+}
+
+enum LogOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  created_ASC
+  created_DESC
+  previousValue_ASC
+  previousValue_DESC
+  newValue_ASC
+  newValue_DESC
+}
+
+type LogPreviousValues {
+  id: ID!
+  type: LogType!
+  created: DateTime!
+  previousValue: String
+  newValue: String
+}
+
+type LogSubscriptionPayload {
+  mutation: MutationType!
+  node: Log
+  updatedFields: [String!]
+  previousValues: LogPreviousValues
+}
+
+input LogSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LogWhereInput
+  AND: [LogSubscriptionWhereInput!]
+  OR: [LogSubscriptionWhereInput!]
+  NOT: [LogSubscriptionWhereInput!]
 }
 
 enum LogType {
-  IssueOpen
-  IssueAssigneeChange
-  IssueStatusChange
-  IssueTypeChange
-  IssuePriorityChange
-  IssueComment
+  Open
+  Assignee
+  Status
+  Type
+  Priority
+  Comment
+  Estimate
+  Attachment
+}
+
+input LogUpdateInput {
+  type: LogType
+  user: UserUpdateOneInput
+  issue: IssueUpdateOneInput
+  prevAssignee: UserUpdateOneInput
+  newAssignee: UserUpdateOneInput
+  previousValue: String
+  newValue: String
+}
+
+input LogUpdateManyMutationInput {
+  type: LogType
+  previousValue: String
+  newValue: String
+}
+
+input LogWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: LogType
+  type_not: LogType
+  type_in: [LogType!]
+  type_not_in: [LogType!]
+  created: DateTime
+  created_not: DateTime
+  created_in: [DateTime!]
+  created_not_in: [DateTime!]
+  created_lt: DateTime
+  created_lte: DateTime
+  created_gt: DateTime
+  created_gte: DateTime
+  user: UserWhereInput
+  issue: IssueWhereInput
+  prevAssignee: UserWhereInput
+  newAssignee: UserWhereInput
+  previousValue: String
+  previousValue_not: String
+  previousValue_in: [String!]
+  previousValue_not_in: [String!]
+  previousValue_lt: String
+  previousValue_lte: String
+  previousValue_gt: String
+  previousValue_gte: String
+  previousValue_contains: String
+  previousValue_not_contains: String
+  previousValue_starts_with: String
+  previousValue_not_starts_with: String
+  previousValue_ends_with: String
+  previousValue_not_ends_with: String
+  newValue: String
+  newValue_not: String
+  newValue_in: [String!]
+  newValue_not_in: [String!]
+  newValue_lt: String
+  newValue_lte: String
+  newValue_gt: String
+  newValue_gte: String
+  newValue_contains: String
+  newValue_not_contains: String
+  newValue_starts_with: String
+  newValue_not_starts_with: String
+  newValue_ends_with: String
+  newValue_not_ends_with: String
+  AND: [LogWhereInput!]
+  OR: [LogWhereInput!]
+  NOT: [LogWhereInput!]
+}
+
+input LogWhereUniqueInput {
+  id: ID
 }
 
 scalar Long
@@ -1531,12 +1581,12 @@ type Mutation {
   upsertIssue(where: IssueWhereUniqueInput!, create: IssueCreateInput!, update: IssueUpdateInput!): Issue!
   deleteIssue(where: IssueWhereUniqueInput!): Issue
   deleteManyIssues(where: IssueWhereInput): BatchPayload!
-  createIssueTrackingLog(data: IssueTrackingLogCreateInput!): IssueTrackingLog!
-  updateIssueTrackingLog(data: IssueTrackingLogUpdateInput!, where: IssueTrackingLogWhereUniqueInput!): IssueTrackingLog
-  updateManyIssueTrackingLogs(data: IssueTrackingLogUpdateManyMutationInput!, where: IssueTrackingLogWhereInput): BatchPayload!
-  upsertIssueTrackingLog(where: IssueTrackingLogWhereUniqueInput!, create: IssueTrackingLogCreateInput!, update: IssueTrackingLogUpdateInput!): IssueTrackingLog!
-  deleteIssueTrackingLog(where: IssueTrackingLogWhereUniqueInput!): IssueTrackingLog
-  deleteManyIssueTrackingLogs(where: IssueTrackingLogWhereInput): BatchPayload!
+  createLog(data: LogCreateInput!): Log!
+  updateLog(data: LogUpdateInput!, where: LogWhereUniqueInput!): Log
+  updateManyLogs(data: LogUpdateManyMutationInput!, where: LogWhereInput): BatchPayload!
+  upsertLog(where: LogWhereUniqueInput!, create: LogCreateInput!, update: LogUpdateInput!): Log!
+  deleteLog(where: LogWhereUniqueInput!): Log
+  deleteManyLogs(where: LogWhereInput): BatchPayload!
   createProject(data: ProjectCreateInput!): Project!
   updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
   updateManyProjects(data: ProjectUpdateManyMutationInput!, where: ProjectWhereInput): BatchPayload!
@@ -1575,7 +1625,7 @@ enum Permission {
 }
 
 type Project {
-  id: Int!
+  id: ID!
   name: String!
   key: String!
   issues(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue!]
@@ -1588,7 +1638,7 @@ type ProjectConnection {
 }
 
 input ProjectCreateInput {
-  id: Int
+  id: ID
   name: String!
   key: String!
   issues: IssueCreateManyWithoutProjectInput
@@ -1600,7 +1650,7 @@ input ProjectCreateOneWithoutIssuesInput {
 }
 
 input ProjectCreateWithoutIssuesInput {
-  id: Int
+  id: ID
   name: String!
   key: String!
 }
@@ -1620,7 +1670,7 @@ enum ProjectOrderByInput {
 }
 
 type ProjectPreviousValues {
-  id: Int!
+  id: ID!
   name: String!
   key: String!
 }
@@ -1672,14 +1722,20 @@ input ProjectUpsertWithoutIssuesInput {
 }
 
 input ProjectWhereInput {
-  id: Int
-  id_not: Int
-  id_in: [Int!]
-  id_not_in: [Int!]
-  id_lt: Int
-  id_lte: Int
-  id_gt: Int
-  id_gte: Int
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   name: String
   name_not: String
   name_in: [String!]
@@ -1717,7 +1773,7 @@ input ProjectWhereInput {
 }
 
 input ProjectWhereUniqueInput {
-  id: Int
+  id: ID
   key: String
 }
 
@@ -1731,9 +1787,9 @@ type Query {
   issue(where: IssueWhereUniqueInput!): Issue
   issues(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Issue]!
   issuesConnection(where: IssueWhereInput, orderBy: IssueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IssueConnection!
-  issueTrackingLog(where: IssueTrackingLogWhereUniqueInput!): IssueTrackingLog
-  issueTrackingLogs(where: IssueTrackingLogWhereInput, orderBy: IssueTrackingLogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IssueTrackingLog]!
-  issueTrackingLogsConnection(where: IssueTrackingLogWhereInput, orderBy: IssueTrackingLogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IssueTrackingLogConnection!
+  log(where: LogWhereUniqueInput!): Log
+  logs(where: LogWhereInput, orderBy: LogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Log]!
+  logsConnection(where: LogWhereInput, orderBy: LogOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LogConnection!
   project(where: ProjectWhereUniqueInput!): Project
   projects(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Project]!
   projectsConnection(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProjectConnection!
@@ -1747,7 +1803,7 @@ type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   issue(where: IssueSubscriptionWhereInput): IssueSubscriptionPayload
-  issueTrackingLog(where: IssueTrackingLogSubscriptionWhereInput): IssueTrackingLogSubscriptionPayload
+  log(where: LogSubscriptionWhereInput): LogSubscriptionPayload
   project(where: ProjectSubscriptionWhereInput): ProjectSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

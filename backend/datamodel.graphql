@@ -7,10 +7,11 @@ enum Permission {
 enum IssueType {
   Task
   Bug
-  Story
+  Request
 }
 
 enum IssueStatus {
+  Backlog
   Open
   InProgress
   Done
@@ -22,8 +23,19 @@ enum IssuePriority {
   Low
 }
 
+enum LogType {
+  Open
+  Assignee
+  Status
+  Type
+  Priority
+  Comment
+  Estimate
+  Attachment
+}
+
 type Project {
-  id: Int! @id
+  id: ID! @id
   name: String!
   key: String! @unique
   issues: [Issue!]! @relation(name: "ProjectIssue", onDelete: CASCADE)
@@ -34,8 +46,6 @@ type User {
   email: String! @unique
   name: String!
   password: String!
-  # resetToken: String
-  # resetTokenExpiry: Float
   permissions: [Permission!]! @scalarList(strategy: RELATION)
   assigned: [Issue!]! @relation(name: "AssigneeIssue", onDelete: CASCADE)
   reporter: [Issue!]! @relation(name: "ReporterIssue", onDelete: CASCADE)
@@ -44,7 +54,7 @@ type User {
 }
 
 type Issue {
-  id: Int! @id
+  id: ID! @id
   title: String!
   description: String
   type: IssueType!
@@ -61,6 +71,7 @@ type Issue {
   project: Project! @relation(name: "ProjectIssue", onDelete: SET_NULL)
   comments: [Comment!]! @relation(name: "IssueComment", onDelete: CASCADE)
   attachments: [File!]! @relation(name: "IssueFile", onDelete: CASCADE)
+  dueDate: DateTime
 }
 
 type Comment {
@@ -74,26 +85,16 @@ type Comment {
 
 type File {
   id: ID! @id
-
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
   filename: String!
   mimetype: String!
   encoding: String!
   url: String! @unique
   issue: Issue! @relation(name: "IssueFile")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
-enum LogType {
-  IssueOpen
-  IssueAssigneeChange
-  IssueStatusChange
-  IssueTypeChange
-  IssuePriorityChange
-  IssueComment
-}
-
-type IssueTrackingLog {
+type Log {
   id: ID! @id
   type: LogType!
   created: DateTime! @createdAt

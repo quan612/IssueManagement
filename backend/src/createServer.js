@@ -6,10 +6,10 @@ const Issue = require("./resolvers/Issue");
 const Project = require("./resolvers/Project");
 const User = require("./resolvers/User");
 const Comment = require("./resolvers/Comment");
-const IssueTrackingLog = require("./resolvers/IssueTrackingLog");
+const Log = require("./resolvers/Log");
+const File = require("./resolvers/File");
 
 // create the GraphQL yoga server
-
 function createServer() {
   return new GraphQLServer({
     typeDefs: "src/schema.graphql",
@@ -20,7 +20,8 @@ function createServer() {
       Project: Project,
       User: User,
       Comment: Comment,
-      IssueTrackingLog: IssueTrackingLog,
+      Log: Log,
+      File,
     },
     resolverValidationOptions: {
       requireResolversForResolveType: false,

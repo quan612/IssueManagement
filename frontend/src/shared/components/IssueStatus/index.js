@@ -2,12 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { IssueStatus } from "shared/constants/issues";
-
 import { StyledTag } from "shared/components/styles";
 
 const issueStatusColors = {
   BACKLOG: "#718096", // red
-  SELECTED: "#d69e2e", // pink
+  OPEN: "#d69e2e", // pink
   INPROGRESS: "#3182ce", // orange
   DONE: "#38a169", // teal
 };

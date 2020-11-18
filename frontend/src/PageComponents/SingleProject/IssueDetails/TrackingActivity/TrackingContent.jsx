@@ -11,6 +11,7 @@ import { BulletList } from "./styles";
 export const TrackingContent = ({ log, issue }) => {
   const handleRenderContent = (log, issue) => {
     const { type, user, prevAssignee, newAssignee, previousValue, newValue } = log;
+    issue.attachments.map((attachment) => console.log(attachment));
 
     if (type === "Priority")
       return (
@@ -18,6 +19,15 @@ export const TrackingContent = ({ log, issue }) => {
           <IssuePriorityTag priority={previousValue} />
           <ThemeIcon className="ml-8 mr-8" icon="chevron-right" size="sm" />
           <IssuePriorityTag priority={newValue} />
+        </>
+      );
+
+    if (type === "Estimate")
+      return (
+        <>
+          <span>{previousValue} hours</span>
+          <ThemeIcon className="ml-8 mr-8" icon="chevron-right" size="sm" />
+          <span>{newValue} hours</span>
         </>
       );
 
@@ -49,6 +59,18 @@ export const TrackingContent = ({ log, issue }) => {
           <ThemeIcon className="ml-8 mr-8" icon="chevron-right" size="sm" />
           <Type type={newValue} />
         </>
+      );
+    }
+
+    if (type === "Attachment") {
+      let file = issue.attachments.filter((attachment) => attachment.id === newValue);
+
+      return (
+        <span>
+          {"empty"}
+          <ThemeIcon className="ml-8 mr-8" icon="chevron-right" size="sm" />
+          {file[0].filename}
+        </span>
       );
     }
 

@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const PanelContainer = styled.div`
+  background-color: white;
+  border: solid 1px #c2c2c2;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+`;
+
 export const LogWrapper = styled.div`
   min-height: 62px;
 `;
@@ -19,7 +26,7 @@ export const LogItemWrapper = styled.div`
     position: relative;
   }
 
-  &:last-child > div {
+  &:last-child:not(:first-child) > div {
     border-top: solid 1px #bdbdbd;
     position: relative;
     padding-bottom: 1rem;

@@ -5,7 +5,7 @@ import { withSignUp } from "shared/HOC";
 import { Formik } from "formik";
 import { NavLink } from "react-router-dom";
 import * as Yup from "yup";
-import * as ROUTES from "App/routes";
+import * as ROUTES from "App/Routes";
 
 import { KeyCodes } from "shared/constants/keyCodes";
 import { Button } from "shared/components/Button";
@@ -28,7 +28,9 @@ const Signup = ({ loading, error, onSignUp, ...props }) => {
 
     name: Yup.string().required(" Name is required!"),
 
-    password: Yup.string().required(" Password is required!").min(5, "Password min length is 5"),
+    password: Yup.string()
+      .required(" Password is required!")
+      .min(5, "Password min length is 5"),
   });
 
   const handleOnChange = (e, formik) => {
@@ -87,7 +89,13 @@ const Signup = ({ loading, error, onSignUp, ...props }) => {
                 />
 
                 <div className="text-center mt-3">
-                  <Button type="submit" isWorking={loading} variant="primary" onClick={() => {}} width="100%">
+                  <Button
+                    type="submit"
+                    isWorking={loading}
+                    variant="primary"
+                    onClick={() => {}}
+                    width="100%"
+                  >
                     Sign Up
                   </Button>
                 </div>

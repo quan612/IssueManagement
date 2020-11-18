@@ -16,7 +16,11 @@ const Issue = {
 
   comments(parent, args, ctx, info) {
     return ctx.prisma.issue({ id: parent.id }).comments();
-  }
+  },
+
+  attachments(parent, args, ctx, info) {
+    return ctx.prisma.issue({ id: parent.id }).attachments();
+  },
 };
 
 module.exports = Issue;

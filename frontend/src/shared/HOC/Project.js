@@ -11,6 +11,9 @@ import {
   PROJECTS,
 } from "shared/GraphQL/Project";
 
+import { FullScreenSpinnerContainer } from "./styles";
+import Loading from "shared/components/Spinner";
+
 export const withProjects = (BaseComponent) => ({ ...props }) => {
   const { loading, error, data, networkStatus } = useQuery(PROJECTS);
 
@@ -82,12 +85,19 @@ export const withProjectsQuery = (BaseComponent) => ({ ...props }) => {
 
 export const withSingleProjectQuery = (BaseComponent) => ({ ...props }) => {
   const { params } = props.match;
+
   const { loading, error, data } = useQuery(SINGLE_PROJECT_QUERY, {
     variables: { id: params.projectId },
   });
 
-  if (loading) return <p>Single project query</p>;
-  else {
+  if (loading) {
+    return (
+      <FullScreenSpinnerContainer>
+        <Loading />
+        Fetching project information...
+      </FullScreenSpinnerContainer>
+    );
+  } else {
     return <BaseComponent error={error} project={data.project} {...props} />;
   }
 };

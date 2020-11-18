@@ -40,7 +40,6 @@ const SingleComment = ({ comment, commentOwner, currentLogInUser, updateComment,
             <Button isWorking={isWorking} variant="info" onClick={handleSaveComment}>
               Save
             </Button>
-
             <Button disabled={isWorking} variant="secondary" onClick={() => setEdit(false)}>
               Cancel
             </Button>

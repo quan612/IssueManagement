@@ -1,4 +1,6 @@
-const handleCreateLog = require("./index.js");
+let util = require("./log.js");
+
+const IssueOpen = "Open";
 
 const IssueMutation = {
   async createIssue(parent, args, ctx, info) {
@@ -6,14 +8,14 @@ const IssueMutation = {
       //check if user is log in
       //check if the project existed
 
-      // create an issue within the project
       const { title, description, type, status, priority, project, assignee } = args;
 
-      // finding the highest position based on current issues
-      let listPosition;
       const projectIssues = await ctx.prisma.issues({
         where: { project: { id: project } },
       });
+
+      // finding the highest position based on current issues
+      let listPosition;
 
       if (projectIssues.length > 0) {
         const issuesSameType = projectIssues.filter((issue) => issue.type === type);
@@ -43,13 +45,15 @@ const IssueMutation = {
           timeSpent: 0,
           timeRemaining: 0,
           listPosition,
+          attachments: [],
+          dueDate: null,
         },
         info
       );
 
-      // update Log table
-      await ctx.prisma.createIssueTrackingLog({
-        logType: IssueCreate,
+      //update Log table
+      let log = await ctx.prisma.createLog({
+        type: IssueOpen,
         user: {
           connect: { id: ctx.request.userId },
         },
@@ -132,9 +136,9 @@ const IssueMutation = {
 
     //due to relation, assignee is not available in updateIssue, we must assign it for log
     updateIssue.assignee = await ctx.prisma.issue({ id }, info).assignee();
-
+    // console.log(currentIssue);
     // update Log table
-    await handleCreateLog(ctx, actionType, currentIssue, updateIssue);
+    await util.handleCreateLog(ctx, actionType, currentIssue, updateIssue);
 
     return updateIssue;
   },

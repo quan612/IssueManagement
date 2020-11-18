@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { withUserUpdate } from "shared/HOC";
 
-import { PageContainer, Wrapper, Panel, UserDetailsWrapper } from "./styles";
+import { PageContainer, Wrapper, PanelContainer, UserDetailsWrapper } from "./styles";
 import { Section } from "shared/components/Section";
 
 import { Input } from "shared/components/Input";
@@ -40,7 +40,7 @@ const User = ({ authentication, onUpdateUser, updating }) => {
   return (
     <PageContainer>
       <Wrapper>
-        <Panel>
+        <PanelContainer>
           <div className="flex justify-center">
             <UserAvatar className="-mt-24" user={userData} size={200} src={image} />
           </div>
@@ -60,7 +60,7 @@ const User = ({ authentication, onUpdateUser, updating }) => {
               <UserDetails user={userData} onEdit={() => setEdit(true)} />
             )}
           </UserDetailsWrapper>
-        </Panel>
+        </PanelContainer>
       </Wrapper>
     </PageContainer>
   );

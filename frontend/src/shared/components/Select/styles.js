@@ -1,5 +1,5 @@
 import tw from "tailwind.macro";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const SelectContainer = styled.div`
   ${tw` relative rounded `}
@@ -38,6 +38,12 @@ export const MenuContainer = styled.div`
   background: inherit;
   border: 1px solid ${(props) => props.theme.colors.primary};
   color: ${(props) => (props.theme.input ? props.theme.input.textColor : "black")};
+
+  ${(props) =>
+    props.isDropUp &&
+    css`
+      bottom: 2.5rem;
+    `}
 `;
 
 export const MenuItem = styled(SelectedItemWrapper)`

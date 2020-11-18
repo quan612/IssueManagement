@@ -19,7 +19,7 @@ export const EmptyLabel = styled.div`
   margin-left: -4px;
   height: 135px;
   background: ${(props) => (props.theme.input ? props.theme.input.background : "white")};
-
+  border: 1px solid ${(props) => props.theme.colors.borderColor};
   &:hover {
     opacity: 0.8;
   }
@@ -39,7 +39,7 @@ export const ContentEditable = styled.div`
   max-height: 250px;
   white-space: pre-line;
   padding: 5px;
-  border: 1px solid transparent;
+  border: 1px solid ${(props) => props.theme.colors.borderColor};
   border-radius: 0.2rem;
   overflow-y: scroll;
 
